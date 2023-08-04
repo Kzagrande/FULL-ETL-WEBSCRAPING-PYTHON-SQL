@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 from typing import Dict
 
-class HttpRequesterInterface(ABC):
+class DatabaseRepositoryInterface(ABC):
 
     @abstractmethod
-    def request_from_page(self) -> Dict[int, str]:
+    def insert_artist(self, data: Dict) -> None:
         pass

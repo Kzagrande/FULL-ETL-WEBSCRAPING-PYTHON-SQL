@@ -6,4 +6,4 @@ ExtractContract = namedtuple(
         raw_information_content
         extraction_date
     '''
-)   
+)
