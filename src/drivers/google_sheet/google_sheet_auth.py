@@ -1,13 +1,18 @@
 import os
+import sys
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
+from googleapiclient.discovery import Resource
+project_root = 'C:\\Users\\User\\sites\\control-tower-D'
+sys.path.insert(0, project_root)
+from src.drivers.interfaces.google_sheet_auth import GoogleSheetAuthInterface
 
 
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 
-class GoogleSheetAuth:
+class GoogleSheetAuth(GoogleSheetAuthInterface):
     def __init__(self):
          #Define um metodo construtor que sempre que classe for chamada já executa o metodo get_service() que por sua vez retora o _get_setvice, privado.
         self.service = self._get_service()
@@ -31,5 +36,6 @@ class GoogleSheetAuth:
 
         return build('sheets', 'v4', credentials=creds)
 
-    def get_service(self):
+    
+    def get_service(self) -> Resource :
         return self.service
