@@ -5,9 +5,11 @@ from src.stages.contracts.extract_contract import ExtractContract
 from typing import List
 from src.stages.contracts.transform_contract import TransformContract
 from src.errors.transform_error import TransformError
+import pandas as pd 
+
+
 
 class TransformRawScheduling:
-    
     def transform(self, extract_contract:ExtractContract) :
         try:
             transformed_information = self.__filter_and_transform_data(extract_contract)
@@ -23,8 +25,12 @@ class TransformRawScheduling:
         extraction_date  = extract_contract.extraction_date 
         data_content = extract_contract.raw_information_content
         # transform_information  = []
-        # print(data_content[8])
-        return data_content[8]
+        df = pd.DataFrame(data_content)
+        df.to_csv('seuarquivo.csv', index=False)
+
+        print(df)
+        
+        return df
        
         
        

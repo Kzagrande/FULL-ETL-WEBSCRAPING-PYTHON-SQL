@@ -13,8 +13,7 @@ def test_transform():
     transformed_data_contract =  tansform_raw_data.transform(extract_scheduling_contract_mock)
     
     assert isinstance(transformed_data_contract, TransformContract)
-    
-    
+     
     
 def test_transform_error():
     tansform_raw_data = TransformRawScheduling()

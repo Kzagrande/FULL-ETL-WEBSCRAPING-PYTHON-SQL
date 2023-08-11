@@ -36,7 +36,7 @@ class GoogleSheetGetter(GoogleSheetGetterInterface):
             # Call the Sheets API
             sheet = self.service.spreadsheets()
             result = sheet.values().get(spreadsheetId=self.spreadsheet_id,
-                                        range=f"{self.get_sheet_name()}!B17:AB37").execute()
+                                        range=f"{self.get_sheet_name()}!B38:AB154").execute()
             values = result.get('values', [])
             # print('Values', values)
             return values

@@ -9,7 +9,7 @@ class DatabaseConnection:
         db_connection = mysql.connect(
             host = "localhost",
             port = 3306,
-            database = "pipeline_db",
+            database = "ods_shein",
             user = "root",
             passwd = "onepiece1998Yan"
         )
