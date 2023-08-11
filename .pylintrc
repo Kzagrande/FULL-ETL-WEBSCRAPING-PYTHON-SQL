@@ -1,0 +1,95 @@
+[MASTER]
+
+# Define a nota mínima necessária para considerar uma avaliação válida.
+# A nota varia de 0 a 10.
+min-similarity-lines = 10.0
+
+[MESSAGES CONTROL]
+
+# Habilitar/desabilitar mensagens específicas do Pylint.
+# A sintaxe é: <mensagem> [AVALIAR/IGNORAR] <valor>
+
+# Exemplo de desabilitação de uma mensagem específica:
+disable = C0114
+
+[BASIC]
+
+# Define os padrões que devem ser usados ao verificar os nomes de variáveis, funções, etc.
+# Você pode modificar esses padrões para atender ao estilo de nomenclatura preferido.
+
+# Regras para nomes de variáveis (nomes devem ter no mínimo 2 caracteres).
+variable-rgx = '[a-z_][a-z0-9_]{1,30}$'
+
+# Regras para nomes de constantes.
+const-rgx = '[A-Z_][A-Z0-9_]{1,30}$'
+
+# Regras para nomes de classes (nomes devem ter no mínimo 3 caracteres).
+class-rgx = '[A-Z_][a-zA-Z0-9]+$'
+
+# Regras para nomes de funções.
+function-rgx = '[a-z_][a-z0-9_]{1,30}$'
+
+# Regras para nomes de métodos.
+method-rgx = '[a-z_][a-z0-9_]{1,30}$'
+
+[FORMAT]
+
+# Define o estilo de código preferido para formatação.
+# Você pode modificar essas opções para ajustar o estilo preferido.
+
+# Tamanho máximo de linha.
+max-line-length = 100
+
+# Define se a indentação deve ser feita usando espaços ou tabs.
+indent-string = "    "
+
+# Define se devem ser adicionados espaços depois dos parênteses, colchetes e chaves.
+spaces-after-variables = true
+
+# Define se deve haver um espaço entre o nome da função/método e o primeiro parêntese.
+spaces-before-call = 1
+
+# Define se deve haver espaços em branco ao redor dos operadores.
+single-space-after-comma = true
+single-space-after-anonymous-function-operator = true
+
+[TYPECHECK]
+
+# Define se variáveis devem ser verificadas em relação ao seu tipo.
+# Se desabilitado, você não verá mensagens sobre problemas de tipo.
+# É recomendado habilitar esta opção.
+generated-members = __.*__
+
+[REPORTS]
+
+# Define a saída dos relatórios gerados pelo Pylint.
+# Neste exemplo, estamos usando a saída de texto padrão.
+output-format = colorized
+
+# Define o local onde o relatório de erros será salvo.
+reports = no
+
+[IMPORTS]
+
+# Define como o Pylint trata as importações.
+# Neste exemplo, estamos ignorando importações não utilizadas.
+ignore-imports = yes
+
+[DESIGN]
+
+# Define as opções de design.
+# Neste exemplo, estamos ignorando a verificação de "docstring missing" (falta de docstrings).
+
+# Desabilitar verificação de docstrings.
+no-docstring-rgx = '.*'
+
+[TOOLS]
+
+# Define as ferramentas adicionais para o Pylint usar.
+# Neste exemplo, estamos usando o "pyreverse" para gerar gráficos UML.
+
+# Ferramentas adicionais.
+# O "pyreverse" deve ser instalado e disponível no caminho do sistema.
+# A ferramenta cria gráficos UML a partir do código Python.
+# Exemplo de uso: pylint --ext-pyreverse <nome_do_arquivo.py>
+# ext-pyreverse = yes
