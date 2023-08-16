@@ -1,5 +1,6 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.keys import Keys
 import time
 import sys
 project_root = 'C:\\Users\\User\\sites\\control-tower-D'
@@ -56,12 +57,24 @@ class WmsConfig():
         )
         time.sleep(2)
         btn_ok.click()
-            
+        time.sleep(2)
+        
+    def language(self):
+        dropdown_language = self.wait_for_element(
+            By.XPATH,
+            '//*[@id="app"]/section/section/header/div/nav/div[2]/div[4]/div/div/a',
+        )
+        dropdown_language.click()
+        dropdown_language.send_keys(Keys.DOWN)
+        dropdown_language.send_keys(Keys.ENTER)
+        
+                
     def run_wms_config(self) -> None:
         try:
             self.login()
             self.navigate_to_wms()
             self.select_warehouse()
+            self.language()
         except Exception as e:
             print(f"An error occurred: {e}")
         finally:
