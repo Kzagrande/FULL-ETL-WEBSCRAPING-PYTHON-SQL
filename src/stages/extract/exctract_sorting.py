@@ -8,6 +8,7 @@ from src.stages.contracts.extract_contract import ExtractContract
 from src.errors.extract_error import ExtractError
 from src.drivers.sorting_in import SortingIn
 from src.drivers.wms_report_upload import WmsReportUpload
+from src.stages.transform.transform_sorting_in import TransformSorting
 
 class ExtractSortingIn:
 
@@ -22,7 +23,6 @@ class ExtractSortingIn:
             essential_information = self.__wms_report_upload.upload_sheet(filename=sorting_in_information)
             return ExtractContract(
                 raw_information_content=essential_information,
-                extraction_date=date.today()
             )
         except Exception as exception:
             raise ExtractError(str(exception)) from exception
@@ -30,7 +30,9 @@ class ExtractSortingIn:
 
 
 if __name__ ==  "__main__":
-    test = ExtractSortingIn(SortingIn(), WmsReportUpload() )
+    test = ExtractSortingIn(SortingIn(), WmsReportUpload())
     extract_test = test.extract()
+    transform = TransformSorting()
+    transformed_data = transform.transform(extract_test)
     print(extract_test)
     
