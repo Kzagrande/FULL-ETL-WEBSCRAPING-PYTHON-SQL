@@ -1,20 +1,25 @@
-from src.stages.extract.extract_html import ExtractHtml
-from src.stages.transform.transform_raw_data import TransformRawData
-from src.stages.load.load_data import LoadData
-from src.drivers.http_requester import HttpRequester
-from src.drivers.html_collector import HtmlCollector
+import sys
+project_root = 'C:\\Users\\User\\sites\\control-tower-D'
+sys.path.insert(0, project_root)
+
+from src.stages.extract.exctract_sorting import ExtractSortingIn
+from src.stages.transform.transform_sorting_in import TransformSorting
+from src.stages.load.load_sorting_in import LoadSorting_in
+from src.drivers.sorting_in import SortingIn
+from src.drivers.wms_report_upload import WmsReportUpload
 from src.infra.database_connector import DatabaseConnection
 from src.infra.database_repository import DatabaseRepository
 
+
+
 class MainPipeline:
     def __init__(self) -> None:
-        self.__extract_html = ExtractHtml(HttpRequester(), HtmlCollector())
-        self.__transform_raw_data = TransformRawData()
-        self.__load_data = LoadData(DatabaseRepository())
-
+        self.__extract_sorting = ExtractSortingIn(SortingIn(), WmsReportUpload())
+        self.__transform_sorting = TransformSorting()
+        self.__load_sorting = LoadSorting_in(DatabaseRepository())
+        
     def run_pipeline(self) -> None:
         DatabaseConnection.connect()
-        extract_contract = self.__extract_html.extract()
-        transformed_data_contract = self.__transform_raw_data.transform(extract_contract)
-        self.__load_data.load(transformed_data_contract)
-        
+        extract_sorting_in_contract = self.__extract_sorting.extract()
+        transform_sorting_in_contract = self.__transform_sorting.transform(extract_sorting_in_contract)
+        self.__load_sorting.load(transform_sorting_in_contract)

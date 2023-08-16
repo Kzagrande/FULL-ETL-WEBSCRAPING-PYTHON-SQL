@@ -21,6 +21,7 @@ class ExtractSortingIn:
             sorting_in_information = self.__sorting_in.sorting_in_workflow()
             print(sorting_in_information)
             essential_information = self.__wms_report_upload.upload_sheet(filename=sorting_in_information)
+            print(essential_information)
             return ExtractContract(
                 raw_information_content=essential_information,
             )
@@ -29,10 +30,10 @@ class ExtractSortingIn:
 
 
 
-if __name__ ==  "__main__":
-    test = ExtractSortingIn(SortingIn(), WmsReportUpload())
-    extract_test = test.extract()
-    transform = TransformSorting()
-    transformed_data = transform.transform(extract_test)
-    print(extract_test)
+# if __name__ ==  "__main__":
+#     test = ExtractSortingIn(SortingIn(), WmsReportUpload())
+#     extract_test = test.extract()
+#     transform = TransformSorting()
+#     transformed_data = transform.transform(extract_test)
+#     print(extract_test)
     

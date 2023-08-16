@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
-from typing import Dict
+from typing import List
 
 class DatabaseRepositoryInterface(ABC):
 
     @abstractmethod
-    def insert_artist(self, data: Dict) -> None:
+    def insert_sorting_in(self, data: List) -> None:
         pass

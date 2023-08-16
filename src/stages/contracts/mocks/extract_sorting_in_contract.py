@@ -5,10 +5,25 @@ from src.stages.contracts.extract_contract import ExtractContract
 extract_contract_mock = ExtractContract(
     raw_information_content=[
     ["仓库", "包裹号", "订单号", "发货模式", "推荐库区", "推荐巷道", "操作人", "操作时间"],
-    ["巴西瓜卢流斯发货仓二", "GC2308142624096260", "GSHNRC6440002NX", "合单发货", "7", "40", "SPglp2WH176", "2023-08-15 07:59:59"],
-    ["巴西瓜卢流斯发货仓二", "GC2308105267422209", "GSHNR124S00NGLX", "合单发货", "12", "71", "SPglp2WH155", "2023-08-15 07:59:59"],
-    ["巴西瓜卢流斯发货仓二", "GC2308121317896195", "GSHNRU35U000480", "合单发货", "13", "73", "SPglp2WH1105", "2023-08-15 07:59:58"],
-    ["巴西瓜卢流斯发货仓二", "GC2308090885467140", "GSHNRN17100MXAA", "合单发货", "9", "53", "SPglp2WH163", "2023-08-15 07:59:58"],
-    ["巴西瓜卢流斯发货仓二", "GC2308140523666434", "GSHNRW42000NQ3M", "合单发货", "6", "31", "SPglp2WH171", "2023-08-15 07:59:57"]
-],
+    ["BR_GRU_SW 2", "GC2308117514380967", "GSHNRU35U000481", "Consolidated Shipping", "11", "72", "SPglp2WH1104", "2023-08-15 08:00:01"],
+    ["BR_GRU_SW 2", "GC2308131372497098", "GSHNRW42000NQ3P", "Consolidated Shipping", "4", "33", "SPglp2WH172", "2023-08-15 08:00:02"],
+    ["BR_GRU_SW 2", "GC2308142496708193", "GSHNRC6440002NY", "Consolidated Shipping", "8", "41", "SPglp2WH177", "2023-08-15 08:00:03"],
+    ["BR_GRU_SW 2", "GC2308124917846539", "GSHNR124S00NGKY", "Consolidated Shipping", "14", "74", "SPglp2WH156", "2023-08-15 08:00:04"],
+    ["BR_GRU_SW 2", "GC2308118932166345", "GSHNRU35U000482", "Consolidated Shipping", "10", "57", "SPglp2WH1106", "2023-08-15 08:00:05"],
+    ["BR_GRU_SW 2", "GC2308139257937473", "GSHNRN17100MXAB", "Consolidated Shipping", "1", "54", "SPglp2WH164", "2023-08-15 08:00:06"],
+    ["BR_GRU_SW 2", "GC2308149365817624", "GSHNRW42000NQ3X", "Consolidated Shipping", "5", "34", "SPglp2WH173", "2023-08-15 08:00:07"],
+    ["BR_GRU_SW 2", "GC2308100258357842", "GSHNRC6440002NZ", "Consolidated Shipping", "15", "75", "SPglp2WH178", "2023-08-15 08:00:08"],
+    ["BR_GRU_SW 2", "GC2308121848728094", "GSHNR124S00NGMZ", "Consolidated Shipping", "16", "76", "SPglp2WH157", "2023-08-15 08:00:09"],
+    ["BR_GRU_SW 2", "GC2308142814678190", "GSHNRU35U000483", "Consolidated Shipping", "17", "77", "SPglp2WH1107", "2023-08-15 08:00:10"],
+    ["BR_GRU_SW 2", "GC2308142839279341", "GSHNRN17100MXAC", "Consolidated Shipping", "18", "78", "SPglp2WH165", "2023-08-15 08:00:11"],
+    ["BR_GRU_SW 2", "GC2308142946177324", "GSHNRW42000NQ3Y", "Consolidated Shipping", "19", "79", "SPglp2WH174", "2023-08-15 08:00:12"],
+    ["BR_GRU_SW 2", "GC2308142946177325", "GSHNRC6440002NA", "Consolidated Shipping", "20", "80", "SPglp2WH179", "2023-08-15 08:00:13"],
+    ["BR_GRU_SW 2", "GC2308142946177326", "GSHNR124S00NGXA", "Consolidated Shipping", "21", "81", "SPglp2WH158", "2023-08-15 08:00:14"],
+    ["BR_GRU_SW 2", "GC2308142946177327", "GSHNRU35U000484", "Consolidated Shipping", "22", "82", "SPglp2WH1108", "2023-08-15 08:00:15"],
+    ["BR_GRU_SW 2", "GC2308142946177328", "GSHNRN17100MXAD", "Consolidated Shipping", "23", "83", "SPglp2WH166", "2023-08-15 08:00:16"],
+    ["BR_GRU_SW 2", "GC2308142946177329", "GSHNRW42000NQ3Z", "Consolidated Shipping", "24", "84", "SPglp2WH175", "2023-08-15 08:00:17"],
+    ["BR_GRU_SW 2", "GC2308142946177330", "GSHNRC6440002NB", "Consolidated Shipping", "25", "85", "SPglp2WH180", "2023-08-15 08:00:18"],
+    ["BR_GRU_SW 2", "GC2308142946177331", "GSHNR124S00NGYA", "Consolidated Shipping", "26", "86", "SPglp2WH159", "2023-08-15 08:00:19"],
+    ["BR_GRU_SW 2", "GC2308142946177332", "GSHNRU35U000485", "Consolidated Shipping", "27", "87", "SPglp2WH1109", "2023-08-15 08:00:20"],
+]
 )

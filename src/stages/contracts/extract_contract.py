@@ -3,6 +3,6 @@ from collections import namedtuple
 ExtractContract = namedtuple(
     "ExtractContract",
     '''
-        raw_information_contentW     
+        raw_information_content 
     '''
 )
