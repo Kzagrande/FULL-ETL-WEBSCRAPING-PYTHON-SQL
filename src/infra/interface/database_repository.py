@@ -4,5 +4,5 @@ from typing import List
 class DatabaseRepositoryInterface(ABC):
 
     @abstractmethod
-    def insert_sorting_in(self, data: List) -> None:
+    def insert_data(self, data: List,query:str) -> None:
         pass

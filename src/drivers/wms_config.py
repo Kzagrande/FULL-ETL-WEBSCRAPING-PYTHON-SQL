@@ -21,11 +21,11 @@ class WmsConfig():
         self.browser.get(self.login_url)
         username_input = self.wait_for_element(By.CSS_SELECTOR, 'input[name="name"]')
         username_input.clear()
-        username_input.send_keys('SPglp2WH020')
+        username_input.send_keys('SPglp2WH013')
 
         password_input = self.wait_for_element(By.CSS_SELECTOR, 'input[name="password"]')
         password_input.clear()
-        password_input.send_keys('Bia2023@@')
+        password_input.send_keys('onepiece1998Yan#')
         password_input.submit()
 
     def navigate_to_wms(self):
