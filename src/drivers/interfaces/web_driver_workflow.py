@@ -1,11 +1,11 @@
 from abc import ABC, abstractmethod
 
-class SortingInInterface(ABC):
+class WebDriverWorkflowInterface(ABC):
 
     @abstractmethod
     def navigate_to_wms(self):
         pass
 
     @abstractmethod
-    def sorting_in_workflow(self) -> None:
+    def web_drive_workflow(self) -> None:
         pass

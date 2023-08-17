@@ -8,10 +8,11 @@ from typing import Dict
 
 
 class WmsReportDownload:
-    def __init__(self,wait, browser,options ):
+    def __init__(self,wait, browser,options, sector:str ):
         self.wait = wait
         self.browser = browser
         self.options = options
+        self.sector = sector
         
     def wait_for_element(self, by, value):
         return self.wait.until(EC.presence_of_element_located((by, value)))
@@ -36,7 +37,7 @@ class WmsReportDownload:
                 # Obter a data e hora atual
                 file_current_date = datetime.now()
                 file_current_date_formated = file_current_date.strftime("%Y-%m-%d_%H-%M-%S")
-                file_name = "sorting_"+ file_current_date_formated+".xlsx"
+                file_name = self.sector+ file_current_date_formated+".xlsx"
                 time.sleep(1)
                 pyautogui.typewrite(file_name, interval=0.2)
                 time.sleep(1)
