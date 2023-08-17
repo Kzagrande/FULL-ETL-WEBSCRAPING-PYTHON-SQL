@@ -5,14 +5,17 @@ sys.path.insert(0, project_root)
 from src.stages.extract.extract import Extract
 from src.stages.transform.transform_sorting_in import TransformSorting
 from src.stages.transform.transform_putaway import TransformPutaway
-from src.stages.load.load_sorting_in import LoadData
+from src.stages.transform.transform_picking import TransformPicking
+from src.stages.load.load_data import LoadData
 from src.drivers.sorting_in import SortingIn
 from src.drivers.putaway import Putaway
+from src.drivers.picking import Picking
 from src.drivers.wms_report_upload import WmsReportUpload
 from src.infra.database_connector import DatabaseConnection
 from src.infra.database_repository import DatabaseRepository
 from src.queries.queries import INSERT_SORTING_IN as sorting_in_query
 from src.queries.queries import INSERT_PUTAWAY as putaway_query
+from src.queries.queries import INSERT_PICKING as picking_query
 
 class MainPipeline:
              
@@ -33,5 +36,13 @@ class MainPipeline:
         extract_putaway_in_contract = extract_putaway.extract()
         transform_putaway_in_contract = transform_putaway.transform(extract_putaway_in_contract)
         load_putaway.load(transform_putaway_in_contract)
+        
+        extract_picking = Extract(Picking(), WmsReportUpload())
+        transform_picking = TransformPicking()
+        load_picking = LoadData(DatabaseRepository(query=picking_query))
+        extract_picking_in_contract = extract_picking.extract()
+        transform_picking_in_contract = transform_picking.transform(extract_picking_in_contract)
+        load_picking.load(transform_picking_in_contract)
+        
         
         

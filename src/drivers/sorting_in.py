@@ -74,7 +74,7 @@ class SortingIn(WebDriverWorkflowInterface):
         wms_config = WmsConfig(self.wait, self.browser, self.options)
         wms_config.run_wms_config()
         self.navigate_to_wms()
-        wms_report_download = WmsReportDownload(self.wait, self.browser, self.options,'sorting')
+        wms_report_download = WmsReportDownload(self.wait, self.browser, self.options,'sorting_')
         report_download = wms_report_download.download_sheet()
         self.browser.quit()
         file_name = report_download['file_name']

@@ -28,7 +28,7 @@ class WmsReportDownload:
                 btn_extract_search.click()
                 time.sleep(1)
                 
-                my_file = self.wait_for_element(By.XPATH, '//*[@id="app"]/section/section/main/div/div/div/section/div/div[1]/div[2]/div[2]/div/table/tbody/tr[td[contains(text(), "SPglp2WH020")]][1]/td[2]/a')
+                my_file = self.wait_for_element(By.XPATH, '//*[@id="app"]/section/section/main/div/div/div/section/div/div[1]/div[2]/div[2]/div/table/tbody/tr[td[contains(text(), "SPglp2WH013")]][1]/td[2]/a')
                 actions = ActionChains(self.browser)
                 actions.context_click(my_file).perform()
                 time.sleep(1)

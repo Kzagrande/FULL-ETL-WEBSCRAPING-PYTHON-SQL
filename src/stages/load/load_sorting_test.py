@@ -1,6 +1,6 @@
 from src.stages.contracts.mocks.transform_contract import transform_contract_mock
 from src.errors.load_error import LoadError
-from .load_sorting_in import LoadData
+from .load_data import LoadData
 
 class RepositorySpy:
     def __init__(self) -> None:

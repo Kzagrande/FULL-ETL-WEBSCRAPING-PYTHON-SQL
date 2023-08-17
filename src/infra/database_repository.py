@@ -9,7 +9,7 @@ class DatabaseRepository(DatabaseRepositoryInterface):
 
     def insert_data(self, data: List) -> None:   
         
-        print(data)
+        print('DADO PARA ENTRAR NO DB -->>',data)
         cursor = DatabaseConnection.connection.cursor()
         for row in data:
             cursor.execute(self.query, list(row))
