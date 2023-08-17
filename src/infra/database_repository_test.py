@@ -12,4 +12,4 @@ def test_insert_artist():
     data = transform_contract_mock.load_content
     print(data)
 
-    database_repository.insert_sorting_in(data)
+    database_repository.insert_data(data)

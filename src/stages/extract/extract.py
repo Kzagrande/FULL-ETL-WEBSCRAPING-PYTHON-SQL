@@ -21,7 +21,7 @@ class Extract:
         try:
             web_driver_workflow_information = self.__web_driver_workflow.web_drive_workflow()
             print(web_driver_workflow_information)
-            essential_information = self.__wms_report_upload.upload_sclsheet(filename=web_driver_workflow_information)
+            essential_information = self.__wms_report_upload.upload_sheet(filename=web_driver_workflow_information)
             print(essential_information)
             return ExtractContract(
                 raw_information_content=essential_information,
