@@ -5,3 +5,9 @@ INSERT_SORTING_IN = '''
         (%s,%s,%s,%s,%s,%s,%s,%s,%s)
 '''
 
+INSERT_PUTAWAY = '''
+    INSERT INTO putaway
+        (warehouse, subpackage_number, order_number, zone_, lane, location, operated_by,operation_time, sector)
+    VALUES
+        (%s,%s,%s,%s,%s,%s,%s,%s,%s)
+'''
