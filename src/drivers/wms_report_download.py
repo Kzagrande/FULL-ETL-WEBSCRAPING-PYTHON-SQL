@@ -22,7 +22,8 @@ class WmsReportDownload:
         try:  
                 extract_url = 'https://wms-br.biz.sheinbackend.com/#/management/import-export-mgt/download'
                 self.browser.get(extract_url)
-                time.sleep(5)
+                time.sleep(3)
+                self.browser.switch_to.window(self.browser.window_handles[0])
                 btn_extract_search = self.wait_for_element(By.XPATH, '//*[@id="app"]/section/section/main/div/div/div/div/div/div/form/div[5]/div//button')
                 btn_extract_search.click()
                 time.sleep(30)

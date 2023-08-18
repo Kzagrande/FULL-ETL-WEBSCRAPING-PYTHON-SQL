@@ -69,8 +69,9 @@ class Picking(WebDriverWorkflowInterface):
         btn_search.click()
         time.sleep(1)
         
-        # btn_extract = self.wait_for_element(By.XPATH, '//*[@id="app"]/section/section/main/div/div/div/section[1]/button')
-        # btn_extract.click()
+        btn_extract = self.wait_for_element(By.XPATH, '//*[@id="app"]/section/section/main/div/div/div/section[1]/button')
+        btn_extract.click()
+        time.sleep(1)
      
     def web_drive_workflow(self) -> None:     
         wms_config = WmsConfig(self.wait, self.browser, self.options)

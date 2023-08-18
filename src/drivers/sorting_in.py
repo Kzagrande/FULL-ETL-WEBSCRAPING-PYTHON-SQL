@@ -65,9 +65,9 @@ class SortingIn(WebDriverWorkflowInterface):
             btn_search.click()
             time.sleep(1)
             
-            # btn_extract = self.wait_for_element(By.XPATH, '//*[@id="app"]/section/section/main/div/div/div/section[1]/button')
-            # btn_extract.click()
-            # time.sleep(3)
+            btn_extract = self.wait_for_element(By.XPATH, '//*[@id="app"]/section/section/main/div/div/div/section[1]/button')
+            btn_extract.click()
+            time.sleep(1)
 
      
     def web_drive_workflow(self) -> None:     
@@ -78,10 +78,11 @@ class SortingIn(WebDriverWorkflowInterface):
         report_download = wms_report_download.download_sheet()
         self.browser.quit()
         file_name = report_download['file_name']
+        print(file_name)
         return file_name
 
 
-if __name__ ==  "__main__":
-    sorting_in = SortingIn()
-    sorting_in.web_drive_workflow()
+# if __name__ ==  "__main__":
+#     sorting_in = SortingIn()
+#     sorting_in.web_drive_workflow()
     
