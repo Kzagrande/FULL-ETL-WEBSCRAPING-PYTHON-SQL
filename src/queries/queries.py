@@ -18,3 +18,10 @@ INSERT_PICKING = '''
     VALUES
         (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
 '''
+
+INSERT_SORTING_OUT= '''
+    INSERT INTO sorting_out
+        (warehouse,task_group_number,picking_container,picking_task_number,package_number,subpackage_number,basket_number,mark_box_empty_name,sorted_by,sorting_time,sector)
+    VALUES
+        (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+'''

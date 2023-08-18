@@ -62,9 +62,9 @@ class Putaway(WebDriverWorkflowInterface):
             btn_search.click()
             time.sleep(1)
             
-            btn_extract = self.wait_for_element(By.XPATH, '//*[@id="app"]/section/section/main/div/div/div/section[1]/button')
-            btn_extract.click()
-            time.sleep(3)
+            # btn_extract = self.wait_for_element(By.XPATH, '//*[@id="app"]/section/section/main/div/div/div/section[1]/button')
+            # btn_extract.click()
+            # time.sleep(3)
 
      
     def web_drive_workflow(self) -> None:     

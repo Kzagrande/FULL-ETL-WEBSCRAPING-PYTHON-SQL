@@ -20,6 +20,9 @@ class WmsReportDownload:
 
     def download_sheet(self) -> Dict:    
         try:  
+                extract_url = 'https://wms-br.biz.sheinbackend.com/#/management/import-export-mgt/download'
+                self.browser.get(extract_url)
+                time.sleep(5)
                 btn_extract_search = self.wait_for_element(By.XPATH, '//*[@id="app"]/section/section/main/div/div/div/div/div/div/form/div[5]/div//button')
                 btn_extract_search.click()
                 time.sleep(30)
