@@ -82,7 +82,7 @@ class SortingIn(WebDriverWorkflowInterface):
         return file_name
 
 
-# if __name__ ==  "__main__":
-#     sorting_in = SortingIn()
-#     sorting_in.web_drive_workflow()
+if __name__ ==  "__main__":
+    sorting_in = SortingIn()
+    sorting_in.web_drive_workflow()
     
