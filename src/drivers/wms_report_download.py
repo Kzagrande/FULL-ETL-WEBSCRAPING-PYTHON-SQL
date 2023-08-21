@@ -58,6 +58,5 @@ class WmsReportDownload:
         finally:
            return {
             "file_name":file_name,
-            "download_time":datetime.now() 
-            
+            "download_time":datetime.now()          
         }

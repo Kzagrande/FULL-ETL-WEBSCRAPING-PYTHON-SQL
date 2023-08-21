@@ -1,55 +1,48 @@
 import sys
 project_root = 'C:\\Users\\User\\sites\\control-tower-D'
 sys.path.insert(0, project_root)
+import os
 from googleapiclient.errors import HttpError
 from datetime import datetime
 from src.drivers.google_sheet_auth import GoogleSheetAuth
 from typing import List
 import pandas as pd
 from src.drivers.interfaces.google_sheet_getter import GoogleSheetGetterInterface
+
 class GoogleSheetGetter(GoogleSheetGetterInterface):
-    def __init__(self, spreadsheet_id):
-        self.spreadsheet_id = spreadsheet_id
+    def __init__(self, ):
+        self.spreadsheet_id = '1BPJqdN2d_wTtJBktzWEtir0L1HkxMpGjTHqnSox7-c0'
 
-    def get_sheet_name(self):
-        today = datetime.now()
-        days_of_week = {
-            1: "Monday",
-            2: "Tuesday",
-            3: "Wednesday",
-            4: "Thursday",
-            5: "Friday",
-            6: "Saturday",
-            7: "Sunday"
-        }
-        day_name = days_of_week[today.isoweekday()]
-        formatted_date =f"{day_name} {today.strftime('%m.%d')}"
-        # print('formated date -->>>', formatted_date)
-        return 'ATIVOS'
 
-    
     def get_sheet(self) -> List:
         try:
-            # Create an instance of GoogleSheetAuth to get the service
             auth = GoogleSheetAuth()
             self.service = auth.get_service()
-            # print(self.service)
 
-            # Call the Sheets API
             sheet = self.service.spreadsheets()
             result = sheet.values().get(
-            spreadsheetId=spreadsheet_id,
-            range='ATIVOS'
-        ).execute()
+                spreadsheetId=self.spreadsheet_id,
+                range='ATIVOS!A:R'  # Modificado para pegar todas as colunas de A a R
+            ).execute()
             values = result.get('values', [])
-            print('Values', values)
-            excel_file = "test.xlsx"
-            values.to_excel(excel_file, index=False)
+            
+            if values:
+                filtered_values = [row for row in values if len(row) >= 1]  # Filtra apenas as linhas com pelo menos 18 colunas preenchidas (de A a R)
+                df = pd.DataFrame(filtered_values[1:], columns=filtered_values[0])
+                download_path = os.path.expanduser('~') + '\\Downloads\\'
+                excel_file = os.path.join(download_path, "hc.xlsx")
+                df.to_excel(excel_file, index=False)
+                print(f"Arquivo 'hc.xlsx' salvo em {excel_file}")
+            else:
+                print("No data found.")
         except HttpError as e:
-            print('Error:', e)
+            print('Error:', e)  
+            
+        finally:
+           return excel_file
+   
 
-# Exemplo de uso:
-if __name__ == "__main__":
-    spreadsheet_id = '1BPJqdN2d_wTtJBktzWEtir0L1HkxMpGjTHqnSox7-c0'
-    updater = GoogleSheetGetter(spreadsheet_id)
-    updater.get_sheet()
+# if __name__ == "__main__":
+
+#     getter = GoogleSheetGetter()
+#     getter.get_sheet()

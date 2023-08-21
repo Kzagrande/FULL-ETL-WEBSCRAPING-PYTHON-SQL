@@ -33,3 +33,10 @@ INSERT_PACKING= '''
         (%s,%s,%s,%s,%s,%s,%s,%s)
 '''
 
+INSERT_HC= '''
+    INSERT INTO hc
+        (name,id_employ,admission_dt,company,warehouse,bz,coolar,category,sector,role_1,shift,schedule,manager_1,manager_2,manager_3,status,role_2,user_)
+    VALUES
+        (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+'''
+
