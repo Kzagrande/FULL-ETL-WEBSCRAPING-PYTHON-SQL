@@ -5,6 +5,7 @@ from src.stages.contracts.extract_contract import ExtractContract
 import pandas as pd
 from src.stages.contracts.transform_contract import TransformContract
 from typing import List
+from datetime import datetime
 
 class TransformPacking:
      
@@ -19,6 +20,9 @@ class TransformPacking:
      
      def __filter_and_transform_data(self, extract_packing: ExtractContract) -> List:
          data_content = extract_packing.raw_information_content
+         columns_to_fill = ["Consolidational Order Recommendation Number","Consolidational Package No.","Subpackage No.","lack parcels during packing","Workstation","Operated By"]   
+         data_content[columns_to_fill] = data_content[columns_to_fill].fillna("-")
+         data_content["Operating time"].fillna(datetime(1500, 1, 11, 11, 11, 11), inplace=True) 
          data_content['sector'] = 'packing_'                   
          print(data_content)
          excel_file = "output.xlsx"

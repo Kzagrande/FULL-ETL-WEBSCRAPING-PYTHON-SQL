@@ -20,10 +20,31 @@ class TransformPicking:
      
      def __filter_and_transform_data(self, extract_picking: ExtractContract) -> List:
          data_content = extract_picking.raw_information_content
-         data_content['sector'] = 'picking'  
-         data_content["Picking Container"].fillna("Não encontrado", inplace=True)          
-         data_content["Voided By"].fillna("Desconhecido", inplace=True)          
-         data_content["Voided Time"].fillna(datetime(2023, 1, 11, 11, 11, 11), inplace=True)       
+         columns_to_fill = [
+            "Transit warehouse",
+            "Picking Group Number",
+            "Picking Task No.",
+            "Picking Methods",
+            "Type",
+            "Consolidational Order Recommendation Number",
+            "Subpackage No.",
+            "Whether to short pick",
+            "Picking Location",
+            "Lane",
+            "Picking area",
+            "Picking Container",
+            "Status",
+            "Created by",
+            "picker",
+            "Picking Time",
+            "Voided By",
+            "Do you confirm to flag it as \"cancel\"?"
+        ]
+         data_content[columns_to_fill] = data_content[columns_to_fill].fillna("-")
+         data_content["Task Creation Time"].fillna(datetime(1500, 1, 11, 11, 11, 11), inplace=True) 
+         data_content["Task Pick-up Time"].fillna(datetime(1500, 1, 11, 11, 11, 11), inplace=True) 
+         data_content["Voided Time"].fillna(datetime(1500, 1, 11, 11, 11, 11), inplace=True) 
+         data_content['sector'] = 'picking'    
          print(data_content)
          excel_file = "picking.xlsx"
          data_content.to_excel(excel_file, index=False)
