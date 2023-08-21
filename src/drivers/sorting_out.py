@@ -32,7 +32,7 @@ class SortingOut(WebDriverWorkflowInterface):
         return self.wait.until(EC.presence_of_element_located((by, value)))
 
     def navigate_to_wms(self):        
-            sorting_url = 'https://wms-br.biz.sheinbackend.com/#/outbound-mgt/sowing-management/sowing-detail'
+            sorting_url = 'https://wms-la.biz.sheinbackend.com/#/outbound-mgt/sowing-management/sowing-detail'
             self.browser.get(sorting_url)
             time.sleep(5)
 

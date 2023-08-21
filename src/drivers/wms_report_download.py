@@ -20,7 +20,7 @@ class WmsReportDownload:
 
     def download_sheet(self) -> Dict:    
         try:  
-                extract_url = 'https://wms-br.biz.sheinbackend.com/#/management/import-export-mgt/download'
+                extract_url = 'https://wms-la.biz.sheinbackend.com/#/management/import-export-mgt/download'
                 self.browser.get(extract_url)
                 time.sleep(3)
                 self.browser.switch_to.window(self.browser.window_handles[0])

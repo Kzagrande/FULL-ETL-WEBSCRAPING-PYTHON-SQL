@@ -12,7 +12,7 @@ class WmsConfig():
         self.browser = browser
         self.options = options
         self.login_url = "https://ulp.sheincorp.cn/#/login"
-        self.wms_url = "https://wms-br.biz.sheinbackend.com/"
+        self.wms_url = "https://wms-la.biz.sheinbackend.com/"
 
     def wait_for_element(self, by, value):
         return self.wait.until(EC.presence_of_element_located((by, value)))

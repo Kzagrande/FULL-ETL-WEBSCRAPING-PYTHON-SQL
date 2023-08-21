@@ -32,7 +32,7 @@ class Packing(WebDriverWorkflowInterface):
         return self.wait.until(EC.presence_of_element_located((by, value)))
 
     def navigate_to_wms(self):        
-            packing_url = 'https://wms-br.biz.sheinbackend.com/#/outbound-mgt/package/package-record'
+            packing_url = 'https://wms-la.biz.sheinbackend.com/#/outbound-mgt/package/package-record'
             self.browser.get(packing_url)
             time.sleep(5)
 
