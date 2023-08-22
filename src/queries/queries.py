@@ -28,9 +28,9 @@ INSERT_SORTING_OUT= '''
 
 INSERT_PACKING= '''
     INSERT INTO packing
-        (consolid_recomed_number,consolid_all_pack_number,subpackaga_number,lack_parcels_packing,workstation,operated_by,operation_time,sector)
+        (consolid_recomed_number,consolid_all_pack_number,subpackaga_number,lack_parcels_packing,workstation,operated_by,operation_time,sector,current_date_,extraction_hour,Warehouse)
     VALUES
-        (%s,%s,%s,%s,%s,%s,%s,%s)
+        (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
 '''
 
 INSERT_HC= '''

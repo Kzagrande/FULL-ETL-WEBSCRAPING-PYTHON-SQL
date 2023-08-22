@@ -6,6 +6,7 @@ import pandas as pd
 from src.stages.contracts.transform_contract import TransformContract
 from typing import List
 from datetime import datetime
+from src.drivers.time_interval import get_current_and_last_hour
 
 class TransformPacking:
      
@@ -20,11 +21,27 @@ class TransformPacking:
      
      def __filter_and_transform_data(self, extract_packing: ExtractContract) -> List:
          data_content = extract_packing.raw_information_content
-         columns_to_fill = ["Consolidational Order Recommendation Number","Consolidational Package No.","Subpackage No.","lack parcels during packing","Workstation","Operated By"]   
+         columns_to_fill = ["Consolidational Order Recommendation Number","Consolidational Package No.","Sub-Package Number","lack parcels during packing","Workstation","Operator"]   
          data_content[columns_to_fill] = data_content[columns_to_fill].fillna("-")
          data_content["Operating time"].fillna(datetime(1500, 1, 11, 11, 11, 11), inplace=True) 
-         data_content['sector'] = 'packing_'                   
-         print(data_content)
+         data_content['sector'] = 'packing_'   
+          
+         data_content['current_date_'] = datetime.now().strftime('%Y-%m-%d')
+         hours = get_current_and_last_hour()
+         data_content['extraction_hour'] = hours['last_hour']   
+         
+         transformed_values = []
+         for warehouse in data_content['Workstation']:
+                if warehouse.startswith("Packstation"):
+                    transformed_value = "Sao Paulo GLP Transit Warehouse"
+                else:
+                    transformed_value = "BR_GRU_SW 2"
+                transformed_values.append(transformed_value)
+
+            # Adicionar a lista de valores transformados de volta ao DataFrame, se necessário
+         data_content['Warehouse'] = transformed_values
+
+
          excel_file = "output.xlsx"
          data_content.to_excel(excel_file, index=False)
          data_content_list  = data_content.values.tolist()
