@@ -37,8 +37,7 @@ class MainPipeline:
         extract_sorting_in_contract = extract_sorting.extract()
         transform_sorting_in_contract = transform_sorting.transform(extract_sorting_in_contract)
         load_sorting.load(transform_sorting_in_contract)
-        
-        
+              
         extract_putaway = Extract(Putaway(), WmsReportUpload())
         transform_putaway = TransformPutaway()
         load_putaway = LoadData(DatabaseRepository(query=putaway_query))

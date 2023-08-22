@@ -6,6 +6,7 @@ import pandas as pd
 from src.stages.contracts.transform_contract import TransformContract
 from typing import List
 from datetime import datetime
+from src.drivers.time_interval import get_current_and_last_hour
 
 class TransformPicking:
      
@@ -27,7 +28,7 @@ class TransformPicking:
             "Picking Methods",
             "Type",
             "Consolidational Order Recommendation Number",
-            "Subpackage No.",
+            "Sub-Package Number",
             "Whether to short pick",
             "Picking Location",
             "Lane",
@@ -45,6 +46,11 @@ class TransformPicking:
          data_content["Task Pick-up Time"].fillna(datetime(1500, 1, 11, 11, 11, 11), inplace=True) 
          data_content["Voided Time"].fillna(datetime(1500, 1, 11, 11, 11, 11), inplace=True) 
          data_content['sector'] = 'picking'    
+         
+         data_content['current_date_'] = datetime.now().strftime('%Y-%m-%d')
+         hours = get_current_and_last_hour()
+         
+         data_content['extraction_hour'] = hours['last_hour']   
          print(data_content)
          excel_file = "picking.xlsx"
          data_content.to_excel(excel_file, index=False)
