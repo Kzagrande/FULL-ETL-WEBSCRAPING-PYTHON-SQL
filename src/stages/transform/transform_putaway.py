@@ -6,6 +6,7 @@ import pandas as pd
 from src.stages.contracts.transform_contract import TransformContract
 from typing import List
 from datetime import datetime
+from src.drivers.time_interval import get_current_and_last_hour
 
 class TransformPutaway:
      
@@ -20,10 +21,15 @@ class TransformPutaway:
      
      def __filter_and_transform_data(self, extract_putaway: ExtractContract) -> List:
          data_content = extract_putaway.raw_information_content
-         columns_to_fill = ['Warehouse','Subpackage No.','Order No.','Zone','Lane','Location', 'Operated By']
+         columns_to_fill = ['Warehouse','Sub-Package Number','Order No.','Zone','Lane','Location', 'Operator']
          data_content[columns_to_fill] = data_content[columns_to_fill].fillna("-")
          data_content["Operating time"].fillna(datetime(1500, 1, 11, 11, 11, 11), inplace=True) 
-         data_content['sector'] = 'putaway'                   
+         data_content['sector'] = 'putaway'  
+         
+         data_content['current_date_'] = datetime.now().strftime('%Y-%m-%d')
+         hours = get_current_and_last_hour()
+         data_content['extraction_hour'] = hours['last_hour']   
+                          
          print(data_content)
          excel_file = "putaway.xlsx"
          data_content.to_excel(excel_file, index=False)
