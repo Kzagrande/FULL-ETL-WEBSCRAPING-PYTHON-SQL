@@ -31,12 +31,12 @@ class MainPipeline:
     def run_pipeline(self) -> None:
         DatabaseConnection.connect()
         
-        # extract_sorting = Extract(SortingIn(), WmsReportUpload())
-        # transform_sorting = TransformSorting()
-        # load_sorting = LoadData(DatabaseRepository(query=sorting_in_query))
-        # extract_sorting_in_contract = extract_sorting.extract()
-        # transform_sorting_in_contract = transform_sorting.transform(extract_sorting_in_contract)
-        # load_sorting.load(transform_sorting_in_contract)
+        extract_sorting = Extract(SortingIn(), WmsReportUpload())
+        transform_sorting = TransformSorting()
+        load_sorting = LoadData(DatabaseRepository(query=sorting_in_query))
+        extract_sorting_in_contract = extract_sorting.extract()
+        transform_sorting_in_contract = transform_sorting.transform(extract_sorting_in_contract)
+        load_sorting.load(transform_sorting_in_contract)
               
         extract_putaway = Extract(Putaway(), WmsReportUpload())
         transform_putaway = TransformPutaway()
