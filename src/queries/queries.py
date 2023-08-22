@@ -1,6 +1,6 @@
 INSERT_SORTING_IN = '''
     INSERT INTO sorting_in
-        (package_number,warehouse,order_number,shipping_mode,recomendation_zone,recomendation_lane,operated_by,operation_time, sector,current_date_,extraction_hour)
+        (warehouse, package_number,order_number,shipping_mode,recomendation_zone,recomendation_lane,operated_by,operation_time, sector,current_date_,extraction_hour)
     VALUES
         (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
 '''
