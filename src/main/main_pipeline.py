@@ -31,12 +31,12 @@ class MainPipeline:
     def run_pipeline(self) -> None:
         DatabaseConnection.connect()
         
-        extract_sorting = Extract(SortingIn(), WmsReportUpload())
-        transform_sorting = TransformSorting()
-        load_sorting = LoadData(DatabaseRepository(query=sorting_in_query))
-        extract_sorting_in_contract = extract_sorting.extract()
-        transform_sorting_in_contract = transform_sorting.transform(extract_sorting_in_contract)
-        load_sorting.load(transform_sorting_in_contract)
+        # extract_sorting = Extract(SortingIn(), WmsReportUpload())
+        # transform_sorting = TransformSorting()
+        # load_sorting = LoadData(DatabaseRepository(query=sorting_in_query))
+        # extract_sorting_in_contract = extract_sorting.extract()
+        # transform_sorting_in_contract = transform_sorting.transform(extract_sorting_in_contract)
+        # load_sorting.load(transform_sorting_in_contract)
               
         # extract_putaway = Extract(Putaway(), WmsReportUpload())
         # transform_putaway = TransformPutaway()
@@ -66,12 +66,12 @@ class MainPipeline:
         # transform_packing_in_contract = transform_packing.transform(extract_paking_in_contract)
         # load_picking.load(transform_packing_in_contract)
         
-        # extract_hc = ExtractHc(GoogleSheetGetter(),WmsReportUpload())
-        # transform_hc = TransformHc()
-        # load_hc = LoadData(DatabaseRepository(query=hc_query))
-        # extract_hc_in_contract = extract_hc.extract()
-        # transform_hc_in_contract = transform_hc.transform(extract_hc_in_contract)
-        # load_hc.load(transform_hc_in_contract)
+        extract_hc = ExtractHc(GoogleSheetGetter(),WmsReportUpload())
+        transform_hc = TransformHc()
+        load_hc = LoadData(DatabaseRepository(query=hc_query))
+        extract_hc_in_contract = extract_hc.extract()
+        transform_hc_in_contract = transform_hc.transform(extract_hc_in_contract)
+        load_hc.load(transform_hc_in_contract)
         
         
         
