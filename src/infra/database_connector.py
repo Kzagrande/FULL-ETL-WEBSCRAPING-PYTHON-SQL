@@ -24,7 +24,7 @@ class DatabaseConnection:
             host="127.0.0.1",
             port=tunnel.local_bind_port,  # Usar a porta local do túnel SSH
             database="ware_ods_shein",
-            user="ware_root",
+            user="ware_admin",
             passwd="onepiece9960"
         )
         
