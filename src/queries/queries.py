@@ -38,5 +38,14 @@ INSERT_HC= '''
         (name,id_employ,admission_dt,company,warehouse,bz,coolar,category,sector,role_1,shift,schedule,manager_1,manager_2,manager_3,status,role_2,user_)
     VALUES
         (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+        
 '''
 
+
+# Isso aqui é um gato pois precisava passar algo para a query da classe
+TRUNCATE_TABLE = '''
+'''
+
+RUN_PROCEDURE = '''
+    CALL uph_staff();
+'''

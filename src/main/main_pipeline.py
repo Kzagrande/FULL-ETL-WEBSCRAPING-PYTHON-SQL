@@ -25,11 +25,15 @@ from src.queries.queries import INSERT_PICKING as picking_query
 from src.queries.queries import INSERT_SORTING_OUT as sorting_out_query
 from src.queries.queries import INSERT_PACKING as packing_query
 from src.queries.queries import INSERT_HC as hc_query
+from src.queries.queries import TRUNCATE_TABLE as truncate_query
+from src.queries.queries import RUN_PROCEDURE as procedure_query
 
 class MainPipeline:
              
     def run_pipeline(self) -> None:
         DatabaseConnection.connect()
+        truncate_sectors = LoadData(DatabaseRepository(query=truncate_query))
+        truncate_sectors.truncate()
         
         # extract_sorting = Extract(SortingIn(), WmsReportUpload())
         # transform_sorting = TransformSorting()
@@ -72,6 +76,13 @@ class MainPipeline:
         extract_hc_in_contract = extract_hc.extract()
         transform_hc_in_contract = transform_hc.transform(extract_hc_in_contract)
         load_hc.load(transform_hc_in_contract)
+        
+        run_procedures = LoadData(DatabaseRepository(query=procedure_query))
+        run_procedures.procedure()
+        
+
+        
+
         
         
         

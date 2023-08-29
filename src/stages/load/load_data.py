@@ -13,3 +13,16 @@ class LoadData:
             self.__repository.insert_data(load_content)
         except Exception as exception:
             raise LoadError(str(exception)) from exception
+
+
+    def truncate(self) -> None:
+        try:
+            self.__repository.truncate_tables()
+        except Exception as exception:
+            raise LoadError(str(exception)) from exception
+        
+    def procedure(self) -> None:
+        try:
+            self.__repository.run_procedure()
+        except Exception as exception:
+            raise LoadError(str(exception)) from exception
