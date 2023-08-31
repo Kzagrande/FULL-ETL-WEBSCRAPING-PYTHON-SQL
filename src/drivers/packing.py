@@ -19,6 +19,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from src.drivers.wms_report_upload import WmsReportUpload
 from src.drivers.interfaces.web_driver_workflow import WebDriverWorkflowInterface
+from src.errors.no_data_error import NoDataError
 
 class Packing(WebDriverWorkflowInterface):
     def __init__(self):
@@ -32,6 +33,7 @@ class Packing(WebDriverWorkflowInterface):
         return self.wait.until(EC.presence_of_element_located((by, value)))
 
     def navigate_to_wms(self):        
+        try:
             packing_url = 'https://wms-la.biz.sheinbackend.com/#/outbound-mgt/package/package-record'
             self.browser.get(packing_url)
             time.sleep(5)
@@ -64,10 +66,18 @@ class Packing(WebDriverWorkflowInterface):
             btn_search = self.wait_for_element(By.XPATH, '//*[@id="app"]/section/section/main/div/div/div/div/div/div/form/div[8]/div/button')
             btn_search.click()
             time.sleep(1)
+            valid_user =  self.wait_for_element(
+                    By.XPATH,
+                    '//*[@id="app"]/section/section/main/div/div/div/section[2]/div/div[1]/div[2]/div[2]/div/table/tbody/tr[1]',
+                )                
             
             btn_extract = self.wait_for_element(By.XPATH, '//*[@id="app"]/section/section/main/div/div/div/section[1]/button')
             btn_extract.click()
             time.sleep(1)
+            
+        except Exception as exception:
+            print('Nenhum dado presente para esta hora.')
+            raise NoDataError(str(exception)) from exception                
 
      
     def web_drive_workflow(self) -> None:     

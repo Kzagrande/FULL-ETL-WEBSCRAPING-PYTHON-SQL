@@ -28,6 +28,7 @@ class Extract:
                 raw_information_content=essential_information,
             )
         except Exception as exception:
+            print('Erro na extração')
             raise ExtractError(str(exception)) from exception
         
 class ExtractHc:

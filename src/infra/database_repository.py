@@ -10,13 +10,12 @@ class DatabaseRepository(DatabaseRepositoryInterface):
     def insert_data(self, data: List) -> None:   
         
         print('DADO PARA ENTRAR NO DB -->>',data)
+        print('DADO PARA ENTRAR NO DB -->>',type(data))
         cursor = DatabaseConnection.connection.cursor()
-        for row in data:
-            cursor.execute(self.query, list(row))
+        cursor.executemany(self.query, list(data))
 
         DatabaseConnection.connection.commit()
-        
-                 
+                         
     def truncate_tables(self)  -> None:
          __tables = ['putaway', 'picking', 'sorting_out', 'packing', 'hc']
          cursor = DatabaseConnection.connection.cursor()

@@ -21,7 +21,7 @@ class TransformSorting:
      
      def __filter_and_transform_data(self, extract_sorting: ExtractContract) -> List:
          data_content = extract_sorting.raw_information_content
-         columns_to_fill = ['Warehouse','Package No.','Order No.','Shipping Mode','Recommended Storage Area','Recommended Aisle', 'Operator']
+         columns_to_fill = ['Warehouse','Package No.','Order No.','Shipping Mode','Recommended Storage Area','Recommended Aisle', 'Operator','Operating time']
          data_content["Operating time"].fillna(datetime(1500, 1, 11, 11, 11, 11), inplace=True) 
          data_content[columns_to_fill] = data_content[columns_to_fill].fillna("-")
          data_content['sector'] = 'sorting_in'     

@@ -16,6 +16,7 @@ from src.drivers.wms_report_download import WmsReportDownload
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from src.drivers.interfaces.web_driver_workflow import WebDriverWorkflowInterface
+from src.errors.no_data_error import NoDataError
 
 class Putaway(WebDriverWorkflowInterface):
     def __init__(self):
@@ -28,7 +29,8 @@ class Putaway(WebDriverWorkflowInterface):
     def wait_for_element(self, by, value):
         return self.wait.until(EC.presence_of_element_located((by, value)))
 
-    def navigate_to_wms(self):        
+    def navigate_to_wms(self):  
+        try:      
             putaway_url = 'https://wms-la.biz.sheinbackend.com/#/inbound-mgt/shelf-detail-management'
             self.browser.get(putaway_url)
             time.sleep(5)
@@ -62,10 +64,19 @@ class Putaway(WebDriverWorkflowInterface):
             btn_search.click()
             time.sleep(1)
             
+            valid_user =  self.wait_for_element(
+                    By.XPATH,
+                    '//*[@id="app"]/section/section/main/div/div/div/section[2]/div/div[1]/div[2]/div[2]/div/table/tbody/tr[1]',
+                )
+            
             btn_extract = self.wait_for_element(By.XPATH, '//*[@id="app"]/section/section/main/div/div/div/section[1]/button')
             btn_extract.click()
             time.sleep(1)
-
+            
+        except Exception as exception:
+            print('Nenhum dado presente para esta hora.')
+            raise NoDataError(str(exception)) from exception
+                    
      
     def web_drive_workflow(self) -> None:     
         wms_config = WmsConfig(self.wait, self.browser, self.options)
