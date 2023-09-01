@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import List
+from typing import List,Dict
 
 class DatabaseRepositoryInterface(ABC):
 
@@ -11,4 +11,7 @@ class DatabaseRepositoryInterface(ABC):
         pass
     
     def run_procedure(self)-> None:
+        pass
+    
+    def insert_in_table_control(self,sector_infos:Dict,query:str)->None:
         pass

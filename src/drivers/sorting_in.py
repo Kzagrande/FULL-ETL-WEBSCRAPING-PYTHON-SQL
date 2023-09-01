@@ -30,7 +30,7 @@ class SortingIn(WebDriverWorkflowInterface):
 
     def navigate_to_wms(self):
         try:
-            sorting_url = "https://wms-la.biz.sheinbkend.com/#/inbound-mgt/receive-detail-management"
+            sorting_url = "https://wms-la.biz.sheinbackend.com/#/inbound-mgt/receive-detail-management"
             self.browser.get(sorting_url)
             time.sleep(5)
 

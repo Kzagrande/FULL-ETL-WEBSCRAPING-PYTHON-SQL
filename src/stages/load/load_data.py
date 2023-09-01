@@ -1,5 +1,6 @@
 from src.infra.interface.database_repository import DatabaseRepositoryInterface
 from src.stages.contracts.transform_contract import TransformContract
+from typing import Dict
 
 
 class LoadData:
@@ -16,3 +17,6 @@ class LoadData:
 
     def procedure(self) -> None:
         self.__repository.run_procedure()
+        
+    def table_control(self,sector_infos:Dict) -> None:
+        self.__repository.insert_in_table_control(sector_infos)
