@@ -1,4 +1,4 @@
-from typing import List
+from typing import List,Dict
 from .database_connector import DatabaseConnection
 from .interface.database_repository import DatabaseRepositoryInterface
 from src.errors.error_log import ErrorLog
@@ -20,7 +20,7 @@ class DatabaseRepository(DatabaseRepositoryInterface):
 
     def truncate_tables(self) -> None:
         try:
-            __tables = ["putaway", "picking", "sorting_out", "packing", "hc"]
+            __tables = ["sorting_in","putaway", "picking", "sorting_out", "packing", "hc"]
             cursor = DatabaseConnection.connection.cursor()
             for table in __tables:
                 self.query = f"TRUNCATE TABLE ware_ods_shein.{table}"
@@ -38,3 +38,16 @@ class DatabaseRepository(DatabaseRepositoryInterface):
             DatabaseConnection.connection.commit()
         except Exception as exception:
             raise ErrorLog(str(exception), func="run_procedure") from exception
+        
+    def insert_in_table_control(self, sector_infos:Dict) -> None:
+        try:
+            cursor = DatabaseConnection.connection.cursor()
+            cursor.execute(self.query,sector_infos)
+            DatabaseConnection.connection.commit()
+        except Exception as exception:
+            print(exception)
+            raise ErrorLog(str(exception), func="insert_in_table_control") from exception
+
+        
+
+    

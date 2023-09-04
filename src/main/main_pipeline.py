@@ -28,15 +28,29 @@ from src.queries.queries import INSERT_PACKING as packing_query
 from src.queries.queries import INSERT_HC as hc_query
 from src.queries.queries import TRUNCATE_TABLE as truncate_query
 from src.queries.queries import RUN_PROCEDURE as procedure_query
+from src.queries.queries import INSERT_INTO_TABLE_CONTROL as control_table_query
 from src.errors.error_log import ErrorLog
+from datetime import datetime
+
+
 
 
 class MainPipeline:
-    def run_pipeline(self) -> None:
-        DatabaseConnection.connect()
-        truncate_sectors = LoadData(DatabaseRepository(query=truncate_query))
-        truncate_sectors.truncate()
+    def automation_control(self, status: bool, sector: str) -> None:
+        automation_control = LoadData(DatabaseRepository(query=control_table_query))
+        sorting_in_infos = {
+            "name": sector,
+            "scheduled_time": {datetime.now()},
+            "status": status,
+        }
+        sorting_values = (
+            sorting_in_infos["name"],
+            sorting_in_infos["scheduled_time"],
+            sorting_in_infos["status"],
+        )
+        automation_control.table_control(sorting_values)
 
+    def sorting_in(self):
         try:
             extract_sorting = Extract(SortingIn(), WmsReportUpload())
             transform_sorting = TransformSorting()
@@ -46,9 +60,12 @@ class MainPipeline:
                 extract_sorting_in_contract
             )
             load_sorting.load(transform_sorting_in_contract)
+            self.automation_control(status=True, sector="Sorting_in")
         except Exception as exception:
+            self.automation_control(status=False, sector="Sorting_in")
             ErrorLog(str(exception), func="Pipeline - Sorting_in")
 
+    def putaway(self):
         try:
             extract_putaway = Extract(Putaway(), WmsReportUpload())
             transform_putaway = TransformPutaway()
@@ -58,9 +75,12 @@ class MainPipeline:
                 extract_putaway_in_contract
             )
             load_putaway.load(transform_putaway_in_contract)
+            self.automation_control(status=True, sector="Putaway")
         except Exception as exception:
+            self.automation_control(status=False, sector="Putaway")
             ErrorLog(str(exception), func="Pipeline - Putaway")
 
+    def picking(self):
         try:
             extract_picking = Extract(Picking(), WmsReportUpload())
             transform_picking = TransformPicking()
@@ -70,9 +90,12 @@ class MainPipeline:
                 extract_picking_in_contract
             )
             load_picking.load(transform_picking_in_contract)
+            self.automation_control(status=True, sector="Picking")
         except Exception as exception:
+            self.automation_control(status=False, sector="Sorting_in")
             ErrorLog(str(exception), func="Pipeline - Picking")
 
+    def sorting_out(self):
         try:
             extract_sorting_out = Extract(SortingOut(), WmsReportUpload())
             transform_sorting_out = TransformSortingOut()
@@ -82,9 +105,12 @@ class MainPipeline:
                 extract_sorting_out_in_contract
             )
             load_sorting_out.load(transform_sorting_out_in_contract)
+            self.automation_control(status=True, sector="Sorting_out")
         except Exception as exception:
+            self.automation_control(status=False, sector="Sorting_out")
             ErrorLog(str(exception), func="Pipeline - Sorting_out")
 
+    def packing(self):
         try:
             extract_paking = Extract(Packing(), WmsReportUpload())
             transform_packing = TransformPacking()
@@ -94,9 +120,12 @@ class MainPipeline:
                 extract_paking_in_contract
             )
             load_packing.load(transform_packing_in_contract)
+            self.automation_control(status=True, sector="Packing")
         except Exception as exception:
+            self.automation_control(status=False, sector="Packing")
             ErrorLog(str(exception), func="Pipeline - Packing")
 
+    def hc(self):
         try:
             extract_hc = ExtractHc(GoogleSheetGetter(), WmsReportUpload())
             transform_hc = TransformHc()
@@ -107,8 +136,22 @@ class MainPipeline:
         except Exception as exception:
             ErrorLog(str(exception), func="Pipeline - HC")
 
+    def procedures(self):
         try:
             run_procedures = LoadData(DatabaseRepository(query=procedure_query))
             run_procedures.procedure()
         except Exception as exception:
             ErrorLog(str(exception), func="Pipeline - Procedures")
+
+
+    def run_pipeline(self) -> None:
+        DatabaseConnection.connect()
+        truncate_sectors = LoadData(DatabaseRepository(query=truncate_query))
+        truncate_sectors.truncate()
+        self.sorting_in()
+        self.putaway()
+        self.picking()
+        self.sorting_out()
+        self.packing()
+        self.hc()
+        self.procedures()
