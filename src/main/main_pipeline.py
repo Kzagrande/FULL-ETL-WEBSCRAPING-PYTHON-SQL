@@ -34,7 +34,6 @@ from datetime import datetime
 
 
 
-
 class MainPipeline:
     def automation_control(self, status: bool, sector: str) -> None:
         automation_control = LoadData(DatabaseRepository(query=control_table_query))
