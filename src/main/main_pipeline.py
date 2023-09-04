@@ -33,6 +33,8 @@ from src.errors.error_log import ErrorLog
 from datetime import datetime
 
 
+
+
 class MainPipeline:
     def automation_control(self, status: bool, sector: str) -> None:
         automation_control = LoadData(DatabaseRepository(query=control_table_query))
@@ -60,7 +62,7 @@ class MainPipeline:
             load_sorting.load(transform_sorting_in_contract)
             self.automation_control(status=True, sector="Sorting_in")
         except Exception as exception:
-            self.automation_control(status=False, sector="Sorting_out")
+            self.automation_control(status=False, sector="Sorting_in")
             ErrorLog(str(exception), func="Pipeline - Sorting_in")
 
     def putaway(self):
@@ -123,7 +125,7 @@ class MainPipeline:
             self.automation_control(status=False, sector="Packing")
             ErrorLog(str(exception), func="Pipeline - Packing")
 
-    def hc():
+    def hc(self):
         try:
             extract_hc = ExtractHc(GoogleSheetGetter(), WmsReportUpload())
             transform_hc = TransformHc()
@@ -134,7 +136,7 @@ class MainPipeline:
         except Exception as exception:
             ErrorLog(str(exception), func="Pipeline - HC")
 
-    def procedures():
+    def procedures(self):
         try:
             run_procedures = LoadData(DatabaseRepository(query=procedure_query))
             run_procedures.procedure()
@@ -147,7 +149,7 @@ class MainPipeline:
         truncate_sectors = LoadData(DatabaseRepository(query=truncate_query))
         truncate_sectors.truncate()
         self.sorting_in()
-        self.sorting_out()
+        self.putaway()
         self.picking()
         self.sorting_out()
         self.packing()

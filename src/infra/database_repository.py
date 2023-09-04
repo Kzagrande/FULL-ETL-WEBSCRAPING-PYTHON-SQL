@@ -20,7 +20,7 @@ class DatabaseRepository(DatabaseRepositoryInterface):
 
     def truncate_tables(self) -> None:
         try:
-            __tables = ["putaway", "picking", "sorting_out", "packing", "hc"]
+            __tables = ["sorting_in","putaway", "picking", "sorting_out", "packing", "hc"]
             cursor = DatabaseConnection.connection.cursor()
             for table in __tables:
                 self.query = f"TRUNCATE TABLE ware_ods_shein.{table}"
