@@ -4,13 +4,16 @@ project_root = "C:\\Users\\User\\sites\\control-tower-D"
 sys.path.insert(0, project_root)
 from src.stages.extract.extract import Extract
 from src.stages.extract.extract import ExtractHc
+from src.stages.extract.extract import ExtractBacklog
 from src.stages.transform.transform_sorting_in import TransformSorting
 from src.stages.transform.transform_putaway import TransformPutaway
 from src.stages.transform.transform_picking import TransformPicking
 from src.stages.transform.transform_sorting_out import TransformSortingOut
 from src.stages.transform.transform_packing import TransformPacking
 from src.stages.transform.transform_hc import TransformHc
+from src.stages.transform.transform_backlog import TransformBacklog
 from src.stages.load.load_data import LoadData
+from src.drivers.wms_backlog import WmsBacklog
 from src.drivers.sorting_in import SortingIn
 from src.drivers.putaway import Putaway
 from src.drivers.picking import Picking
@@ -29,23 +32,25 @@ from src.queries.queries import INSERT_HC as hc_query
 from src.queries.queries import TRUNCATE_TABLE as truncate_query
 from src.queries.queries import RUN_PROCEDURE as procedure_query
 from src.queries.queries import INSERT_INTO_TABLE_CONTROL as control_table_query
+from src.queries.queries import INSERT_BACKLOG as backlog_query
 from src.errors.error_log import ErrorLog
 from datetime import datetime
-
-
+from src.drivers.time_interval import get_current_and_last_hour
 
 
 class MainPipeline:
     def automation_control(self, status: bool, sector: str) -> None:
         automation_control = LoadData(DatabaseRepository(query=control_table_query))
+        extraction_hour = get_current_and_last_hour()
+        hours = extraction_hour["last_hour"]
         sorting_in_infos = {
             "name": sector,
-            "scheduled_time": {datetime.now()},
+            "extraction_hour": {hours},
             "status": status,
         }
         sorting_values = (
             sorting_in_infos["name"],
-            sorting_in_infos["scheduled_time"],
+            sorting_in_infos["extraction_hour"],
             sorting_in_infos["status"],
         )
         automation_control.table_control(sorting_values)
@@ -125,6 +130,22 @@ class MainPipeline:
             self.automation_control(status=False, sector="Packing")
             ErrorLog(str(exception), func="Pipeline - Packing")
 
+    def backlog(self):
+        # try:
+        extract_backlog = ExtractBacklog(WmsBacklog())
+        transform_backlog = TransformBacklog()
+        load_backlog = LoadData(DatabaseRepository(query=backlog_query))
+        extract_backlog_in_contract = extract_backlog.extract()
+        transform_backlog_in_contract = transform_backlog.transform(
+            extract_backlog_in_contract
+        )
+        load_backlog.load(transform_backlog_in_contract)
+        self.automation_control(status=True, sector="Backlog")
+
+    # # except Exception as exception:
+    #     self.automation_control(status=False, sector="Backlog")
+    #     ErrorLog(str(exception), func="Pipeline - Backlog")
+
     def hc(self):
         try:
             extract_hc = ExtractHc(GoogleSheetGetter(), WmsReportUpload())
@@ -143,7 +164,6 @@ class MainPipeline:
         except Exception as exception:
             ErrorLog(str(exception), func="Pipeline - Procedures")
 
-
     def run_pipeline(self) -> None:
         DatabaseConnection.connect()
         truncate_sectors = LoadData(DatabaseRepository(query=truncate_query))
@@ -153,5 +173,6 @@ class MainPipeline:
         self.picking()
         self.sorting_out()
         self.packing()
+        self.backlog()
         self.hc()
         self.procedures()

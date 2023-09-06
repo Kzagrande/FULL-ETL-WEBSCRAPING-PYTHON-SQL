@@ -29,7 +29,7 @@ class WmsReportDownload:
                 '//*[@id="app"]/section/section/main/div/div/div/div/div/div/form/div[5]/div//button',
             )
             btn_extract_search.click()
-            time.sleep(30)
+            time.sleep(40)
 
             btn_extract_search = self.wait_for_element(
                 By.XPATH,
