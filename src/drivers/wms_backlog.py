@@ -10,9 +10,10 @@ import time
 from src.drivers.wms_config import WmsConfig
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
+from src.drivers.interfaces.wms_backlog import WmsBacklogInterface
 
 
-class WmsBacklog:
+class WmsBacklog(WmsBacklogInterface):
     def __init__(self) -> None:
         self.options = webdriver.ChromeOptions()
         self.options.add_argument("--start-maximized")  # Maximizes the window
@@ -24,8 +25,6 @@ class WmsBacklog:
 
     def extract_backlog(self):
         self.backlog = {"sector": [], "value": []}
-        wms_config = WmsConfig(self.wait, self.browser, self.options)
-        wms_config.run_wms_config()
 
         operation_monitoring = self.wait_for_element(
             By.XPATH,
@@ -88,7 +87,7 @@ class WmsBacklog:
         )
         to_be_sorted_text = to_be_sorted.text
         print("to_be_sorted_text --> ", to_be_sorted_text)
-        self.backlog["sector"].append("to_be_sorted_text")
+        self.backlog["sector"].append("to_be_sorted")
         self.backlog["value"].append(to_be_sorted_text)
 
         to_be_packed = self.wait_for_element(
@@ -97,8 +96,17 @@ class WmsBacklog:
         )
         to_be_packed_text = to_be_packed.text
         print("to_be_packed_text --> ", to_be_packed_text)
-        self.backlog["sector"].append("to_be_packed_text")
+        self.backlog["sector"].append("to_be_packed")
         self.backlog["value"].append(to_be_packed_text)
+        return self.backlog
+    
+    
+    def web_drive_workflow(self) -> None:
+        wms_config = WmsConfig(self.wait, self.browser, self.options)
+        wms_config.run_wms_config()
+        backlog = self.extract_backlog()
+        self.browser.quit()
+        return backlog
 
 
 # if __name__ == "__main__":

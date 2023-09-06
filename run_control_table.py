@@ -22,12 +22,12 @@ class PendingAtuomations:
         DatabaseConnection.connect()
         cursor = DatabaseConnection.connection.cursor()
         current_time = datetime.now()
-        query = "SELECT id, name,scheduled_time FROM ware_ws_shein.control_automations WHERE scheduled_time <= %s AND status = False"
+        query = "SELECT id, name,extraction_hour FROM ware_ws_shein.control_automations WHERE extraction_hour <= %s AND status = False"
         cursor.execute(query, (current_time,))
         pending_automations = cursor.fetchall()
         print(pending_automations[0][2])
 
-        for automation_id, automation_name, scheduled_time in pending_automations:
+        for automation_id, automation_name, extraction_hour in pending_automations:
             try:
                 if automation_name in sectors:
                     sector = sectors[automation_name]

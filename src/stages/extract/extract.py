@@ -8,6 +8,9 @@ from src.drivers.interfaces.wms_report_upload import WmsReportUploadInterface
 from src.stages.contracts.extract_contract import ExtractContract
 from src.errors.error_log import ErrorLog
 from src.drivers.interfaces.google_sheet_getter import GoogleSheetGetterInterface
+from src.drivers.interfaces.wms_backlog import WmsBacklogInterface
+from src.drivers.wms_backlog import WmsBacklog
+from src.stages.transform.transform_backlog import TransformBacklog
 
 
 class Extract:
@@ -59,9 +62,26 @@ class ExtractHc:
             raise ErrorLog(str(exception), func="Extract HC ERROR") from exception
 
 
+class ExtractBacklog:
+    def __init__(self, wmsBacklog: WmsBacklogInterface) -> None:
+        self.__wms_backlog = wmsBacklog
+
+    def extract(self) -> ExtractContract:
+        try:
+            get_backlog_information = self.__wms_backlog.web_drive_workflow()
+            print(get_backlog_information)
+            return ExtractContract(
+                raw_information_content=get_backlog_information,
+            )
+        except Exception as exception:
+            raise ErrorLog(str(exception), func="Extract Backlog ERROR") from exception
+
+
 # if __name__ ==  "__main__":
-#     test = Extract(Putaway(), WmsReportUpload())
-#     extract_test = test.extract()
-#     transform = TransformPutaway()
-#     transformed_data = transform.transform(extract_test)
-#     print(extract_test)
+#         extract_backlog = ExtractBacklog(WmsBacklog())
+#         transform_backlog = TransformBacklog()
+#         extract_backlog_in_contract = extract_backlog.extract()
+#         transform_backlog_in_contract = transform_backlog.transform(
+#         extract_backlog_in_contract
+#             )
+#         print(transform_backlog_in_contract)

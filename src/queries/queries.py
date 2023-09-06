@@ -33,6 +33,14 @@ INSERT_PACKING = """
         (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
 """
 
+INSERT_BACKLOG = """
+    INSERT INTO sectors_backlog
+    (sector,value, extraction_hour) 
+    VALUES 
+    (%s,%s,%s)
+"""
+
+
 INSERT_HC = """
     INSERT INTO hc
         (name,id_employ,admission_dt,company,warehouse,bz,coolar,category,sector,role_1,shift,schedule,manager_1,manager_2,manager_3,status,role_2,user_)
@@ -52,7 +60,8 @@ RUN_PROCEDURE = """
 
 INSERT_INTO_TABLE_CONTROL = """
     INSERT INTO ware_ws_shein.control_automations
-    (name, scheduled_time,status) 
+    (name, extraction_hour,status) 
     VALUES 
     (%s, %s,%s)
 """
+
