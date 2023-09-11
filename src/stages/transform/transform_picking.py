@@ -7,7 +7,6 @@ import pandas as pd
 from src.stages.contracts.transform_contract import TransformContract
 from typing import List
 from datetime import datetime
-from src.drivers.time_interval import get_current_and_last_hour
 from src.errors.error_log import ErrorLog
 
 
@@ -54,9 +53,10 @@ class TransformPicking:
             data_content["sector"] = "picking"
 
             data_content["current_date_"] = datetime.now().strftime("%Y-%m-%d")
-            hours = get_current_and_last_hour()
+            hours = datetime.now()
+            hours = hours.replace(minute=0, second=0, microsecond=0)
 
-            data_content["extraction_hour"] = hours["last_hour"]
+            data_content["extraction_hour"] = hours
             print(data_content)
             excel_file = "picking.xlsx"
             data_content.to_excel(excel_file, index=False)

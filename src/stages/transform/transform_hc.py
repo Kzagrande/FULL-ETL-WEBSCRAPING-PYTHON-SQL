@@ -42,5 +42,5 @@ class TransformHc:
             return data_content.values.tolist()
         except Exception as exception:
             raise ErrorLog(
-                str(exception), func=" __filter_and_transform_data - HC"
+                str(exception), func=" __filter_and_transform_data - HC",error_code=2
             ) from exception

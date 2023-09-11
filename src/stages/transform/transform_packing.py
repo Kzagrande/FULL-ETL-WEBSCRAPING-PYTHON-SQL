@@ -7,7 +7,6 @@ import pandas as pd
 from src.stages.contracts.transform_contract import TransformContract
 from typing import List
 from datetime import datetime
-from src.drivers.time_interval import get_current_and_last_hour
 from src.errors.error_log import ErrorLog
 
 
@@ -36,8 +35,9 @@ class TransformPacking:
             data_content["sector"] = "packing_"
 
             data_content["current_date_"] = datetime.now().strftime("%Y-%m-%d")
-            hours = get_current_and_last_hour()
-            data_content["extraction_hour"] = hours["last_hour"]
+            hours = datetime.now()
+            hours = hours.replace(minute=0, second=0, microsecond=0)
+            data_content["extraction_hour"] = hours
 
             transformed_values = []
             for warehouse in data_content["Workstation"]:

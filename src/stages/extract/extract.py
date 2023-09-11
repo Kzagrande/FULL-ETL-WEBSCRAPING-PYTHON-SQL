@@ -36,7 +36,10 @@ class Extract:
                 raw_information_content=essential_information,
             )
         except Exception as exception:
-            raise ErrorLog(str(exception), func="Extract ERROR") from exception
+            print(exception.error_code)
+            raise ErrorLog(
+                str(exception), func="Extract ERROR", error_code=exception.error_code
+            ) from exception
 
 
 class ExtractHc:
@@ -59,7 +62,7 @@ class ExtractHc:
                 raw_information_content=essential_information,
             )
         except Exception as exception:
-            raise ErrorLog(str(exception), func="Extract HC ERROR") from exception
+            raise ErrorLog(str(exception), func="Extract HC ERROR",error_code=2) from exception
 
 
 class ExtractBacklog:
@@ -74,7 +77,7 @@ class ExtractBacklog:
                 raw_information_content=get_backlog_information,
             )
         except Exception as exception:
-            raise ErrorLog(str(exception), func="Extract Backlog ERROR") from exception
+            raise ErrorLog(str(exception), func="Extract Backlog ERROR",error_code=3) from exception
 
 
 # if __name__ ==  "__main__":

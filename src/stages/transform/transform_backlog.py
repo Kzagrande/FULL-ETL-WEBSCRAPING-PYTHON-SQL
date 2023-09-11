@@ -19,7 +19,6 @@ from src.drivers.time_interval import get_current_and_last_hour
 
 # Seu código anterior ...
 
-
 class TransformBacklog:
     def transform(self, extract_backlog: ExtractContract) -> TransformContract:
         transformed_data = self.__filter_and_transform_data(extract_backlog)
@@ -31,8 +30,9 @@ class TransformBacklog:
         try:
             data_content = extract_picking.raw_information_content
 
-            hours = get_current_and_last_hour()
-            data_content["extraction_hour"] = hours["last_hour"]
+            hours = datetime.now()
+            hours = hours.replace(minute=0, second=0, microsecond=0)
+            data_content["extraction_hour"] = hours
 
             # Crie uma lista de listas vazia
             data_list = []

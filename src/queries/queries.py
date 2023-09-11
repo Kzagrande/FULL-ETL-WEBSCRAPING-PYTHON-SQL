@@ -58,10 +58,7 @@ RUN_PROCEDURE = """
     CALL uph_staff();
 """
 
-INSERT_INTO_TABLE_CONTROL = """
-    INSERT INTO ware_ws_shein.control_automations
-    (name, extraction_hour,status) 
-    VALUES 
-    (%s, %s,%s)
+UPDATE_RPA_CONTROL = """
+UPDATE ware_ods_shein.rpa_control SET status = 1 WHERE id = %s
 """
 

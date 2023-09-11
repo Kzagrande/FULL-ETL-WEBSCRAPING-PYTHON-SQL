@@ -30,34 +30,62 @@ from src.queries.queries import INSERT_SORTING_OUT as sorting_out_query
 from src.queries.queries import INSERT_PACKING as packing_query
 from src.queries.queries import INSERT_HC as hc_query
 from src.queries.queries import TRUNCATE_TABLE as truncate_query
-from src.queries.queries import RUN_PROCEDURE as procedure_query
-from src.queries.queries import INSERT_INTO_TABLE_CONTROL as control_table_query
 from src.queries.queries import INSERT_BACKLOG as backlog_query
+from src.queries.queries import RUN_PROCEDURE as procedure_query
 from src.errors.error_log import ErrorLog
 from datetime import datetime
 from src.drivers.time_interval import get_current_and_last_hour
+from typing import List
 
 
 class MainPipeline:
-    def automation_control(self, status: bool, sector: str) -> None:
-        automation_control = LoadData(DatabaseRepository(query=control_table_query))
-        extraction_hour = get_current_and_last_hour()
-        hours = extraction_hour["last_hour"]
-        sorting_in_infos = {
-            "name": sector,
-            "extraction_hour": {hours},
-            "status": status,
+    def get_pending_automations(self):
+        sectors = {
+            "Sorting_in": self.sorting_in,
+            "Putaway": self.putaway,
+            "Picking": self.picking,
+            "Sorting_out": self.sorting_out,
+            "Packing": self.packing,
         }
-        sorting_values = (
-            sorting_in_infos["name"],
-            sorting_in_infos["extraction_hour"],
-            sorting_in_infos["status"],
-        )
-        automation_control.table_control(sorting_values)
 
-    def sorting_in(self):
+        cursor = DatabaseConnection.connection.cursor()
+        current_time = datetime.now()
+        query = "SELECT id,sector,extraction_hour FROM ware_ods_shein.rpa_control WHERE extraction_hour <= %s AND status = False"
+        cursor.execute(query, (current_time,))
+        pending_automations = cursor.fetchall()
+        print(pending_automations)
+
+        for id, sector_name, extaction_hour in pending_automations:
+            try:
+                # print(id)
+                # print(sector_name)
+                # print(extaction_hour)
+                sector = sectors[sector_name]
+                sector(extaction_hour)
+                update_query = f"UPDATE ware_ods_shein.rpa_control SET status = True WHERE id = {id}"
+                cursor.execute(update_query)
+                print(
+                    f"A extração do {sector_name} referente ás {extaction_hour} foi executada com sucesso"
+                )
+                DatabaseConnection.connection.commit()
+
+            except Exception as exception:
+                if exception.error_code == 1:
+                    update_query = f"UPDATE ware_ods_shein.rpa_control SET status = True WHERE id = {id}"
+                    cursor.execute(update_query)
+                    print(
+                        f"A extração do {sector_name} referente ás {extaction_hour} foi executada com sucesso"
+                    )
+                    DatabaseConnection.connection.commit()
+                else:
+                    raise ErrorLog(
+                        str(exception), func=f"get_pending_automations ERROR"
+                    ) from exception
+
+    def sorting_in(self, pending=None):
         try:
-            extract_sorting = Extract(SortingIn(), WmsReportUpload())
+            print(pending)
+            extract_sorting = Extract(SortingIn(pending), WmsReportUpload())
             transform_sorting = TransformSorting()
             load_sorting = LoadData(DatabaseRepository(query=sorting_in_query))
             extract_sorting_in_contract = extract_sorting.extract()
@@ -65,14 +93,17 @@ class MainPipeline:
                 extract_sorting_in_contract
             )
             load_sorting.load(transform_sorting_in_contract)
-            self.automation_control(status=True, sector="Sorting_in")
         except Exception as exception:
-            self.automation_control(status=False, sector="Sorting_in")
-            ErrorLog(str(exception), func="Pipeline - Sorting_in")
+            raise ErrorLog(
+                str(exception),
+                func="Pipeline - Sorting_in",
+                error_code=exception.error_code,
+            )
 
-    def putaway(self):
+    def putaway(self, pending=None):
         try:
-            extract_putaway = Extract(Putaway(), WmsReportUpload())
+            print(pending)
+            extract_putaway = Extract(Putaway(pending), WmsReportUpload())
             transform_putaway = TransformPutaway()
             load_putaway = LoadData(DatabaseRepository(query=putaway_query))
             extract_putaway_in_contract = extract_putaway.extract()
@@ -80,14 +111,17 @@ class MainPipeline:
                 extract_putaway_in_contract
             )
             load_putaway.load(transform_putaway_in_contract)
-            self.automation_control(status=True, sector="Putaway")
         except Exception as exception:
-            self.automation_control(status=False, sector="Putaway")
-            ErrorLog(str(exception), func="Pipeline - Putaway")
+            raise ErrorLog(
+                str(exception),
+                func="Pipeline - Putaway",
+                error_code=exception.error_code,
+            )
 
-    def picking(self):
+    def picking(self, pending=None):
         try:
-            extract_picking = Extract(Picking(), WmsReportUpload())
+            print(pending)
+            extract_picking = Extract(Picking(pending), WmsReportUpload())
             transform_picking = TransformPicking()
             load_picking = LoadData(DatabaseRepository(query=picking_query))
             extract_picking_in_contract = extract_picking.extract()
@@ -95,14 +129,16 @@ class MainPipeline:
                 extract_picking_in_contract
             )
             load_picking.load(transform_picking_in_contract)
-            self.automation_control(status=True, sector="Picking")
         except Exception as exception:
-            self.automation_control(status=False, sector="Sorting_in")
-            ErrorLog(str(exception), func="Pipeline - Picking")
+            raise ErrorLog(
+                str(exception),
+                func="Pipeline - Picking",
+                error_code=exception.error_code,
+            )
 
-    def sorting_out(self):
+    def sorting_out(self, pending=None):
         try:
-            extract_sorting_out = Extract(SortingOut(), WmsReportUpload())
+            extract_sorting_out = Extract(SortingOut(pending), WmsReportUpload())
             transform_sorting_out = TransformSortingOut()
             load_sorting_out = LoadData(DatabaseRepository(query=sorting_out_query))
             extract_sorting_out_in_contract = extract_sorting_out.extract()
@@ -110,14 +146,16 @@ class MainPipeline:
                 extract_sorting_out_in_contract
             )
             load_sorting_out.load(transform_sorting_out_in_contract)
-            self.automation_control(status=True, sector="Sorting_out")
         except Exception as exception:
-            self.automation_control(status=False, sector="Sorting_out")
-            ErrorLog(str(exception), func="Pipeline - Sorting_out")
+            raise ErrorLog(
+                str(exception),
+                func="Pipeline - Sorting_out",
+                error_code=exception.error_code,
+            )
 
-    def packing(self):
+    def packing(self, pending=None):
         try:
-            extract_paking = Extract(Packing(), WmsReportUpload())
+            extract_paking = Extract(Packing(pending), WmsReportUpload())
             transform_packing = TransformPacking()
             load_packing = LoadData(DatabaseRepository(query=packing_query))
             extract_paking_in_contract = extract_paking.extract()
@@ -125,26 +163,26 @@ class MainPipeline:
                 extract_paking_in_contract
             )
             load_packing.load(transform_packing_in_contract)
-            self.automation_control(status=True, sector="Packing")
         except Exception as exception:
-            self.automation_control(status=False, sector="Packing")
-            ErrorLog(str(exception), func="Pipeline - Packing")
+            raise ErrorLog(
+                str(exception),
+                func="Pipeline - Packing",
+                error_code=exception.error_code,
+            )
 
-    def backlog(self):
-        # try:
-        extract_backlog = ExtractBacklog(WmsBacklog())
-        transform_backlog = TransformBacklog()
-        load_backlog = LoadData(DatabaseRepository(query=backlog_query))
-        extract_backlog_in_contract = extract_backlog.extract()
-        transform_backlog_in_contract = transform_backlog.transform(
-            extract_backlog_in_contract
-        )
-        load_backlog.load(transform_backlog_in_contract)
-        self.automation_control(status=True, sector="Backlog")
-
-    # # except Exception as exception:
-    #     self.automation_control(status=False, sector="Backlog")
-    #     ErrorLog(str(exception), func="Pipeline - Backlog")
+    def backlog(self, pending=None):
+        try:
+            extract_backlog = ExtractBacklog(WmsBacklog())
+            transform_backlog = TransformBacklog()
+            load_backlog = LoadData(DatabaseRepository(query=backlog_query))
+            extract_backlog_in_contract = extract_backlog.extract()
+            transform_backlog_in_contract = transform_backlog.transform(
+                extract_backlog_in_contract
+            )
+            load_backlog.load(transform_backlog_in_contract)
+        except Exception as exception:
+            self.automation_control(status=False, sector="Backlog")
+            ErrorLog(str(exception), func="Pipeline - Backlog")
 
     def hc(self):
         try:
@@ -168,11 +206,12 @@ class MainPipeline:
         DatabaseConnection.connect()
         truncate_sectors = LoadData(DatabaseRepository(query=truncate_query))
         truncate_sectors.truncate()
-        self.sorting_in()
-        self.putaway()
-        self.picking()
-        self.sorting_out()
-        self.packing()
+        self.get_pending_automations()
+        # self.sorting_in()
+        # self.putaway()
+        # self.picking()
+        # self.sorting_out()
+        # self.packing()
         self.backlog()
         self.hc()
         self.procedures()

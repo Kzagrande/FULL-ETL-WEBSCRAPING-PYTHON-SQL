@@ -19,7 +19,8 @@ from src.errors.error_log import ErrorLog
 
 
 class SortingIn(WebDriverWorkflowInterface):
-    def __init__(self):
+    def __init__(self,pending_automation=None):
+        self.pending_automation  = pending_automation
         self.options = webdriver.ChromeOptions()
         self.options.add_argument("--start-maximized")  # Maximizes the window
         self.browser = webdriver.Chrome(options=self.options)
@@ -29,7 +30,6 @@ class SortingIn(WebDriverWorkflowInterface):
         return self.wait.until(EC.presence_of_element_located((by, value)))
 
     def navigate_to_wms(self):
-        try:
             sorting_url = "https://wms-la.biz.sheinbackend.com/#/inbound-mgt/receive-detail-management"
             self.browser.get(sorting_url)
             time.sleep(5)
@@ -59,7 +59,8 @@ class SortingIn(WebDriverWorkflowInterface):
             )
             first_time.click()
 
-            hours = get_current_and_last_hour()
+            print(self.pending_automation)
+            hours = get_current_and_last_hour(self.pending_automation)
 
             self.browser.execute_script(
                 f"arguments[0].textContent = '{hours['last_hour']}'", first_time
@@ -80,11 +81,23 @@ class SortingIn(WebDriverWorkflowInterface):
             )
             btn_search.click()
             time.sleep(1)
+            
+            try:
+                data_content = self.wait_for_element(
+                    By.XPATH,
+                    '//*[@id="app"]/section/section/main/div/div/div/section[2]/div/div[1]/div[2]/iframe',
+                )
+            except:
+                raise ErrorLog(
+                    message="Sem dados para este horário",
+                    func="Navigate_to_wms",
+                    error_code=1,
+                ) 
 
-            valid_user = self.wait_for_element(
-                By.XPATH,
-                '//*[@id="app"]/section/section/main/div/div/div/section[2]/div/div[1]/div[2]/div[2]/div/table/tbody/tr[1]',
-            )
+            # valid_user = self.wait_for_element(
+            #     By.XPATH,
+            #     '//*[@id="app"]/section/section/main/div/div/div/section[2]/div/div[1]/div[2]/div[2]/div/table/tbody/tr[1]',
+            # )
             btn_extract = self.wait_for_element(
                 By.XPATH,
                 '//*[@id="app"]/section/section/main/div/div/div/section[1]/button',
@@ -92,8 +105,6 @@ class SortingIn(WebDriverWorkflowInterface):
             btn_extract.click()
             time.sleep(1)
 
-        except Exception as exception:
-            raise ErrorLog(str(exception), func="navigate_to_wms() - Sorting_in") from exception
 
     def web_drive_workflow(self) -> None:
         wms_config = WmsConfig(self.wait, self.browser, self.options)

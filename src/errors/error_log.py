@@ -4,9 +4,10 @@ from src.drivers.slack_report import log_error_and_notify_slack
 
 
 class ErrorLog(Exception):
-    def __init__(self, message: str,func:str) -> None:
+    def __init__(self, message: str,func:str,error_code:None) -> None:
         super().__init__(message)
         self.message = message
+        self.error_code = error_code
 
         current_path = os.path.abspath(__file__)
         arquive_name = os.path.basename(current_path)
