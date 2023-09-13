@@ -15,7 +15,7 @@ class WmsReportUpload(WmsReportUploadInterface):
             sheet_data = pd.read_excel(sheet_path)
         except Exception as exception:
             raise ErrorLog(
-                str(exception), func="upload_sheet()"
+                str(exception), func="upload_sheet()",error_code=4
             ) from exception            
         return sheet_data
         

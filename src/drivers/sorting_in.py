@@ -30,6 +30,7 @@ class SortingIn(WebDriverWorkflowInterface):
         return self.wait.until(EC.presence_of_element_located((by, value)))
 
     def navigate_to_wms(self):
+        try:
             sorting_url = "https://wms-la.biz.sheinbackend.com/#/inbound-mgt/receive-detail-management"
             self.browser.get(sorting_url)
             time.sleep(5)
@@ -104,6 +105,12 @@ class SortingIn(WebDriverWorkflowInterface):
             )
             btn_extract.click()
             time.sleep(1)
+        except:
+            raise ErrorLog(
+                message="Navigate_to_wms Sorting_in - ERROR",
+                func="Navigate_to_wms",
+                error_code=0,
+            ) 
 
 
     def web_drive_workflow(self) -> None:

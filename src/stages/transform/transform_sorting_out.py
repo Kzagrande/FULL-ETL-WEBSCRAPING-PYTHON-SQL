@@ -50,5 +50,5 @@ class TransformSortingOut:
 
         except Exception as exception:
             raise ErrorLog(
-                str(exception), func=" __filter_and_transform_data - Sorting_out"
+                str(exception), func=" __filter_and_transform_data - Sorting_out",error_code=19
             ) from exception

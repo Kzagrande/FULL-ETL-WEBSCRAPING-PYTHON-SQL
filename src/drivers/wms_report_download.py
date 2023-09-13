@@ -1,3 +1,7 @@
+import sys
+
+project_root = "C:\\Users\\User\\sites\\control-tower-D"
+sys.path.insert(0, project_root)
 import pyautogui
 import time
 from datetime import datetime
@@ -76,26 +80,8 @@ class WmsReportDownload:
                 print("Nome do último arquivo baixado:", file_name)
             else:
                 print("Nenhum arquivo encontrado na pasta de downloads.")
-
-            # pyautogui.press('down', presses=4)  # Pressiona a tecla "seta para baixo" três vezes
-            # pyautogui.press('enter')  # Pressiona a tecla "enter" para confirmar a opção
-            # # Obter a data e hora atual
-            # file_current_date = datetime.now()
-            # file_current_date_formated = file_current_date.strftime("%Y-%m-%d_%H-%M-%S")
-            # file_name = self.sector+ file_current_date_formated+".xlsx"
-            # time.sleep(1)
-            # pyautogui.typewrite(file_name, interval=0.2)
-            # time.sleep(1)
-            # for _ in range(3):
-            #     pyautogui.press('tab')
-
-            # time.sleep(4)
-            # pyautogui.press('enter')  # Pressiona a tecla "enter" para confirmar a opção
-            # time.sleep(4)
         except Exception as exception:
-            raise ErrorLog(
-                str(exception), func="download_sheet()"
-            ) from exception
+            raise ErrorLog(str(exception), func="download_sheet()",error_code=9) from exception
 
         finally:
             return {"file_name": file_name, "download_time": datetime.now()}

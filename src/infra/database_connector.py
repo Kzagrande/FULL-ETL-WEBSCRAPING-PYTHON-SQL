@@ -37,4 +37,4 @@ class DatabaseConnection:
 
             cls.connection = db_connection
         except Exception as exception:
-            raise ErrorLog(str(exception), func="connect()") from exception
+            raise ErrorLog(str(exception), func="connect()",error_code=9) from exception

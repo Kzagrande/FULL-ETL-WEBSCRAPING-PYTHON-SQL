@@ -36,7 +36,7 @@ class WmsConfig:
             password_input.send_keys("onepiece1998Yan#")
             password_input.submit()
         except Exception as exception:
-            raise ErrorLog(str(exception), func="login()") from exception
+            raise ErrorLog(str(exception), func="login()",error_code=5) from exception
 
     def navigate_to_wms(self):
         div_wmsAncor = self.wait_for_element(
@@ -70,7 +70,7 @@ class WmsConfig:
             btn_ok.click()
             time.sleep(2)
         except Exception as exception:
-            raise ErrorLog(str(exception), func="select_warehouse()") from exception
+            raise ErrorLog(str(exception), func="select_warehouse()",error_code=6) from exception
 
     def language(self):
         try:
@@ -82,7 +82,7 @@ class WmsConfig:
             dropdown_language.send_keys(Keys.DOWN)
             dropdown_language.send_keys(Keys.ENTER)
         except Exception as exception:
-            raise ErrorLog(str(exception), func="language") from exception
+            raise ErrorLog(str(exception), func="language",error_code=8) from exception
 
     def run_wms_config(self) -> None:
             self.login()

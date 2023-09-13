@@ -30,81 +30,86 @@ class Packing(WebDriverWorkflowInterface):
         return self.wait.until(EC.presence_of_element_located((by, value)))
 
     def navigate_to_wms(self):
-        packing_url = (
-            "https://wms-la.biz.sheinbackend.com/#/outbound-mgt/package/package-record"
-        )
-        self.browser.get(packing_url)
-        time.sleep(5)
-
-        select_time = self.wait_for_element(
-            By.XPATH,
-            '//*[@id="app"]/section/section/main/div/div/div/div/div/div/form/div[7]/div/div[2]/label/div',
-        )
-        select_time.click()
-        time.sleep(1)
-
-        click_calendar = self.wait_for_element(
-            By.XPATH,
-            '//*[@id="app"]/section/section/main/div/div/div/div/div/div/form/div[7]/div/div[2]/label/div/div[2]/div/div/div/div/div[3]/div[25]',
-        )
-        click_calendar.click()
-        actions = ActionChains(self.browser)
-        actions.double_click(click_calendar).perform()
-
-        first_time = self.wait_for_element(
-            By.XPATH,
-            '//*[@id="app"]/section/section/main/div/div/div/div/div/div/form/div[7]/div/div[2]/label/div/div/div/div[2]/span',
-        )
-        second_time = self.wait_for_element(
-            By.XPATH,
-            '//*[@id="app"]/section/section/main/div/div/div/div/div/div/form/div[7]/div/div[2]/label/div/div/div/div[2]/span[3]',
-        )
-        first_time.click()
-
-        hours = get_current_and_last_hour(self.pending_automation)
-
-        self.browser.execute_script(
-            f"arguments[0].textContent = '{hours['last_hour']}'", first_time
-        )
-        time.sleep(2)
-
-        self.browser.execute_script(
-            f"arguments[0].textContent = '{hours['last_second']}'", second_time
-        )
-        time.sleep(2)
-
-        second_time.send_keys(Keys.ENTER)
-        time.sleep(1)
-
-        btn_search = self.wait_for_element(
-            By.XPATH,
-            '//*[@id="app"]/section/section/main/div/div/div/div/div/div/form/div[8]/div/button',
-        )
-        btn_search.click()
-        # time.sleep(1)
-        # valid_user = self.wait_for_element(
-        #     By.XPATH,
-        #     '//*[@id="app"]/section/section/main/div/div/div/section[2]/div/div[1]/div[2]/div[2]/div/table/tbody/tr[1]',
-        # )
-
         try:
-            data_content = self.wait_for_element(
+            packing_url = "https://wms-la.biz.sheinbackend.com/#/outbound-mgt/package/package-record"
+            self.browser.get(packing_url)
+            time.sleep(5)
+
+            select_time = self.wait_for_element(
                 By.XPATH,
-                '//*[@id="app"]/section/section/main/div/div/div/section[2]/div/div[1]/div[2]/iframe',
+                '//*[@id="app"]/section/section/main/div/div/div/div/div/div/form/div[7]/div/div[2]/label/div',
             )
+            select_time.click()
+            time.sleep(1)
+
+            click_calendar = self.wait_for_element(
+                By.XPATH,
+                '//*[@id="app"]/section/section/main/div/div/div/div/div/div/form/div[7]/div/div[2]/label/div/div[2]/div/div/div/div/div[3]/div[25]',
+            )
+            click_calendar.click()
+            actions = ActionChains(self.browser)
+            actions.double_click(click_calendar).perform()
+
+            first_time = self.wait_for_element(
+                By.XPATH,
+                '//*[@id="app"]/section/section/main/div/div/div/div/div/div/form/div[7]/div/div[2]/label/div/div/div/div[2]/span',
+            )
+            second_time = self.wait_for_element(
+                By.XPATH,
+                '//*[@id="app"]/section/section/main/div/div/div/div/div/div/form/div[7]/div/div[2]/label/div/div/div/div[2]/span[3]',
+            )
+            first_time.click()
+
+            hours = get_current_and_last_hour(self.pending_automation)
+
+            self.browser.execute_script(
+                f"arguments[0].textContent = '{hours['last_hour']}'", first_time
+            )
+            time.sleep(2)
+
+            self.browser.execute_script(
+                f"arguments[0].textContent = '{hours['last_second']}'", second_time
+            )
+            time.sleep(2)
+
+            second_time.send_keys(Keys.ENTER)
+            time.sleep(1)
+
+            btn_search = self.wait_for_element(
+                By.XPATH,
+                '//*[@id="app"]/section/section/main/div/div/div/div/div/div/form/div[8]/div/button',
+            )
+            btn_search.click()
+            # time.sleep(1)
+            # valid_user = self.wait_for_element(
+            #     By.XPATH,
+            #     '//*[@id="app"]/section/section/main/div/div/div/section[2]/div/div[1]/div[2]/div[2]/div/table/tbody/tr[1]',
+            # )
+
+            try:
+                data_content = self.wait_for_element(
+                    By.XPATH,
+                    '//*[@id="app"]/section/section/main/div/div/div/section[2]/div/div[1]/div[2]/iframe',
+                )
+            except:
+                raise ErrorLog(
+                    message="Sem dados para este horário",
+                    func="Navigate_to_wms",
+                    error_code=1,
+                )
+
+            btn_extract = self.wait_for_element(
+                By.XPATH,
+                '//*[@id="app"]/section/section/main/div/div/div/section[1]/button',
+            )
+            btn_extract.click()
+            time.sleep(1)
         except:
             raise ErrorLog(
-                message="Sem dados para este horário",
+                message="Navigate_to_wms Packing - ERROR",
                 func="Navigate_to_wms",
-                error_code=1,
+                error_code=0,
             )
-
-        btn_extract = self.wait_for_element(
-            By.XPATH,
-            '//*[@id="app"]/section/section/main/div/div/div/section[1]/button',
-        )
-        btn_extract.click()
-        time.sleep(1)
 
     def web_drive_workflow(self) -> None:
         wms_config = WmsConfig(self.wait, self.browser, self.options)

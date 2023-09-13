@@ -34,7 +34,7 @@ INSERT_PACKING = """
 """
 
 INSERT_BACKLOG = """
-    INSERT INTO sectors_backlog
+    INSERT INTO ware_ods_shein.sectors_backlog
     (sector,value, extraction_hour) 
     VALUES 
     (%s,%s,%s)

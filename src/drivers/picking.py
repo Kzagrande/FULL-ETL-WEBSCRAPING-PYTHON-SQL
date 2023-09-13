@@ -18,114 +18,122 @@ from src.errors.error_log import ErrorLog
 
 
 class Picking(WebDriverWorkflowInterface):
-    def __init__(self, pending_automation=None):
-        self.pending_automation = pending_automation
-        self.options = webdriver.ChromeOptions()
-        self.options.add_argument("--start-maximized")  # Maximizes the window
-        self.browser = webdriver.Chrome(options=self.options)
-        self.wait = WebDriverWait(self.browser, 10)  # 10 seconds timeout
+        def __init__(self, pending_automation=None):
+            self.pending_automation = pending_automation
+            self.options = webdriver.ChromeOptions()
+            self.options.add_argument("--start-maximized")  # Maximizes the window
+            self.browser = webdriver.Chrome(options=self.options)
+            self.wait = WebDriverWait(self.browser, 10)  # 10 seconds timeout
 
-    def wait_for_element(self, by, value):
-        return self.wait.until(EC.presence_of_element_located((by, value)))
+        def wait_for_element(self, by, value):
+            return self.wait.until(EC.presence_of_element_located((by, value)))
 
-    def navigate_to_wms(self):
-        picking_url = "https://wms-la.biz.sheinbackend.com/#/outbound-mgt/picking-management/picking-task-detail"
-        self.browser.get(picking_url)
-        time.sleep(5)
+        def navigate_to_wms(self):
+            try:
+                picking_url = "https://wms-la.biz.sheinbackend.com/#/outbound-mgt/picking-management/picking-task-detail"
+                self.browser.get(picking_url)
+                time.sleep(5)
 
-        select_time = self.wait_for_element(
-            By.XPATH,
-            '//*[@id="app"]/section/section/main/div/div/div/div/div/div/form/div[11]/div/div/div[1]/div[1]',
-        )
-        select_time.click()
-        time.sleep(1)
+                select_time = self.wait_for_element(
+                    By.XPATH,
+                    '//*[@id="app"]/section/section/main/div/div/div/div/div/div/form/div[11]/div/div/div[1]/div[1]',
+                )
+                select_time.click()
+                time.sleep(1)
 
-        complete_time = self.wait_for_element(
-            By.XPATH,
-            '//*[@id="app"]/section/section/main/div/div/div/div/div/div/form/div[11]/div/div/div[1]/div/div/div[2]/div/div[2]/div/a[3]',
-        )
-        complete_time.click()
-        time.sleep(2)
+                complete_time = self.wait_for_element(
+                    By.XPATH,
+                    '//*[@id="app"]/section/section/main/div/div/div/div/div/div/form/div[11]/div/div/div[1]/div/div/div[2]/div/div[2]/div/a[3]',
+                )
+                complete_time.click()
+                time.sleep(2)
 
-        time_element = self.wait_for_element(
-            By.XPATH,
-            '//*[@id="app"]/section/section/main/div/div/div/div/div/div/form/div[11]/div/div[2]/div/div[2]/label/div',
-        )
-        time_element.click()
+                time_element = self.wait_for_element(
+                    By.XPATH,
+                    '//*[@id="app"]/section/section/main/div/div/div/div/div/div/form/div[11]/div/div[2]/div/div[2]/label/div',
+                )
+                time_element.click()
 
-        click_calendar = self.wait_for_element(
-            By.XPATH,
-            '//*[@id="app"]/section/section/main/div/div/div/div/div/div/form/div[11]/div/div[2]/div/div[2]/label/div/div[2]/div/div/div/div/div[3]/div[25]',
-        )
-        click_calendar.click()
-        actions = ActionChains(self.browser)
-        actions.double_click(click_calendar).perform()
+                click_calendar = self.wait_for_element(
+                    By.XPATH,
+                    '//*[@id="app"]/section/section/main/div/div/div/div/div/div/form/div[11]/div/div[2]/div/div[2]/label/div/div[2]/div/div/div/div/div[3]/div[25]',
+                )
+                click_calendar.click()
+                actions = ActionChains(self.browser)
+                actions.double_click(click_calendar).perform()
 
-        first_time = self.wait_for_element(
-            By.XPATH,
-            '//*[@id="app"]/section/section/main/div/div/div/div/div/div/form/div[11]/div/div[2]/div/div[2]/label/div/div/span',
-        )
-        second_time = self.wait_for_element(
-            By.XPATH,
-            '//*[@id="app"]/section/section/main/div/div/div/div/div/div/form/div[11]/div/div[2]/div/div[2]/label/div/div/span[3]',
-        )
-        first_time.click()
+                first_time = self.wait_for_element(
+                    By.XPATH,
+                    '//*[@id="app"]/section/section/main/div/div/div/div/div/div/form/div[11]/div/div[2]/div/div[2]/label/div/div/span',
+                )
+                second_time = self.wait_for_element(
+                    By.XPATH,
+                    '//*[@id="app"]/section/section/main/div/div/div/div/div/div/form/div[11]/div/div[2]/div/div[2]/label/div/div/span[3]',
+                )
+                first_time.click()
 
-        hours = get_current_and_last_hour(self.pending_automation)
+                hours = get_current_and_last_hour(self.pending_automation)
 
-        self.browser.execute_script(
-            f"arguments[0].textContent = '{hours['last_hour']}'", first_time
-        )
-        time.sleep(2)
+                self.browser.execute_script(
+                    f"arguments[0].textContent = '{hours['last_hour']}'", first_time
+                )
+                time.sleep(2)
 
-        self.browser.execute_script(
-            f"arguments[0].textContent = '{hours['last_second']}'", second_time
-        )
-        time.sleep(2)
+                self.browser.execute_script(
+                    f"arguments[0].textContent = '{hours['last_second']}'", second_time
+                )
+                time.sleep(2)
 
-        second_time.send_keys(Keys.ENTER)
-        time.sleep(1)
+                second_time.send_keys(Keys.ENTER)
+                time.sleep(1)
 
-        btn_search = self.wait_for_element(
-            By.XPATH,
-            '//*[@id="app"]/section/section/main/div/div/div/div/div/div/form/div[12]/div/button',
-        )
-        btn_search.click()
-        time.sleep(1)
+                btn_search = self.wait_for_element(
+                    By.XPATH,
+                    '//*[@id="app"]/section/section/main/div/div/div/div/div/div/form/div[12]/div/button',
+                )
+                btn_search.click()
+                time.sleep(1)
 
-        # valid_user = self.wait_for_element(
-        #     By.XPATH,
-        #     '//*[@id="app"]/section/section/main/div/div/div/section[2]/div/div[1]/div[2]/div[2]/div/table/tbody/tr[1]',
-        # )
+                # valid_user = self.wait_for_element(
+                #     By.XPATH,
+                #     '//*[@id="app"]/section/section/main/div/div/div/section[2]/div/div[1]/div[2]/div[2]/div/table/tbody/tr[1]',
+                # )
 
-        try:
-            data_content = self.wait_for_element(
-                By.XPATH,
-                '//*[@id="app"]/section/section/main/div/div/div/section[2]/div/div[1]/div[2]/iframe',
-            )
-        except:
-            raise ErrorLog(
-                message="Sem dados para este horário",
-                func="Navigate_to_wms",
-                error_code=1,
-            )
+                try:
+                    data_content = self.wait_for_element(
+                        By.XPATH,
+                        '//*[@id="app"]/section/section/main/div/div/div/section[2]/div/div[1]/div[2]/iframe',
+                    )
+                except:
+                    raise ErrorLog(
+                        message="Sem dados para este horário",
+                        func="Navigate_to_wms",
+                        error_code=1,
+                    )
 
-        btn_extract = self.wait_for_element(
-            By.XPATH,
-            '//*[@id="app"]/section/section/main/div/div/div/section[1]/button',
-        )
-        btn_extract.click()
-        time.sleep(1)
+                btn_extract = self.wait_for_element(
+                    By.XPATH,
+                    '//*[@id="app"]/section/section/main/div/div/div/section[1]/button',
+                )
+                btn_extract.click()
+                time.sleep(1)
 
-    def web_drive_workflow(self) -> None:
-        wms_config = WmsConfig(self.wait, self.browser, self.options)
-        wms_config.run_wms_config()
-        self.navigate_to_wms()
-        wms_report_download = WmsReportDownload(self.wait, self.browser, self.options)
-        report_download = wms_report_download.download_sheet()
-        self.browser.quit()
-        file_name = report_download["file_name"]
-        return file_name
+            except:
+                raise ErrorLog(
+                    message="Navigate_to_wms Picking - ERROR",
+                    func="Navigate_to_wms",
+                    error_code=0,
+                )
+
+        def web_drive_workflow(self) -> None:
+            wms_config = WmsConfig(self.wait, self.browser, self.options)
+            wms_config.run_wms_config()
+            self.navigate_to_wms()
+            wms_report_download = WmsReportDownload(self.wait, self.browser, self.options)
+            report_download = wms_report_download.download_sheet()
+            self.browser.quit()
+            file_name = report_download["file_name"]
+            return file_name
 
 
 # if __name__ ==  "__main__":

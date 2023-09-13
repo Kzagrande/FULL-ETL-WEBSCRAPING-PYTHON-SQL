@@ -57,5 +57,5 @@ class TransformPacking:
 
         except Exception as exception:
             raise ErrorLog(
-                str(exception), func=" __filter_and_transform_data - Packing"
+                str(exception), func=" __filter_and_transform_data - Packing",error_code=15
             ) from exception

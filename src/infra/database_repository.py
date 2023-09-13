@@ -16,7 +16,7 @@ class DatabaseRepository(DatabaseRepositoryInterface):
             cursor.executemany(self.query, list(data))
             DatabaseConnection.connection.commit()
         except Exception as exception:
-            raise ErrorLog(str(exception), func="insert_data()") from exception
+            raise ErrorLog(str(exception), func="insert_data()",error_code=13) from exception
 
     def truncate_tables(self) -> None:
         try:
@@ -37,7 +37,7 @@ class DatabaseRepository(DatabaseRepositoryInterface):
                 print(f"A tabela {table} foi truncada.")
             DatabaseConnection.connection.commit()
         except Exception as exception:
-            raise ErrorLog(str(exception), func="truncate_tables()") from exception
+            raise ErrorLog(str(exception), func="truncate_tables()",error_code=10) from exception
 
     def run_procedure(self) -> None:
         try:
@@ -45,7 +45,7 @@ class DatabaseRepository(DatabaseRepositoryInterface):
             cursor.execute(self.query)
             DatabaseConnection.connection.commit()
         except Exception as exception:
-            raise ErrorLog(str(exception), func="run_procedure") from exception
+            raise ErrorLog(str(exception), func="run_procedure",error_code=11) from exception
 
     def insert_in_table_control(self, sector_infos: Dict) -> None:
         try:
@@ -55,5 +55,5 @@ class DatabaseRepository(DatabaseRepositoryInterface):
         except Exception as exception:
             print(exception)
             raise ErrorLog(
-                str(exception), func="insert_in_table_control"
+                str(exception), func="insert_in_table_control",error_code=12
             ) from exception

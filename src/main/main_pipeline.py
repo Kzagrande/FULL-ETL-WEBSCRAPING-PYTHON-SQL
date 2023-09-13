@@ -48,26 +48,36 @@ class MainPipeline:
             "Packing": self.packing,
         }
 
+        DatabaseConnection.connect()
         cursor = DatabaseConnection.connection.cursor()
         current_time = datetime.now()
         query = "SELECT id,sector,extraction_hour FROM ware_ods_shein.rpa_control WHERE extraction_hour <= %s AND status = False"
         cursor.execute(query, (current_time,))
         pending_automations = cursor.fetchall()
-        print(pending_automations)
 
         for id, sector_name, extaction_hour in pending_automations:
             try:
+                print(id)
+                print(pending_automations)
+                DatabaseConnection.connect()
+                cursor = DatabaseConnection.connection.cursor()
+                truncate_sectors = LoadData(DatabaseRepository(query=truncate_query))
+                truncate_sectors.truncate()
                 # print(id)
                 # print(sector_name)
                 # print(extaction_hour)
                 sector = sectors[sector_name]
                 sector(extaction_hour)
+                self.hc()
+                self.backlog()
+                self.procedures()
                 update_query = f"UPDATE ware_ods_shein.rpa_control SET status = True WHERE id = {id}"
                 cursor.execute(update_query)
-                print(
-                    f"A extração do {sector_name} referente ás {extaction_hour} foi executada com sucesso"
-                )
                 DatabaseConnection.connection.commit()
+                DatabaseConnection.connection.close()
+                print(
+                    f"A extração do {sector_name} referente ás {extaction_hour} foi executada com sucesso e id {id}"
+                )
 
             except Exception as exception:
                 if exception.error_code == 1:
@@ -78,9 +88,12 @@ class MainPipeline:
                     )
                     DatabaseConnection.connection.commit()
                 else:
-                    raise ErrorLog(
-                        str(exception), func=f"get_pending_automations ERROR"
-                    ) from exception
+                    ErrorLog(
+                        message="Erro no pipeline",
+                        func=f"get_pending_automations ERROR",
+                        error_code=exception.error_code,
+                    )
+
 
     def sorting_in(self, pending=None):
         try:
@@ -181,8 +194,11 @@ class MainPipeline:
             )
             load_backlog.load(transform_backlog_in_contract)
         except Exception as exception:
-            self.automation_control(status=False, sector="Backlog")
-            ErrorLog(str(exception), func="Pipeline - Backlog")
+            raise ErrorLog(
+                str(exception),
+                func="Pipeline - Backlog",
+                error_code=exception.error_code,
+            )
 
     def hc(self):
         try:
@@ -193,7 +209,11 @@ class MainPipeline:
             transform_hc_in_contract = transform_hc.transform(extract_hc_in_contract)
             load_hc.load(transform_hc_in_contract)
         except Exception as exception:
-            ErrorLog(str(exception), func="Pipeline - HC")
+            raise ErrorLog(
+                str(exception),
+                func="Pipeline - Hc",
+                error_code=exception.error_code,
+            )
 
     def procedures(self):
         try:
@@ -203,15 +223,4 @@ class MainPipeline:
             ErrorLog(str(exception), func="Pipeline - Procedures")
 
     def run_pipeline(self) -> None:
-        DatabaseConnection.connect()
-        truncate_sectors = LoadData(DatabaseRepository(query=truncate_query))
-        truncate_sectors.truncate()
         self.get_pending_automations()
-        # self.sorting_in()
-        # self.putaway()
-        # self.picking()
-        # self.sorting_out()
-        # self.packing()
-        self.backlog()
-        self.hc()
-        self.procedures()

@@ -65,5 +65,5 @@ class TransformPicking:
 
         except Exception as exception:
             raise ErrorLog(
-                str(exception), func=" __filter_and_transform_data - Picking"
+                str(exception), func=" __filter_and_transform_data - Picking",error_code=16
             ) from exception

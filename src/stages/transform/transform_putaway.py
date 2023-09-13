@@ -48,5 +48,5 @@ class TransformPutaway:
 
         except Exception as exception:
             raise ErrorLog(
-                str(exception), func=" __filter_and_transform_data - Putaway"
+                str(exception), func=" __filter_and_transform_data - Putaway",error_code=17
             ) from exception

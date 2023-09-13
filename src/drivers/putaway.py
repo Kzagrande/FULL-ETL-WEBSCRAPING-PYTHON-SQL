@@ -29,6 +29,7 @@ class Putaway(WebDriverWorkflowInterface):
         return self.wait.until(EC.presence_of_element_located((by, value)))
 
     def navigate_to_wms(self):
+     try:
         putaway_url = (
             "https://wms-la.biz.sheinbackend.com/#/inbound-mgt/shelf-detail-management"
         )
@@ -106,6 +107,12 @@ class Putaway(WebDriverWorkflowInterface):
         )
         btn_extract.click()
         time.sleep(1)
+     except:
+            raise ErrorLog(
+                message="Navigate_to_wms Putaway - ERROR",
+                func="Navigate_to_wms",
+                error_code=0,
+            ) 
 
     def web_drive_workflow(self) -> None:
         wms_config = WmsConfig(self.wait, self.browser, self.options)

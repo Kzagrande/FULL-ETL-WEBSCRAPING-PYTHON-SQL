@@ -44,7 +44,7 @@ class GoogleSheetGetter(GoogleSheetGetterInterface):
             else:
                 print("No data found.")
         except Exception as exception:
-            raise ErrorLog(str(exception), func="get_sheet()") from exception
+            raise ErrorLog(str(exception), func="get_sheet()",error_code=7) from exception
 
         finally:
             return excel_file
