@@ -35,9 +35,13 @@ class TransformPacking:
             data_content["sector"] = "packing_"
 
             data_content["current_date_"] = datetime.now().strftime("%Y-%m-%d")
-            hours = datetime.now()
-            hours = hours.replace(minute=0, second=0, microsecond=0)
-            data_content["extraction_hour"] = hours
+            
+            hours = data_content['Operating time'][1]
+            hours_date_type = datetime.strptime(hours, "%Y-%m-%d %H:%M:%S")
+            print(type(hours_date_type))
+            print(hours_date_type)
+            hours_date_type = hours_date_type.replace(minute=0, second=0, microsecond=0).replace(minute=0, second=0, microsecond=0)
+            data_content["extraction_hour"] = hours_date_type
 
             transformed_values = []
             for warehouse in data_content["Workstation"]:

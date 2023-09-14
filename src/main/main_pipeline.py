@@ -69,7 +69,6 @@ class MainPipeline:
                 sector = sectors[sector_name]
                 sector(extaction_hour)
                 self.hc()
-                self.backlog()
                 self.procedures()
                 update_query = f"UPDATE ware_ods_shein.rpa_control SET status = True WHERE id = {id}"
                 cursor.execute(update_query)
@@ -93,6 +92,7 @@ class MainPipeline:
                         func=f"get_pending_automations ERROR",
                         error_code=exception.error_code,
                     )
+        # self.backlog()
 
 
     def sorting_in(self, pending=None):
