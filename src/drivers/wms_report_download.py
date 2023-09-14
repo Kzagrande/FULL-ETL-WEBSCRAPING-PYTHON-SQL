@@ -33,7 +33,7 @@ class WmsReportDownload:
                 '//*[@id="app"]/section/section/main/div/div/div/div/div/div/form/div[5]/div//button',
             )
             btn_extract_search.click()
-            time.sleep(40)
+            time.sleep(20)
 
             btn_extract_search = self.wait_for_element(
                 By.XPATH,
@@ -46,6 +46,7 @@ class WmsReportDownload:
                 By.XPATH,
                 '//*[@id="app"]/section/section/main/div/div/div/section/div/div[1]/div[2]/div[2]/div/table/tbody/tr[td[contains(text(), "SPglp2WH013")]][1]/td[2]/a',
             )
+            time.sleep(1)
             my_file.click()
             # actions = ActionChains(self.browser)
             # actions.context_click(my_file).perform()
