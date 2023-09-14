@@ -36,7 +36,7 @@ class WmsReportDownload:
             time.sleep(20)
 
             btn_extract_search = self.wait_for_element(
-                By.XPATH,
+                By.XPATH,  
                 '//*[@id="app"]/section/section/main/div/div/div/div/div/div/form/div[5]/div//button',
             )
             btn_extract_search.click()
@@ -49,7 +49,7 @@ class WmsReportDownload:
             time.sleep(1)
             my_file.click()
             # actions = ActionChains(self.browser)
-            # actions.context_click(my_file).perform()
+            # actions.context_click(my_file).perform() 
             time.sleep(1)
 
             # Pasta de downloads (substitua pelo caminho correto)
