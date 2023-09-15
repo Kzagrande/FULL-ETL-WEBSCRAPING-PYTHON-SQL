@@ -10,6 +10,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from typing import Dict
 import os
 from src.errors.error_log import ErrorLog
+from selenium.common.exceptions import TimeoutException
 
 class WmsReportDownload:
     def __init__(self, wait, browser, options):
@@ -18,8 +19,16 @@ class WmsReportDownload:
         self.options = options
         # self.sector = sector
 
-    def wait_for_element(self, by, value):
-        return self.wait.until(EC.presence_of_element_located((by, value)))
+    def wait_for_element(self, by, value, max_retries=5):
+        retries = 0
+        while retries < max_retries:
+            try:
+                return self.wait.until(EC.presence_of_element_located((by, value)))
+            except TimeoutException:
+                print(f"Timeout waiting for element. Retry {retries + 1}/{max_retries}")
+                retries += 1
+        raise Exception("Element not found even after retries")
+
 
     def download_sheet(self) -> Dict:
         try:
@@ -47,14 +56,11 @@ class WmsReportDownload:
                 '//*[@id="app"]/section/section/main/div/div/div/section/div/div[1]/div[2]/div[2]/div/table/tbody/tr[td[contains(text(), "SPglp2WH013")]][1]/td[2]/a',
             )
             my_file.click()
-            # actions = ActionChains(self.browser)
-            # actions.context_click(my_file).perform()
+
             time.sleep(1)
 
-            # Pasta de downloads (substitua pelo caminho correto)
             downloads_folder = "C:\\Users\\User\\Downloads"
 
-            # Lista todos os arquivos na pasta de downloads
             downloads = os.listdir(downloads_folder)
 
             # Filtra apenas arquivos (exclui pastas)
