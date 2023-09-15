@@ -10,7 +10,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from typing import Dict
 import os
 from src.errors.error_log import ErrorLog
-
+from selenium.common.exceptions import TimeoutException
 
 class WmsReportDownload:
     def __init__(self, wait, browser, options):
@@ -19,43 +19,48 @@ class WmsReportDownload:
         self.options = options
         # self.sector = sector
 
-    def wait_for_element(self, by, value):
-        return self.wait.until(EC.presence_of_element_located((by, value)))
+    def wait_for_element(self, by, value, max_retries=5):
+        retries = 0
+        while retries < max_retries:
+            try:
+                return self.wait.until(EC.presence_of_element_located((by, value)))
+            except TimeoutException:
+                print(f"Timeout waiting for element. Retry {retries + 1}/{max_retries}")
+                retries += 1
+        raise Exception("Element not found even after retries")
+
 
     def download_sheet(self) -> Dict:
         try:
             extract_url = "https://wms-la.biz.sheinbackend.com/#/management/import-export-mgt/download"
             self.browser.get(extract_url)
-            time.sleep(3)
+            time.sleep(1)
             self.browser.switch_to.window(self.browser.window_handles[0])
             btn_extract_search = self.wait_for_element(
                 By.XPATH,
                 '//*[@id="app"]/section/section/main/div/div/div/div/div/div/form/div[5]/div//button',
             )
             btn_extract_search.click()
-            time.sleep(20)
+            time.sleep(30)
 
+            time.sleep(3)
             btn_extract_search = self.wait_for_element(
-                By.XPATH,  
+                By.XPATH,
                 '//*[@id="app"]/section/section/main/div/div/div/div/div/div/form/div[5]/div//button',
             )
             btn_extract_search.click()
-            time.sleep(1)
+            time.sleep(3)
 
             my_file = self.wait_for_element(
                 By.XPATH,
                 '//*[@id="app"]/section/section/main/div/div/div/section/div/div[1]/div[2]/div[2]/div/table/tbody/tr[td[contains(text(), "SPglp2WH013")]][1]/td[2]/a',
             )
-            time.sleep(1)
             my_file.click()
-            # actions = ActionChains(self.browser)
-            # actions.context_click(my_file).perform() 
+
             time.sleep(1)
 
-            # Pasta de downloads (substitua pelo caminho correto)
             downloads_folder = "C:\\Users\\User\\Downloads"
 
-            # Lista todos os arquivos na pasta de downloads
             downloads = os.listdir(downloads_folder)
 
             # Filtra apenas arquivos (exclui pastas)
@@ -79,10 +84,9 @@ class WmsReportDownload:
                 file_name = os.path.basename(complete_path)
 
                 print("Nome do último arquivo baixado:", file_name)
+                return {"file_name": file_name, "download_time": datetime.now()}
             else:
                 print("Nenhum arquivo encontrado na pasta de downloads.")
         except Exception as exception:
+            self.browser.quit()
             raise ErrorLog(str(exception), func="download_sheet()",error_code=9) from exception
-
-        finally:
-            return {"file_name": file_name, "download_time": datetime.now()}
