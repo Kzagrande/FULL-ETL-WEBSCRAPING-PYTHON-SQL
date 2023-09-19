@@ -41,3 +41,7 @@ class GoogleSheetAuth(GoogleSheetAuthInterface):
 
     def get_service(self) -> Resource:
         return self.service
+
+# if __name__ ==  "__main__":
+#     auth = GoogleSheetAuth()
+#     auth.get_service()

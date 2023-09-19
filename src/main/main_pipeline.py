@@ -79,6 +79,7 @@ class MainPipeline:
                 )
 
             except Exception as exception:
+                print(exception.error_code)
                 if exception.error_code == 1:
                     update_query = f"UPDATE ware_ods_shein.rpa_control SET status = True WHERE id = {id}"
                     cursor.execute(update_query)

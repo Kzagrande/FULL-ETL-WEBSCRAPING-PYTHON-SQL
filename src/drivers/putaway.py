@@ -90,6 +90,7 @@ class Putaway(WebDriverWorkflowInterface):
                 '//*[@id="app"]/section/section/main/div/div/div/section[2]/div/div[1]/div[2]/iframe',
             )
         except:
+            self.browser.quit()
             raise ErrorLog(
                 message="Sem dados para este horário",
                 func="Navigate_to_wms",
@@ -107,11 +108,11 @@ class Putaway(WebDriverWorkflowInterface):
         )
         btn_extract.click()
         time.sleep(1)
-     except:
+     except Exception as exception:
             raise ErrorLog(
                 message="Navigate_to_wms Putaway - ERROR",
                 func="Navigate_to_wms",
-                error_code=0,
+                error_code=exception.error_code,
             ) 
 
     def web_drive_workflow(self) -> None:
