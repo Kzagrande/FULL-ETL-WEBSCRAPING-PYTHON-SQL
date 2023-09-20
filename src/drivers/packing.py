@@ -16,10 +16,12 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from src.drivers.interfaces.web_driver_workflow import WebDriverWorkflowInterface
 from src.errors.error_log import ErrorLog
+from src.drivers.wms_config_B import WmsConfigB
 
 
 class Packing(WebDriverWorkflowInterface):
-    def __init__(self, pending_automation=None):
+    def __init__(self, pending_automation=None, nave=None):
+        self.nave = nave
         self.pending_automation = pending_automation
         self.options = webdriver.ChromeOptions()
         self.options.add_argument("--start-maximized")  # Maximizes the window
@@ -113,13 +115,21 @@ class Packing(WebDriverWorkflowInterface):
             )
 
     def web_drive_workflow(self) -> None:
-        wms_config = WmsConfig(self.wait, self.browser, self.options)
-        wms_config.run_wms_config()
+        if self.nave == "D":
+            wms_config = WmsConfig(self.wait, self.browser, self.options)
+            wms_config.run_wms_config()
+        else:
+            wms_config = WmsConfigB(self.wait, self.browser, self.options)
+            wms_config.run_wms_config()
+
         self.navigate_to_wms()
-        wms_report_download = WmsReportDownload(self.wait, self.browser, self.options)
+        wms_report_download = WmsReportDownload(
+            self.wait, self.browser, self.options, self.nave
+        )
         report_download = wms_report_download.download_sheet()
         self.browser.quit()
         file_name = report_download["file_name"]
+        print(file_name)
         return file_name
 
 

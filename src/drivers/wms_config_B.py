@@ -9,7 +9,7 @@ sys.path.insert(0, project_root)
 from src.errors.error_log import ErrorLog
 
 
-class WmsConfig:
+class WmsConfigB:
     def __init__(self, wait, browser, options):
         self.wait = wait
         self.browser = browser
@@ -27,17 +27,17 @@ class WmsConfig:
                 By.CSS_SELECTOR, 'input[name="name"]'
             )
             username_input.clear()
-            username_input.send_keys("SPglp2WH013")
+            username_input.send_keys("SPglp103")
 
             password_input = self.wait_for_element(
                 By.CSS_SELECTOR, 'input[name="password"]'
             )
             password_input.clear()
-            password_input.send_keys("onepiece1998Yan#")
+            password_input.send_keys("Ceva@1003")
             password_input.submit()
         except Exception as exception:
             raise ErrorLog(str(exception), func="login()",error_code=5) from exception
-
+        
     def navigate_to_wms(self):
         div_wmsAncor = self.wait_for_element(
             By.CSS_SELECTOR,

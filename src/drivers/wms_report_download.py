@@ -13,10 +13,11 @@ from src.errors.error_log import ErrorLog
 from selenium.common.exceptions import TimeoutException
 
 class WmsReportDownload:
-    def __init__(self, wait, browser, options):
+    def __init__(self, wait, browser, options,nave):
         self.wait = wait
         self.browser = browser
         self.options = options
+        self.nave = nave
         # self.sector = sector
 
     def wait_for_element(self, by, value, max_retries=5):
@@ -51,9 +52,16 @@ class WmsReportDownload:
             btn_extract_search.click()
             time.sleep(3)
 
-            my_file = self.wait_for_element(
+            if self.nave == 'D':
+                my_file = self.wait_for_element(
+                    By.XPATH,
+                    '//*[@id="app"]/section/section/main/div/div/div/section/div/div[1]/div[2]/div[2]/div/table/tbody/tr[td[contains(text(), "SPglp2WH013")]][1]/td[2]/a',
+                )
+                my_file.click()
+            else:
+                my_file = self.wait_for_element(
                 By.XPATH,
-                '//*[@id="app"]/section/section/main/div/div/div/section/div/div[1]/div[2]/div[2]/div/table/tbody/tr[td[contains(text(), "SPglp2WH013")]][1]/td[2]/a',
+                '//*[@id="app"]/section/section/main/div/div/div/section/div/div[1]/div[2]/div[2]/div/table/tbody/tr[td[contains(text(), "SPglp103")]][1]/td[2]/a',
             )
             my_file.click()
 
