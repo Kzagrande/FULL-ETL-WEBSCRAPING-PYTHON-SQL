@@ -29,7 +29,7 @@ class Packing(WebDriverWorkflowInterface):
         self.wait = WebDriverWait(self.browser, 10)  # 10 seconds timeout
 
     def wait_for_element(self, by, value):
-        return self.wait.until(EC.presence_of_element_located((by, value)))
+        return self.wait.until(EC.presence_of_element_located((by, value)))  
 
     def navigate_to_wms(self):
         try:
