@@ -15,10 +15,12 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from src.drivers.interfaces.web_driver_workflow import WebDriverWorkflowInterface
 from src.errors.error_log import ErrorLog
+from src.drivers.wms_config_B import WmsConfigB
 
 
 class Putaway(WebDriverWorkflowInterface):
-    def __init__(self, pending_automation=None):
+    def __init__(self, pending_automation=None, nave=None):
+        self.nave = nave
         self.pending_automation = pending_automation
         self.options = webdriver.ChromeOptions()
         self.options.add_argument("--start-maximized")  # Maximizes the window
@@ -29,99 +31,106 @@ class Putaway(WebDriverWorkflowInterface):
         return self.wait.until(EC.presence_of_element_located((by, value)))
 
     def navigate_to_wms(self):
-     try:
-        putaway_url = (
-            "https://wms-la.biz.sheinbackend.com/#/inbound-mgt/shelf-detail-management"
-        )
-        self.browser.get(putaway_url)
-        time.sleep(5)
-
-        select_time = self.wait_for_element(
-            By.XPATH,
-            '//*[@id="app"]/section/section/main/div/div/div/div/div/div/form/div[6]/div/div[2]/label/div',
-        )
-        select_time.click()
-        time.sleep(1)
-
-        click_calendar = self.wait_for_element(
-            By.XPATH,
-            '//*[@id="app"]/section/section/main/div/div/div/div/div/div/form/div[6]/div/div[2]/label/div/div[2]/div/div/div/div/div[3]/div[25]',
-        )
-        click_calendar.click()
-        actions = ActionChains(self.browser)
-        actions.double_click(click_calendar).perform()
-
-        first_time = self.wait_for_element(
-            By.XPATH,
-            '//*[@id="app"]/section/section/main/div/div/div/div/div/div/form/div[6]/div/div[2]/label/div/div/div/div[2]/span',
-        )
-        second_time = self.wait_for_element(
-            By.XPATH,
-            '//*[@id="app"]/section/section/main/div/div/div/div/div/div/form/div[6]/div/div[2]/label/div/div/div/div[2]/span[3]',
-        )
-        first_time.click()
-
-        print(self.pending_automation)
-        hours = get_current_and_last_hour(self.pending_automation)
-
-        self.browser.execute_script(
-            f"arguments[0].textContent = '{hours['last_hour']}'", first_time
-        )
-        time.sleep(2)
-
-        self.browser.execute_script(
-            f"arguments[0].textContent = '{hours['last_second']}'", second_time
-        )
-        time.sleep(2)
-
-        second_time.send_keys(Keys.ENTER)
-        time.sleep(1)
-
-        btn_search = self.wait_for_element(
-            By.XPATH,
-            '//*[@id="app"]/section/section/main/div/div/div/div/div/div/form/div[7]/div/button',
-        )
-        btn_search.click()
-        time.sleep(1)
-
         try:
-            data_content = self.wait_for_element(
+            putaway_url = "https://wms-la.biz.sheinbackend.com/#/inbound-mgt/shelf-detail-management"
+            self.browser.get(putaway_url)
+            time.sleep(5)
+
+            select_time = self.wait_for_element(
                 By.XPATH,
-                '//*[@id="app"]/section/section/main/div/div/div/section[2]/div/div[1]/div[2]/iframe',
+                '//*[@id="app"]/section/section/main/div/div/div/div/div/div/form/div[6]/div/div[2]/label/div',
             )
-        except:
-            raise ErrorLog(
-                message="Sem dados para este horário",
-                func="Navigate_to_wms",
-                error_code=1,
+            select_time.click()
+            time.sleep(1)
+
+            click_calendar = self.wait_for_element(
+                By.XPATH,
+                '//*[@id="app"]/section/section/main/div/div/div/div/div/div/form/div[6]/div/div[2]/label/div/div[2]/div/div/div/div/div[3]/div[25]',
             )
+            click_calendar.click()
+            actions = ActionChains(self.browser)
+            actions.double_click(click_calendar).perform()
 
-        # valid_user = self.wait_for_element(
-        #     By.XPATH,
-        #     '//*[@id="app"]/section/section/main/div/div/div/section[2]/div/div[1]/div[2]/div[2]/div/table/tbody/tr[1]',
-        # )
+            first_time = self.wait_for_element(
+                By.XPATH,
+                '//*[@id="app"]/section/section/main/div/div/div/div/div/div/form/div[6]/div/div[2]/label/div/div/div/div[2]/span',
+            )
+            second_time = self.wait_for_element(
+                By.XPATH,
+                '//*[@id="app"]/section/section/main/div/div/div/div/div/div/form/div[6]/div/div[2]/label/div/div/div/div[2]/span[3]',
+            )
+            first_time.click()
 
-        btn_extract = self.wait_for_element(
-            By.XPATH,
-            '//*[@id="app"]/section/section/main/div/div/div/section[1]/button',
-        )
-        btn_extract.click()
-        time.sleep(1)
-     except:
+            print(self.pending_automation)
+            hours = get_current_and_last_hour(self.pending_automation)
+
+            self.browser.execute_script(
+                f"arguments[0].textContent = '{hours['last_hour']}'", first_time
+            )
+            time.sleep(2)
+
+            self.browser.execute_script(
+                f"arguments[0].textContent = '{hours['last_second']}'", second_time
+            )
+            time.sleep(2)
+
+            second_time.send_keys(Keys.ENTER)
+            time.sleep(1)
+
+            btn_search = self.wait_for_element(
+                By.XPATH,
+                '//*[@id="app"]/section/section/main/div/div/div/div/div/div/form/div[7]/div/button',
+            )
+            btn_search.click()
+            time.sleep(1)
+
+            try:
+                data_content = self.wait_for_element(
+                    By.XPATH,
+                    '//*[@id="app"]/section/section/main/div/div/div/section[2]/div/div[1]/div[2]/iframe',
+                )
+            except:
+                self.browser.quit()
+                raise ErrorLog(
+                    message="Sem dados para este horário",
+                    func="Navigate_to_wms",
+                    error_code=1,
+                )
+
+            # valid_user = self.wait_for_element(
+            #     By.XPATH,
+            #     '//*[@id="app"]/section/section/main/div/div/div/section[2]/div/div[1]/div[2]/div[2]/div/table/tbody/tr[1]',
+            # )
+
+            btn_extract = self.wait_for_element(
+                By.XPATH,
+                '//*[@id="app"]/section/section/main/div/div/div/section[1]/button',
+            )
+            btn_extract.click()
+            time.sleep(1)
+        except Exception as exception:
             raise ErrorLog(
                 message="Navigate_to_wms Putaway - ERROR",
                 func="Navigate_to_wms",
-                error_code=0,
-            ) 
+                error_code=exception.error_code,
+            )
 
     def web_drive_workflow(self) -> None:
-        wms_config = WmsConfig(self.wait, self.browser, self.options)
-        wms_config.run_wms_config()
+        if self.nave == "D":
+            wms_config = WmsConfig(self.wait, self.browser, self.options)
+            wms_config.run_wms_config()
+        else:
+            wms_config = WmsConfigB(self.wait, self.browser, self.options)
+            wms_config.run_wms_config()
+
         self.navigate_to_wms()
-        wms_report_download = WmsReportDownload(self.wait, self.browser, self.options)
+        wms_report_download = WmsReportDownload(
+            self.wait, self.browser, self.options, self.nave
+        )
         report_download = wms_report_download.download_sheet()
         self.browser.quit()
         file_name = report_download["file_name"]
+        print(file_name)
         return file_name
 
 

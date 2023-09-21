@@ -37,9 +37,12 @@ class TransformSorting:
             data_content["sector"] = "sorting_in"
             
             data_content["current_date_"] = datetime.now().strftime("%Y-%m-%d")
-            hours = datetime.now()
-            hours = hours.replace(minute=0, second=0, microsecond=0)
-            data_content["extraction_hour"] = hours
+            hours = data_content['Operating time'][1]
+            hours_date_type = datetime.strptime(hours, "%Y-%m-%d %H:%M:%S")
+            print(type(hours_date_type))
+            print(hours_date_type)
+            hours_date_type = hours_date_type.replace(minute=0, second=0, microsecond=0).replace(minute=0, second=0, microsecond=0)
+            data_content["extraction_hour"] = hours_date_type
 
             print(data_content)
             excel_file = "output.xlsx"
