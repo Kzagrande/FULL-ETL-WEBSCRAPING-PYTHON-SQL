@@ -51,11 +51,11 @@ class MainPipeline:
         DatabaseConnection.connect()
         cursor = DatabaseConnection.connection.cursor()
         current_time = datetime.now()
-        query = "SELECT id,sector,extraction_hour FROM ware_ods_shein.rpa_control WHERE extraction_hour <= %s AND status = False"
+        query = "SELECT id,sector,extraction_hour,nave FROM ware_ods_shein.rpa_control_naves WHERE extraction_hour <= %s AND status = False"
         cursor.execute(query, (current_time,))
         pending_automations = cursor.fetchall()
 
-        for id, sector_name, extaction_hour in pending_automations:
+        for id, sector_name, extaction_hour,nave in pending_automations:
             try:
                 print(id)
                 print(pending_automations)
@@ -67,10 +67,10 @@ class MainPipeline:
                 # print(sector_name)
                 # print(extaction_hour)
                 sector = sectors[sector_name]
-                sector(extaction_hour)
+                sector(extaction_hour,nave)
                 self.hc()
                 self.procedures()
-                update_query = f"UPDATE ware_ods_shein.rpa_control SET status = True WHERE id = {id}"
+                update_query = f"UPDATE ware_ods_shein.rpa_control_naves SET status = True WHERE id = {id}"
                 cursor.execute(update_query)
                 DatabaseConnection.connection.commit()
                 DatabaseConnection.connection.close()
@@ -81,7 +81,7 @@ class MainPipeline:
             except Exception as exception:
                 print(exception.error_code)
                 if exception.error_code == 1:
-                    update_query = f"UPDATE ware_ods_shein.rpa_control SET status = True WHERE id = {id}"
+                    update_query = f"UPDATE ware_ods_shein.rpa_control_naves SET status = True WHERE id = {id}"
                     cursor.execute(update_query)
                     print(
                         f"A extração do {sector_name} referente ás {extaction_hour} foi executada com sucesso"
@@ -96,10 +96,11 @@ class MainPipeline:
         # self.backlog()
 
 
-    def sorting_in(self, pending=None):
+    def sorting_in(self, pending=None,nave = None):
         try:
+            print(nave)
             print(pending)
-            extract_sorting = Extract(SortingIn(pending), WmsReportUpload())
+            extract_sorting = Extract(SortingIn(pending,nave), WmsReportUpload())
             transform_sorting = TransformSorting()
             load_sorting = LoadData(DatabaseRepository(query=sorting_in_query))
             extract_sorting_in_contract = extract_sorting.extract()
@@ -114,10 +115,10 @@ class MainPipeline:
                 error_code=exception.error_code,
             )
 
-    def putaway(self, pending=None):
+    def putaway(self, pending=None,nave = None):
         try:
             print(pending)
-            extract_putaway = Extract(Putaway(pending), WmsReportUpload())
+            extract_putaway = Extract(Putaway(pending,nave), WmsReportUpload())
             transform_putaway = TransformPutaway()
             load_putaway = LoadData(DatabaseRepository(query=putaway_query))
             extract_putaway_in_contract = extract_putaway.extract()
@@ -132,10 +133,10 @@ class MainPipeline:
                 error_code=exception.error_code,
             )
 
-    def picking(self, pending=None):
+    def picking(self, pending=None,nave = None):
         try:
             print(pending)
-            extract_picking = Extract(Picking(pending), WmsReportUpload())
+            extract_picking = Extract(Picking(pending,nave), WmsReportUpload())
             transform_picking = TransformPicking()
             load_picking = LoadData(DatabaseRepository(query=picking_query))
             extract_picking_in_contract = extract_picking.extract()
@@ -150,9 +151,9 @@ class MainPipeline:
                 error_code=exception.error_code,
             )
 
-    def sorting_out(self, pending=None):
+    def sorting_out(self, pending=None,nave = None):
         try:
-            extract_sorting_out = Extract(SortingOut(pending), WmsReportUpload())
+            extract_sorting_out = Extract(SortingOut(pending,nave), WmsReportUpload())
             transform_sorting_out = TransformSortingOut()
             load_sorting_out = LoadData(DatabaseRepository(query=sorting_out_query))
             extract_sorting_out_in_contract = extract_sorting_out.extract()
@@ -167,9 +168,9 @@ class MainPipeline:
                 error_code=exception.error_code,
             )
 
-    def packing(self, pending=None):
+    def packing(self, pending=None,nave = None):
         try:
-            extract_paking = Extract(Packing(pending), WmsReportUpload())
+            extract_paking = Extract(Packing(pending,nave), WmsReportUpload())
             transform_packing = TransformPacking()
             load_packing = LoadData(DatabaseRepository(query=packing_query))
             extract_paking_in_contract = extract_paking.extract()
@@ -184,22 +185,22 @@ class MainPipeline:
                 error_code=exception.error_code,
             )
 
-    def backlog(self, pending=None):
-        try:
-            extract_backlog = ExtractBacklog(WmsBacklog())
-            transform_backlog = TransformBacklog()
-            load_backlog = LoadData(DatabaseRepository(query=backlog_query))
-            extract_backlog_in_contract = extract_backlog.extract()
-            transform_backlog_in_contract = transform_backlog.transform(
-                extract_backlog_in_contract
-            )
-            load_backlog.load(transform_backlog_in_contract)
-        except Exception as exception:
-            raise ErrorLog(
-                str(exception),
-                func="Pipeline - Backlog",
-                error_code=exception.error_code,
-            )
+    # def backlog(self, pending=None):
+    #     try:
+    #         extract_backlog = ExtractBacklog(WmsBacklog())
+    #         transform_backlog = TransformBacklog()
+    #         load_backlog = LoadData(DatabaseRepository(query=backlog_query))
+    #         extract_backlog_in_contract = extract_backlog.extract()
+    #         transform_backlog_in_contract = transform_backlog.transform(
+    #             extract_backlog_in_contract
+    #         )
+    #         load_backlog.load(transform_backlog_in_contract)
+    #     except Exception as exception:
+    #         raise ErrorLog(
+    #             str(exception),
+    #             func="Pipeline - Backlog",
+    #             error_code=exception.error_code,
+    #         )
 
     def hc(self):
         try:

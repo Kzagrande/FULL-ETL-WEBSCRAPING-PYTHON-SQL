@@ -7,7 +7,7 @@ class WebDriverWorkflowInterface(ABC):
         pass
 
     @abstractmethod
-    def web_drive_workflow(self,pending_hour) -> None:
+    def web_drive_workflow(self,pending_hour,nave) -> None:
         pass
     
     
