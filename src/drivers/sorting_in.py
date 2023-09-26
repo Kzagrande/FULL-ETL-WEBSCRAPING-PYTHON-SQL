@@ -40,14 +40,14 @@ class SortingIn(WebDriverWorkflowInterface):
 
             select_time = self.wait_for_element(
                 By.XPATH,
-                '//*[@id="app"]/div/div[1]/div/div/div[2]/section[3]/section/div[1]/div/div/div/div/div/form/div[6]/div[1]/div[2]/label/div',
+                '/html/body/div[2]/div/div[1]/div/div/div[2]/section[3]/section/div[1]/div/div/div/div/div/form/div[7]/div/div[2]/div/label/div',
             )
             select_time.click()
             time.sleep(1)
 
             click_calendar = self.wait_for_element(
                 By.XPATH,
-                '/html/body/div[2]/div/div[1]/div/div/div[2]/section[3]/section/div[1]/div/div/div/div/div/form/div[7]/div/div[2]/div/label/div/div[2]/div/div/div[1]/div/div[3]/div[25]',
+                '/html/body/div[2]/div/div[1]/div/div/div[2]/section[3]/section/div[1]/div/div/div/div/div/form/div[7]/div/div[2]/div/label/div/div[2]/div/div[1]/div[1]/div/div[3]/div[25]',
             )
             click_calendar.click()
             actions = ActionChains(self.browser)
@@ -55,11 +55,11 @@ class SortingIn(WebDriverWorkflowInterface):
 
             first_time = self.wait_for_element(
                 By.XPATH,
-                '/html/body/div[2]/div/div[1]/div/div/div[2]/section[3]/section/div[1]/div/div/div/div/div/form/div[7]/div/div[2]/div/label/div/div/div/div/span',
+                '/html/body/div[2]/div/div[1]/div/div/div[2]/section[3]/section/div[1]/div/div/div/div/div/form/div[7]/div/div[2]/div/label/div/div[1]/div/div[2]/span[1]',
             )
             second_time = self.wait_for_element(
                 By.XPATH,
-                '/html/body/div[2]/div/div[1]/div/div/div[2]/section[3]/section/div[1]/div/div/div/div/div/form/div[7]/div/div[2]/div/label/div/div/div/div/span[3]',
+                '/html/body/div[2]/div/div[1]/div/div/div[2]/section[3]/section/div[1]/div/div/div/div/div/form/div[7]/div/div[2]/div/label/div/div[1]/div/div[2]/span[3]',
             )
             first_time.click()
 
@@ -81,7 +81,7 @@ class SortingIn(WebDriverWorkflowInterface):
 
             btn_search = self.wait_for_element(
                 By.XPATH,
-                '//*[@id="app"]/div/div[1]/div/div/div[2]/section[3]/section/div[1]/div/div/div/div/div/form/div[8]/div/button',
+                '/html/body/div[2]/div/div[1]/div/div/div[2]/section[3]/section/div[1]/div/div/div/div/div/form/div[8]/div/button[1]',
             )
             btn_search.click()
             time.sleep(1)

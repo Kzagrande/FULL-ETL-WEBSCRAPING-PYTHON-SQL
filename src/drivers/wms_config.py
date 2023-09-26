@@ -93,6 +93,7 @@ class WmsConfig:
             )
             
             dropdown_language.click()
+
         except Exception as exception:
             raise ErrorLog(str(exception), func="language",error_code=8) from exception
 
