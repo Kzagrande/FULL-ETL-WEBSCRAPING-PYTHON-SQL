@@ -47,7 +47,7 @@ class SortingIn(WebDriverWorkflowInterface):
 
             click_calendar = self.wait_for_element(
                 By.XPATH,
-                '/html/body/div[2]/div/div[1]/div/div/div[2]/section[3]/section/div[1]/div/div/div/div/div/form/div[7]/div/div[2]/div/label/div/div[2]/div/div/div/div/div[3]/div[25]',
+                '/html/body/div[2]/div/div[1]/div/div/div[2]/section[3]/section/div[1]/div/div/div/div/div/form/div[7]/div/div[2]/div/label/div/div[2]/div/div/div[1]/div/div[3]/div[25]',
             )
             click_calendar.click()
             actions = ActionChains(self.browser)
