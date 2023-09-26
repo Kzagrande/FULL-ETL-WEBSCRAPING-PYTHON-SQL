@@ -27,6 +27,7 @@ class TransformSorting:
                 "Shipping Mode",
                 "Recommended Storage Area",
                 "Recommended Aisle",
+                "RC Warehouse",
                 "Operator",
                 "Operating time",
             ]
