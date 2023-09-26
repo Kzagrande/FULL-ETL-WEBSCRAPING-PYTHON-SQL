@@ -53,19 +53,19 @@ class WmsConfigB:
             self.browser.switch_to.window(self.browser.window_handles[0])
             warerhouse_menu = self.wait_for_element(
                 By.XPATH,
-                '//*[@id="app"]/section/section/header/div/nav/div[2]/div[2]/div/div[1]/span/span',
+                '//*[@id="app"]/div/div[1]/div/div/div[1]/div[1]/div[2]/div[1]/div[2]/div/div[1]/a',
             )
             warerhouse_menu.click()
             time.sleep(2)
             warerhouse_select = self.wait_for_element(
                 By.XPATH,
-                '//*[@id="app"]/section/section/header/div/nav/div[2]/div[2]/div/div[2]/div/div[2]/div/a',
+                '//*[@id="app"]/div/div[1]/div/div/div[1]/div[1]/div[2]/div[1]/div[2]/div/div[2]/div/div[2]/div/a[2]',
             )
             warerhouse_select.click()
             time.sleep(2)
             btn_ok = self.wait_for_element(
                 By.XPATH,
-                "/html/body/div[6]/div/div/div[2]/button[2]",
+                "/html/body/div[8]/div/div/div[2]/button[2]",
             )
             time.sleep(2)
             btn_ok.click()
@@ -75,13 +75,24 @@ class WmsConfigB:
 
     def language(self):
         try:
+            el = self.wait_for_element(
+                By.XPATH,
+                '//*[@id="app"]/div/div[1]/div/div/div[1]/div[1]/div[2]/div[3]/button',
+            )
+            el.click()
+            
+            dl = self.wait_for_element(
+                By.XPATH,
+                '//*[@id="app"]/div/div[1]/div/div/div[1]/div[1]/div[2]/div[3]/div/div/a',
+            )
+            dl.click()
+            
             dropdown_language = self.wait_for_element(
                 By.XPATH,
-                '//*[@id="app"]/section/section/header/div/nav/div[2]/div[4]/div/div/a',
+                '//*[@id="app"]/div/div[1]/div/div/div[1]/div[1]/div[2]/div[3]/div/div/div//a[contains(text(), "English")]',
             )
+            
             dropdown_language.click()
-            dropdown_language.send_keys(Keys.DOWN)
-            dropdown_language.send_keys(Keys.ENTER)
         except Exception as exception:
             raise ErrorLog(str(exception), func="language",error_code=8) from exception
 
