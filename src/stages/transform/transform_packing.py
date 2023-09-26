@@ -36,7 +36,7 @@ class TransformPacking:
 
             data_content["current_date_"] = datetime.now().strftime("%Y-%m-%d")
             
-            hours = data_content['Operating time'][1]
+            hours = data_content['Operating time'][0]
             hours_date_type = datetime.strptime(hours, "%Y-%m-%d %H:%M:%S")
             print(type(hours_date_type))
             print(hours_date_type)
