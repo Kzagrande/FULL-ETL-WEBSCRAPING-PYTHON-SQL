@@ -5,6 +5,7 @@ sys.path.insert(0, project_root)
 from src.stages.extract.extract import Extract
 from src.stages.extract.extract import ExtractHc
 from src.stages.extract.extract import ExtractBacklog
+from src.stages.transform.transform_rc_managment import TransformRcManagement
 from src.stages.transform.transform_sorting_in import TransformSorting
 from src.stages.transform.transform_putaway import TransformPutaway
 from src.stages.transform.transform_picking import TransformPicking
@@ -14,6 +15,7 @@ from src.stages.transform.transform_hc import TransformHc
 from src.stages.transform.transform_backlog import TransformBacklog
 from src.stages.load.load_data import LoadData
 from src.drivers.wms_backlog import WmsBacklog
+from src.drivers.rc_management import RcManagement
 from src.drivers.sorting_in import SortingIn
 from src.drivers.putaway import Putaway
 from src.drivers.picking import Picking
@@ -93,7 +95,26 @@ class MainPipeline:
                         func=f"get_pending_automations ERROR",
                         error_code=exception.error_code,
                     )
-        # self.backlog()
+
+
+    def rc_management(self, pending=None,nave = None):
+        try:
+            print(nave)
+            print(pending)
+            extract_sorting = Extract(SortingIn(pending,nave), WmsReportUpload())
+            transform_sorting = TransformSorting()
+            load_sorting = LoadData(DatabaseRepository(query=sorting_in_query))
+            extract_sorting_in_contract = extract_sorting.extract()
+            transform_sorting_in_contract = transform_sorting.transform(
+                extract_sorting_in_contract
+            )
+            load_sorting.load(transform_sorting_in_contract)
+        except Exception as exception:
+            raise ErrorLog(
+                str(exception),
+                func="Pipeline - Sorting_in",
+                error_code=exception.error_code,
+            )
 
 
     def sorting_in(self, pending=None,nave = None):
