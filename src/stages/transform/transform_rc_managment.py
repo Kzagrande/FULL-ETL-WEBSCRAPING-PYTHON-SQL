@@ -36,7 +36,9 @@ class TransformRcManagement:
                 "Packer",
                 "Packing Station",
                 "Closing Time",
+                "Closer",
                 "Printing time",
+                "Printer",
                 "Shipping Time",
                 "Shipper",
                 "Pickup Time",
@@ -48,6 +50,7 @@ class TransformRcManagement:
                 "Shelved by",
                 "Transfer Status",
             ]
+
             
             data_content["Creation Time"].fillna(
                 datetime(1500, 1, 11, 11, 11, 11), inplace=True
@@ -70,6 +73,9 @@ class TransformRcManagement:
             data_content["Completion time"].fillna(
                 datetime(1500, 1, 11, 11, 11, 11), inplace=True
             )
+            data_content["Starting time of shelving"].fillna(
+                datetime(1500, 1, 11, 11, 11, 11), inplace=True
+            )
             
             data_content[columns_to_fill] = data_content[columns_to_fill].fillna("-")
             data_content["sector"] = "rc_management"
@@ -84,7 +90,11 @@ class TransformRcManagement:
             print(data_content)
             excel_file = "output.xlsx"
             data_content.to_excel(excel_file, index=False)
+            data_content.replace(["N/A", "Não Disponível"], pd.NA, inplace=True)
             data_content_list = data_content.values.tolist()
+            print(data_content_list)
+            
+
             return data_content_list
 
         except Exception as exception:

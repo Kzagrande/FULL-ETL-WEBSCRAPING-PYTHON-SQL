@@ -27,13 +27,13 @@ class WmsConfigB:
                 By.CSS_SELECTOR, 'input[name="name"]'
             )
             username_input.clear()
-            username_input.send_keys("SPglp103")
+            username_input.send_keys("SPglp010")
 
             password_input = self.wait_for_element(
                 By.CSS_SELECTOR, 'input[name="password"]'
             )
             password_input.clear()
-            password_input.send_keys("Ceva@1003")
+            password_input.send_keys("Pamela@010")
             password_input.submit()
         except Exception as exception:
             raise ErrorLog(str(exception), func="login()",error_code=5) from exception

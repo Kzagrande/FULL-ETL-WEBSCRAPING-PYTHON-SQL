@@ -1,11 +1,10 @@
 INSERT_RC_MANAGEMENT = """
     INSERT INTO rc_management
-        (rc_warehouse, sortation_center_code,destination_warehouse,destination_warehouse_code,destination_warehouse_area,transfer_box_number,
-        shelving_container_number,shipping_mode,same_park_or_not,forecast_status,number_of_sub-packages,creation_time,packer,packing_station,
-        closing_time,closer,printing_time,printer,shipping_time,shipper,pickup_time,pickup_person,signed_for,signed_by,starting_time_of_shelving,completion_time,shelved_by,transfer_status
+       (rc_warehouse, sortation_center_code, destination_warehouse, destination_warehouse_code, destination_warehouse_area, transfer_box_number, shelving_container_number, shipping_mode, same_park_or_not, forecast_status, number_of_sub_packages, creation_time, packer, packing_station, closing_time, closer, printing_time, printer, shipping_time, shipper, pickup_time, pickup_person, signed_for, signed_by, starting_time_of_shelving, completion_time, shelved_by, transfer_status, sector, current_date_, extraction_hour
 )
     VALUES
-        (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+        (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+
 
 """
 
