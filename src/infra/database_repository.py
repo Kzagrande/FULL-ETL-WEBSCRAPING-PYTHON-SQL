@@ -21,6 +21,7 @@ class DatabaseRepository(DatabaseRepositoryInterface):
     def truncate_tables(self) -> None:
         try:
             __tables = [
+                "rc_management",
                 "sorting_in",
                 "putaway",
                 "picking",
