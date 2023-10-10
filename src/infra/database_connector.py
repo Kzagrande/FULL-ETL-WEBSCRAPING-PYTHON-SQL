@@ -2,6 +2,9 @@ import pymysql
 import sshtunnel
 import logging
 from src.errors.error_log import ErrorLog
+from git import Repo
+
+
 
 
 class DatabaseConnection:
@@ -9,6 +12,12 @@ class DatabaseConnection:
 
     @classmethod
     def connect(cls):
+        
+        repo = Repo('.')
+        current_branch = repo.active_branch.name
+        
+        
+        # if current_branch == 'main':
         try:
             logging.basicConfig(
                 level=logging.DEBUG
@@ -38,3 +47,5 @@ class DatabaseConnection:
             cls.connection = db_connection
         except Exception as exception:
             raise ErrorLog(str(exception), func="connect()",error_code=9) from exception
+        # else:
+        #     cls.connection = pymysql.connect(host='127.0.0.1', user='root', password='onepiece1998Yan', db='ware_ods_shein')
