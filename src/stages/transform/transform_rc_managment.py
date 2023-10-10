@@ -11,15 +11,15 @@ from src.errors.error_log import ErrorLog
 
 
 class TransformRcManagement:
-    def transform(self, extract_sorting: ExtractContract) -> TransformContract:
-        transformed_data = self.__filter_and_transform_data(extract_sorting)
+    def transform(self, extract_rc: ExtractContract) -> TransformContract:
+        transformed_data = self.__filter_and_transform_data(extract_rc)
         transformed_data_contract = TransformContract(load_content=transformed_data)
         print("transformed data -->>", transformed_data_contract)
         return transformed_data_contract
 
-    def __filter_and_transform_data(self, extract_sorting: ExtractContract) -> List:
+    def __filter_and_transform_data(self, extract_rc: ExtractContract) -> List:
         try:
-            data_content = extract_sorting.raw_information_content
+            data_content = extract_rc.raw_information_content
             columns_to_fill = [
                 "RC Warehouse",
                 "分拣中心仓代码",

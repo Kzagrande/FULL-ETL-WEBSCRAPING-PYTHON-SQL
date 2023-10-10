@@ -20,7 +20,7 @@ from src.errors.error_log import ErrorLog
 from src.drivers.wms_config_B import WmsConfigB
 
 
-class RcManagement(WebDriverWorkflowInterface):
+class Consolidation(WebDriverWorkflowInterface):
     def __init__(self, pending_automation=None, nave=None):
         self.nave = nave
         self.pending_automation = pending_automation
@@ -34,34 +34,20 @@ class RcManagement(WebDriverWorkflowInterface):
 
     def navigate_to_wms(self):
         try:
-            rc_url = "https://wms-la.biz.sheinbackend.com/#/inbound-mgt/transport-shelf-management"
-            self.browser.get(rc_url)
+            consolidation_url = "https://wms-la.biz.sheinbackend.com/#/package-mgt/combine-suggest"
+            self.browser.get(consolidation_url)
             time.sleep(5)
-
-            select_status = self.wait_for_element(
-                By.XPATH,
-                '/html/body/div[2]/div/div[1]/div/div/div[2]/section[3]/section/div[1]/div/div/div/div/div/form/div[10]/div/div[2]/div/div',
-            )
-            select_status.click()
-            time.sleep(1)
-            
-            completion_time = self.wait_for_element(
-                By.XPATH,
-                '/html/body/div[2]/div/div[1]/div/div/div[2]/section[3]/section/div[1]/div/div/div/div/div/form/div[10]/div/div[2]/div/div/div[1]/div[2]/div/div[2]/div/a[6]',
-            )
-            
-            completion_time.click()
             
             select_time = self.wait_for_element(
                 By.XPATH,
-                '/html/body/div[2]/div/div[1]/div/div/div[2]/section[3]/section/div[1]/div/div/div/div/div/form/div[10]/div/div[2]/div/label/div',
+                '/html/body/div[2]/div/div[1]/div/div/div[2]/section[3]/section/div[1]/div/div/div/div/div/form/div[3]/div/div[2]/div/label/div',
             )
             
             select_time.click()
 
             click_calendar = self.wait_for_element(
                 By.XPATH,
-                '/html/body/div[2]/div/div[1]/div/div/div[2]/section[3]/section/div[1]/div/div/div/div/div/form/div[10]/div/div[2]/div/label/div/div[2]/div/div[1]/div[1]/div/div[3]/div[25]',
+                '/html/body/div[2]/div/div[1]/div/div/div[2]/section[3]/section/div[1]/div/div/div/div/div/form/div[3]/div/div[2]/div/label/div/div[2]/div/div[1]/div[1]/div/div[3]/div[25]',
             )
             click_calendar.click()
             
@@ -70,15 +56,15 @@ class RcManagement(WebDriverWorkflowInterface):
 
             first_time = self.wait_for_element(
                 By.XPATH,
-                '/html/body/div[2]/div/div[1]/div/div/div[2]/section[3]/section/div[1]/div/div/div/div/div/form/div[10]/div/div[2]/div/label/div/div[1]/div/div[2]/span[1]',
+                '/html/body/div[2]/div/div[1]/div/div/div[2]/section[3]/section/div[1]/div/div/div/div/div/form/div[3]/div/div[2]/div/label/div/div[1]/div/div[2]/span[1]',
             )
             second_time = self.wait_for_element(
                 By.XPATH,
-                '/html/body/div[2]/div/div[1]/div/div/div[2]/section[3]/section/div[1]/div/div/div/div/div/form/div[10]/div/div[2]/div/label/div/div[1]/div/div[2]/span[3]',
+                '/html/body/div[2]/div/div[1]/div/div/div[2]/section[3]/section/div[1]/div/div/div/div/div/form/div[3]/div/div[2]/div/label/div/div[1]/div/div[2]/span[3]',
             )
             first_time.click()
 
-            print(self.pending_automation)
+            # print(self.pending_automation)
             hours = get_current_and_last_hour(self.pending_automation)
 
             self.browser.execute_script(
@@ -96,7 +82,7 @@ class RcManagement(WebDriverWorkflowInterface):
 
             btn_search = self.wait_for_element(
                 By.XPATH,
-                '/html/body/div[2]/div/div[1]/div/div/div[2]/section[3]/section/div[1]/div/div/div/div/div/form/div[11]/div/button[1]',
+                '/html/body/div[2]/div/div[1]/div/div/div[2]/section[3]/section/div[1]/div/div/div/div/div/form/div[4]/div/button[1]',
             )
             btn_search.click()
             time.sleep(1)
@@ -148,6 +134,6 @@ class RcManagement(WebDriverWorkflowInterface):
         return file_name
 
 
-# if __name__ ==  "__main__":
-#     sorting_in = RcManagement()
-#     sorting_in.web_drive_workflow()
+if __name__ ==  "__main__":
+    sorting_in = Consolidation()
+    sorting_in.web_drive_workflow()

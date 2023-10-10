@@ -4,20 +4,19 @@ project_root = "C:\\Users\\User\\sites\\control-tower-D"
 sys.path.insert(0, project_root)
 from src.stages.extract.extract import Extract
 from src.stages.extract.extract import ExtractHc
-from src.stages.extract.extract import ExtractBacklog
 from src.stages.transform.transform_rc_managment import TransformRcManagement
 from src.stages.transform.transform_sorting_in import TransformSorting
 from src.stages.transform.transform_putaway import TransformPutaway
+from src.stages.transform.transform_consolidation import TransformConsolidation
 from src.stages.transform.transform_picking import TransformPicking
 from src.stages.transform.transform_sorting_out import TransformSortingOut
 from src.stages.transform.transform_packing import TransformPacking
 from src.stages.transform.transform_hc import TransformHc
-from src.stages.transform.transform_backlog import TransformBacklog
 from src.stages.load.load_data import LoadData
-from src.drivers.wms_backlog import WmsBacklog
 from src.drivers.rc_management import RcManagement
 from src.drivers.sorting_in import SortingIn
 from src.drivers.putaway import Putaway
+from src.drivers.consolidation import Consolidation
 from src.drivers.picking import Picking
 from src.drivers.sorting_out import SortingOut
 from src.drivers.packing import Packing
@@ -28,12 +27,12 @@ from src.infra.database_repository import DatabaseRepository
 from src.queries.queries import INSERT_RC_MANAGEMENT as rc_management_query
 from src.queries.queries import INSERT_SORTING_IN as sorting_in_query
 from src.queries.queries import INSERT_PUTAWAY as putaway_query
+from src.queries.queries import INSERT_CONSOLIDATION as consolidation_query
 from src.queries.queries import INSERT_PICKING as picking_query
 from src.queries.queries import INSERT_SORTING_OUT as sorting_out_query
 from src.queries.queries import INSERT_PACKING as packing_query
 from src.queries.queries import INSERT_HC as hc_query
 from src.queries.queries import TRUNCATE_TABLE as truncate_query
-from src.queries.queries import INSERT_BACKLOG as backlog_query
 from src.queries.queries import RUN_PROCEDURE as procedure_query
 from src.errors.error_log import ErrorLog
 from datetime import datetime
@@ -153,6 +152,25 @@ class MainPipeline:
             raise ErrorLog(
                 str(exception),
                 func="Pipeline - Putaway",
+                error_code=exception.error_code,
+            )
+            
+            
+    def consolidation(self, pending=None,nave = None):
+        try:
+            print(pending)
+            extract_consolidation = Extract(Consolidation(pending,nave), WmsReportUpload())
+            transform_consolidation = TransformConsolidation()
+            load_putaway = LoadData(DatabaseRepository(query=consolidation_query))
+            extract_consolidation_in_contract = extract_consolidation.extract()
+            transform_consolidation_in_contract = transform_consolidation.transform(
+                extract_consolidation_in_contract
+            )
+            load_putaway.load(transform_consolidation_in_contract)
+        except Exception as exception:
+            raise ErrorLog(
+                str(exception),
+                func="Pipeline - Consolidation",
                 error_code=exception.error_code,
             )
 
