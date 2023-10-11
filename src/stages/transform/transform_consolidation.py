@@ -22,9 +22,8 @@ class TransformConsolidation:
             data_content = extract_consolidation.raw_information_content
             columns_to_fill = [
                 "Shipping Warehouse",
-                "Consolidational Order Recommendation Number"
-                "Package No."
-                "Suggested detailed quantity of combined orders"
+                "Consolidational Order Recommendation Number",
+                "Suggested detailed quantity of combined orders",
                 "Creation Time"
             ]
 
@@ -33,12 +32,13 @@ class TransformConsolidation:
                 datetime(1500, 1, 11, 11, 11, 11), inplace=True
             )
 
+            data_content["Package No."].fillna(0, inplace=True)
             data_content[columns_to_fill] = data_content[columns_to_fill].fillna("-")
             data_content["sector"] = "consolidation"
             
             data_content["current_date_"] = datetime.now().strftime("%Y-%m-%d")
             
-            hours = data_content['Completion time'][0]
+            hours = data_content['Creation Time'][0]
             hours_date_type = datetime.strptime(hours, "%Y-%m-%d %H:%M:%S")
             hours_date_type = hours_date_type.replace(minute=0, second=0, microsecond=0).replace(minute=0, second=0, microsecond=0)
             data_content["extraction_hour"] = hours_date_type

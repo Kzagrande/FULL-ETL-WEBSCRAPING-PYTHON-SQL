@@ -46,6 +46,7 @@ class MainPipeline:
             "Rc_management": self.rc_management,
             "Sorting_in": self.sorting_in,
             "Putaway": self.putaway,
+            "Consolidation": self.consolidation,
             "Picking": self.picking,
             "Sorting_out": self.sorting_out,
             "Packing": self.packing,

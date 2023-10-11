@@ -24,10 +24,10 @@ INSERT_PUTAWAY = """
 """
 
 INSERT_CONSOLIDATION = """
-    INSERT INTO putaway
-        (shipping_warehouse,consol_ord_recomend_number,package_num,sugest_combined_ords,creation_time,sector,extraction_hour
+    INSERT INTO consolidation
+        (shipping_warehouse,consol_ord_recomend_number,package_num,sugest_combined_ords,creation_time,sector,current_date_,extraction_hour)
     VALUES
-        (%s,%s,%s,%s,%s,%s,%s)
+        (%s,%s,%s,%s,%s,%s,%s,%s)
 """
 
 
