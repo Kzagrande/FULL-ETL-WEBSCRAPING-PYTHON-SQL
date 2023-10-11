@@ -44,11 +44,11 @@ class TransformPacking:
             data_content["extraction_hour"] = hours_date_type
 
             transformed_values = []
-            for warehouse in data_content["Workstation"]:
-                if warehouse.startswith("Packstation"):
-                    transformed_value = "Sao Paulo GLP Transit Warehouse"
-                else:
+            for warehouse in data_content["Operator"]:
+                if warehouse.startswith("SPglp2WH"):
                     transformed_value = "BR_GRU_SW 2"
+                else:
+                    transformed_value = "Sao Paulo GLP Transit Warehouse"
                 transformed_values.append(transformed_value)
 
             # Adicionar a lista de valores transformados de volta ao DataFrame, se necessário
