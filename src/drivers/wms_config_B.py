@@ -59,7 +59,7 @@ class WmsConfigB:
             time.sleep(2)
             warerhouse_select = self.wait_for_element(
                 By.XPATH,
-                '//*[@id="app"]/div/div[1]/div/div/div[1]/div[1]/div[2]/div[1]/div[2]/div/div[2]/div/div[2]/div/a[2]',
+                '/html/body/div[2]/div/div[1]/div/div/div[1]/div[1]/div[2]/div[1]/div[2]/div/div[2]/div/div[2]/div/a[4]',
             )
             warerhouse_select.click()
             time.sleep(2)

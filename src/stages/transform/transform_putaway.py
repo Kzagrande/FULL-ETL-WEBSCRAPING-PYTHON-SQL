@@ -20,22 +20,14 @@ class TransformPutaway:
     def __filter_and_transform_data(self, extract_putaway: ExtractContract) -> List:
         try:
             data_content = extract_putaway.raw_information_content
-            columns_to_fill = [
-                "Warehouse",
-                "Sub-Package Number",
-                "Order No.",
-                "Zone",
-                "Lane",
-                "Location",
-                "Operator",
-            ]
-            data_content[columns_to_fill] = data_content[columns_to_fill].fillna("-")
-            data_content["Operating time"].fillna(
+
+            data_content.fillna('', inplace=True)
+            data_content["Operation time"].fillna(
                 datetime(1500, 1, 11, 11, 11, 11), inplace=True
             )
             data_content["sector"] = "putaway"
             data_content["current_date_"] = datetime.now().strftime("%Y-%m-%d")
-            hours = data_content['Operating time'][0]
+            hours = data_content['Operation time'][0]
             hours_date_type = datetime.strptime(hours, "%Y-%m-%d %H:%M:%S")
             print(type(hours_date_type))
             print(hours_date_type)

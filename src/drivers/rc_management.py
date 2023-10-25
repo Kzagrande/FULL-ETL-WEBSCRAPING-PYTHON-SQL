@@ -24,9 +24,9 @@ class RcManagement(WebDriverWorkflowInterface):
     def __init__(self, pending_automation=None, nave=None):
         self.nave = nave
         self.pending_automation = pending_automation
-        self.options = webdriver.ChromeOptions()
-        self.options.add_argument("--start-maximized")  # Maximizes the window
-        self.browser = webdriver.Chrome(options=self.options)
+        self.options = webdriver.EdgeOptions()
+        self.options.add_argument("--start-maximized")  
+        self.browser = webdriver.Edge(options=self.options)
         self.wait = WebDriverWait(self.browser, 10)  # 10 seconds timeout
 
     def wait_for_element(self, by, value):
