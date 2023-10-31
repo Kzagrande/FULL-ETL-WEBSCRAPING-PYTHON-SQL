@@ -20,18 +20,8 @@ class TransformSortingOut:
     def __filter_and_transform_data(self, extract_sorting_out: ExtractContract) -> List:
         try:
             data_content = extract_sorting_out.raw_information_content
-            columns_to_fill = [
-                "Warehouse",
-                "task group number",
-                "Picking Task No.",
-                "Picking Container",
-                "Package No.",
-                "Sub-Package Number",
-                "Basket number",
-                "Whether to mark box empty names",
-                "Sorted by",
-            ]
-            data_content[columns_to_fill] = data_content[columns_to_fill].fillna("-")
+
+            data_content.fillna('', inplace=True)
             data_content["Sorting Time"].fillna(
                 datetime(1500, 1, 11, 11, 11, 11), inplace=True
             )

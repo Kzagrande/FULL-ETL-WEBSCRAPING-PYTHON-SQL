@@ -45,7 +45,7 @@ class Picking(WebDriverWorkflowInterface):
 
             complete_time = self.wait_for_element(
                 By.XPATH,
-                '/html/body/div[2]/div/div[1]/div/div/div[2]/section[3]/section/div[1]/div/div/div/div/div/form/div[11]/div/div[2]/div/div[1]/div/div[2]/div/div[2]/div//a[contains(text(), "Completion time")]',
+                '/html/body/div[2]/div/div[1]/div/div/div[2]/section[3]/section/div[1]/div/div/div/div/div/form/div[11]/div/div[2]/div/div[1]/div/div[2]/div/div[2]/div/a[3]',
             )
             complete_time.click()
             time.sleep(2)

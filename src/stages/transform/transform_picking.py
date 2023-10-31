@@ -20,41 +20,27 @@ class TransformPicking:
     def __filter_and_transform_data(self, extract_picking: ExtractContract) -> List:
         try:
             data_content = extract_picking.raw_information_content
-            columns_to_fill = [
-                "Transit warehouse",
-                "Picking Group Number",
-                "Picking Task No.",
-                "Picking Methods",
-                "Type",
-                "Consolidational Order Recommendation Number",
-                "Sub-Package Number",
-                "Whether to short pick",
-                "Picking Location",
-                "Lane",
-                "Picking area",
-                "Picking Container",
-                "Status",
-                "Created by",
-                "picker",
-                "Picking Time",
-                "Voided By",
-                'Do you confirm to flag it as "cancel"?',
-            ]
-            data_content[columns_to_fill] = data_content[columns_to_fill].fillna("-")
-            data_content["Task Creation Time"].fillna(
-                datetime(1500, 1, 11, 11, 11, 11), inplace=True
-            )
-            data_content["Task Pick-up Time"].fillna(
-                datetime(1500, 1, 11, 11, 11, 11), inplace=True
-            )
-            data_content["Voided Time"].fillna(
-                datetime(1500, 1, 11, 11, 11, 11), inplace=True
-            )
-            data_content["sector"] = "picking"
 
-            data_content["current_date_"] = datetime.now().strftime("%Y-%m-%d")
+            data_content.iloc[:,14].fillna(
+                datetime(1500, 1, 11, 11, 11, 11), inplace=True
+            )
+            data_content.iloc[:,15].fillna(
+                datetime(1500, 1, 11, 11, 11, 11), inplace=True
+            )
+            data_content.iloc[:,17].fillna(
+                datetime(1500, 1, 11, 11, 11, 11), inplace=True
+            )
+            data_content.iloc[:,19].fillna(
+                datetime(1500, 1, 11, 11, 11, 11), inplace=True
+            )
             
-            hours = data_content['Picking Time'][0]
+            data_content.iloc[:,4] = data_content.iloc[:,4].str.replace('.*多包.*', 'Multi-Order', regex=True)
+            
+            data_content["sector"] = "picking"
+            data_content["current_date_"] = datetime.now().strftime("%Y-%m-%d")
+            data_content.fillna('', inplace=True)
+            
+            hours = data_content.iloc[0,17] #completion time
             hours_date_type = datetime.strptime(hours, "%Y-%m-%d %H:%M:%S")
             print(type(hours_date_type))
             print(hours_date_type)

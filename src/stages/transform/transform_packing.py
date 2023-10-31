@@ -28,15 +28,15 @@ class TransformPacking:
                 "Workstation",
                 "Operator",
             ]
-            data_content[columns_to_fill] = data_content[columns_to_fill].fillna("-")
-            data_content["Operating time"].fillna(
+            data_content.fillna('', inplace=True)
+            data_content["Operation time"].fillna(
                 datetime(1500, 1, 11, 11, 11, 11), inplace=True
             )
             data_content["sector"] = "packing_"
 
             data_content["current_date_"] = datetime.now().strftime("%Y-%m-%d")
             
-            hours = data_content['Operating time'][0]
+            hours = data_content.iloc[0,6] #operation time
             hours_date_type = datetime.strptime(hours, "%Y-%m-%d %H:%M:%S")
             print(type(hours_date_type))
             print(hours_date_type)
