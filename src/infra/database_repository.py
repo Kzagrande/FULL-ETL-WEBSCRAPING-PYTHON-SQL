@@ -24,6 +24,7 @@ class DatabaseRepository(DatabaseRepositoryInterface):
                 "rc_management",
                 "sorting_in",
                 "putaway",
+                "consolidation",
                 "picking",
                 "sorting_out",
                 "packing",
