@@ -46,7 +46,7 @@ class MainPipeline:
             "Rc_management": self.rc_management,
             "Sorting_in": self.sorting_in,
             "Putaway": self.putaway,
-            "Consolidation": self.consolidation,
+            # "Consolidation": self.consolidation,
             "Picking": self.picking,
             "Sorting_out": self.sorting_out,
             "Packing": self.packing,
@@ -157,23 +157,23 @@ class MainPipeline:
             )
             
             
-    def consolidation(self, pending=None,nave = None):
-        try:
-            print(pending)
-            extract_consolidation = Extract(Consolidation(pending,nave), WmsReportUpload())
-            transform_consolidation = TransformConsolidation()
-            load_putaway = LoadData(DatabaseRepository(query=consolidation_query))
-            extract_consolidation_in_contract = extract_consolidation.extract()
-            transform_consolidation_in_contract = transform_consolidation.transform(
-                extract_consolidation_in_contract
-            )
-            load_putaway.load(transform_consolidation_in_contract)
-        except Exception as exception:
-            raise ErrorLog(
-                str(exception),
-                func="Pipeline - Consolidation",
-                error_code=exception.error_code,
-            )
+    # def consolidation(self, pending=None,nave = None):
+    #     try:
+    #         print(pending)
+    #         extract_consolidation = Extract(Consolidation(pending,nave), WmsReportUpload())
+    #         transform_consolidation = TransformConsolidation()
+    #         load_putaway = LoadData(DatabaseRepository(query=consolidation_query))
+    #         extract_consolidation_in_contract = extract_consolidation.extract()
+    #         transform_consolidation_in_contract = transform_consolidation.transform(
+    #             extract_consolidation_in_contract
+    #         )
+    #         load_putaway.load(transform_consolidation_in_contract)
+    #     except Exception as exception:
+    #         raise ErrorLog(
+    #             str(exception),
+    #             func="Pipeline - Consolidation",
+    #             error_code=exception.error_code,
+    #         )
 
     def picking(self, pending=None,nave = None):
         try:
