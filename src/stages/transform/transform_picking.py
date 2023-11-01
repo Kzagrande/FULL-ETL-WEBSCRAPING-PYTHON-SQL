@@ -38,7 +38,7 @@ class TransformPicking:
             
             data_content["sector"] = "picking"
             data_content["current_date_"] = datetime.now().strftime("%Y-%m-%d")
-            data_content.fillna('', inplace=True)
+            data_content.fillna('-', inplace=True)
             
             hours = data_content.iloc[0,17] #completion time
             hours_date_type = datetime.strptime(hours, "%Y-%m-%d %H:%M:%S")

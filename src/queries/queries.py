@@ -51,6 +51,14 @@ INSERT_PACKING = """
     VALUES
         (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
 """
+INSERT_SUBPACKAGE_MANAGEMENT = """
+    INSERT INTO subpackage_management
+        (shipping_warehouse,subpackage_number,order_number,waybill_number,consolid_package_num,consolid_recomed_number,location,warehouse_area,roadway,
+        service_provider,service_provider_product,shipping_mode,parcel_business_type,sorting_center_subpackage,rc_warehouse,shop_id,shop_name,payment_method,order_flag_type,
+        is_cancelled,cancellation_time,abnormality_type,package_status,operation_time,sector,current_date_,extraction_hour)
+    VALUES
+       (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+"""
 
 INSERT_BACKLOG = """
     INSERT INTO ware_ods_shein.sectors_backlog
