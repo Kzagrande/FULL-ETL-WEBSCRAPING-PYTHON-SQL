@@ -25,7 +25,7 @@ class RcManagement(WebDriverWorkflowInterface):
         self.nave = nave
         self.pending_automation = pending_automation
         self.options = webdriver.ChromeOptions()
-        self.options.add_argument("--start-maximized")  # Maximizes the window
+        self.options.add_argument("--start-maximized")  
         self.browser = webdriver.Chrome(options=self.options)
         self.wait = WebDriverWait(self.browser, 10)  # 10 seconds timeout
 

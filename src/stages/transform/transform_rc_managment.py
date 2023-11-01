@@ -11,78 +11,59 @@ from src.errors.error_log import ErrorLog
 
 
 class TransformRcManagement:
-    def transform(self, extract_rc: ExtractContract) -> TransformContract:
-        transformed_data = self.__filter_and_transform_data(extract_rc)
+    def transform(self, extract_sorting: ExtractContract) -> TransformContract:
+        transformed_data = self.__filter_and_transform_data(extract_sorting)
         transformed_data_contract = TransformContract(load_content=transformed_data)
         print("transformed data -->>", transformed_data_contract)
         return transformed_data_contract
 
-    def __filter_and_transform_data(self, extract_rc: ExtractContract) -> List:
+    def __filter_and_transform_data(self, extract_sorting: ExtractContract) -> List:
         try:
-            data_content = extract_rc.raw_information_content
-            columns_to_fill = [
-                "RC Warehouse",
-                "分拣中心仓代码",
-                "Destination Warehouse",
-                "Destination Warehouse Code",
-                "Destination Warehouse Area",
-                "Transfer box number",
-                "Shelving Container Number",
-                "Shipping Mode",
-                "Same park or Not",
-                "Forecast Status",
-                "Number of Sub-packages",
-                "Creation Time",
-                "Packer",
-                "Packing Station",
-                "Closing Time",
-                "Closer",
-                "Printing time",
-                "Printer",
-                "Shipping Time",
-                "Shipper",
-                "Pickup Time",
-                "Pickup person",
-                "Signed for",
-                "Signed by",
-                "Starting time of shelving",
-                "Completion time",
-                "Shelved by",
-                "Transfer Status",
-            ]
+            data_content = extract_sorting.raw_information_content
+            data_content.iloc[:,11].fillna(
+                datetime(1500, 1, 11, 11, 11, 11), inplace=True
+            )
+            data_content.iloc[:,14].fillna(
+                datetime(1500, 1, 11, 11, 11, 11), inplace=True
+            )
+            data_content.iloc[:,17].fillna(
+                datetime(1500, 1, 11, 11, 11, 11), inplace=True
+            )
+            data_content.iloc[:,16].fillna(
+                datetime(1500, 1, 11, 11, 11, 11), inplace=True
+            )
 
-            
-            data_content["Creation Time"].fillna(
+            data_content.iloc[:,18].fillna(
                 datetime(1500, 1, 11, 11, 11, 11), inplace=True
             )
-            data_content["Closing Time"].fillna(
+
+            data_content.iloc[:,20].fillna(
                 datetime(1500, 1, 11, 11, 11, 11), inplace=True
             )
-            data_content["Printing time"].fillna(
+            data_content.iloc[:,22].fillna(
                 datetime(1500, 1, 11, 11, 11, 11), inplace=True
             )
-            data_content["Shipping Time"].fillna(
+            data_content.iloc[:,24].fillna(
                 datetime(1500, 1, 11, 11, 11, 11), inplace=True
             )
-            data_content["Pickup Time"].fillna(
-                datetime(1500, 1, 11, 11, 11, 11), inplace=True
-            )
-            data_content["Signed for"].fillna(
-                datetime(1500, 1, 11, 11, 11, 11), inplace=True
-            )
-            data_content["Completion time"].fillna(
-                datetime(1500, 1, 11, 11, 11, 11), inplace=True
-            )
-            data_content["Starting time of shelving"].fillna(
+            data_content.iloc[:,25].fillna(
                 datetime(1500, 1, 11, 11, 11, 11), inplace=True
             )
             
-            data_content[columns_to_fill] = data_content[columns_to_fill].fillna("-")
+            data_content.fillna('', inplace=True)
+
+
+            print(data_content.columns[27])
+            data_content.iloc[:,0] = "BR_GRU_RC_A"
+            data_content.iloc[:,27] = "Completed"
+            
+
+             
             data_content["sector"] = "rc_management"
-            
             data_content["current_date_"] = datetime.now().strftime("%Y-%m-%d")
             
-            hours = data_content['Completion time'][0]
+            print(data_content.iloc[0,25])
+            hours = data_content.iloc[0,25] #completion time
             hours_date_type = datetime.strptime(hours, "%Y-%m-%d %H:%M:%S")
             hours_date_type = hours_date_type.replace(minute=0, second=0, microsecond=0).replace(minute=0, second=0, microsecond=0)
             data_content["extraction_hour"] = hours_date_type
