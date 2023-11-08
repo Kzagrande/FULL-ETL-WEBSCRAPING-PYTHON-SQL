@@ -45,7 +45,7 @@ class SubpackageManagement(WebDriverWorkflowInterface):
 
             packed = self.wait_for_element(
                 By.XPATH,
-                '/html/body/div[2]/div/div[1]/div/div/div[2]/section[3]/section/div[1]/div/div/div/div/div/form/div[16]/div/div[2]/div/div/div[1]/div[2]/div/div[2]/div/a[3]',
+                '/html/body/div[2]/div/div[1]/div/div/div[2]/section[3]/section/div[1]/div/div/div/div/div/form/div[16]/div/div[2]/div/div/div[1]/div[2]/div/div[2]/div/a[4]',
             )
             packed.click()
             time.sleep(2)
@@ -110,7 +110,7 @@ class SubpackageManagement(WebDriverWorkflowInterface):
                 self.browser.quit()
                 raise ErrorLog(
                     message="Sem dados para este horário",
-                    func="Navigate_to_wms",
+                    func="Navigate_to_wms - Subpack_management",
                     error_code=30,
                 )
 
