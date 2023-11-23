@@ -22,12 +22,12 @@ class TransformPutaway:
             data_content = extract_putaway.raw_information_content
 
             data_content.fillna('', inplace=True)
-            data_content["Operation time"].fillna(
+            data_content.iloc[:,7].fillna(
                 datetime(1500, 1, 11, 11, 11, 11), inplace=True
             )
             data_content["sector"] = "putaway"
             data_content["current_date_"] = datetime.now().strftime("%Y-%m-%d")
-            hours = data_content['Operation time'][0]
+            hours = data_content.iloc[0,7]
             hours_date_type = datetime.strptime(hours, "%Y-%m-%d %H:%M:%S")
             print(type(hours_date_type))
             print(hours_date_type)

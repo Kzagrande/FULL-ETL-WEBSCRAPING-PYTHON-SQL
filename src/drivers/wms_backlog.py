@@ -16,9 +16,9 @@ from src.errors.error_log import ErrorLog
 
 class WmsBacklog(WmsBacklogInterface):
     def __init__(self) -> None:
-        self.options = webdriver.ChromeOptions()
+        self.options = webdriver.EdgeOptions()
         self.options.add_argument("--start-maximized")  # Maximizes the window
-        self.browser = webdriver.Chrome(options=self.options)
+        self.browser = webdriver.Edge(options=self.options)
         self.wait = WebDriverWait(self.browser, 10)  # 10 seconds timeout
 
     def wait_for_element(self, by, value):
