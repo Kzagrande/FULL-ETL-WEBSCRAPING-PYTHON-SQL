@@ -28,8 +28,6 @@ class TransformSortingOut:
             data_content["sector"] = "sorting_out"
 
             data_content["current_date_"] = datetime.now().strftime("%Y-%m-%d")
-
-            data_content["current_date_"] = datetime.now().strftime("%Y-%m-%d")
             hours = data_content['Sorting Time'][0]
             hours_date_type = datetime.strptime(hours, "%Y-%m-%d %H:%M:%S")
             print(type(hours_date_type))

@@ -18,27 +18,28 @@ class TransformHc:
     def __filter_and_transform_data(self, extract_hc: ExtractContract) -> List:
         try:
             data_content = extract_hc.raw_information_content
-            columns_to_fill = [
-                "NAME",
-                "ID EMPLOYER",
-                "ADMISSION DT",
-                "COMPANY",
-                "WH",
-                "BZ",
-                "COLLAR",
-                "CATEGORY",
-                "SECTOR",
-                "ROLE",
-                "SHIFT",
-                "SCHEDULE",
-                "MANAGER 1",
-                "MANAGER 2",
-                "MANAGER 3",
-                "STATUS",
-                "ROLE 2",
-                "USER",
-            ]
-            data_content[columns_to_fill] = data_content[columns_to_fill].fillna("-")
+            # columns_to_fill = [
+            #     "NAME",
+            #     "ID EMPLOYER",
+            #     "ADMISSION DT",
+            #     "COMPANY",
+            #     "WH",
+            #     "BZ",
+            #     "COLLAR",
+            #     "CATEGORY",
+            #     "SECTOR",
+            #     "ROLE",
+            #     "SHIFT",
+            #     "SCHEDULE",
+            #     "MANAGER 1",
+            #     "MANAGER 2",
+            #     "MANAGER 3",
+            #     "STATUS",
+            #     "ROLE 2",
+            #     "USER",
+            # ]
+            # data_content["current_date_"] = datetime.now().strftime("%Y-%m-%d")
+            data_content.fillna('-', inplace=True)
             return data_content.values.tolist()
         except Exception as exception:
             raise ErrorLog(

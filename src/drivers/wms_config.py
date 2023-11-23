@@ -65,7 +65,7 @@ class WmsConfig:
             time.sleep(2)
             btn_ok = self.wait_for_element(
                 By.XPATH,
-                "/html/body/div[8]/div/div/div[2]/button[2]",
+                "/html/body/div[9]/div/div/div[2]/button[2]",
             )
             time.sleep(2)
             btn_ok.click()
