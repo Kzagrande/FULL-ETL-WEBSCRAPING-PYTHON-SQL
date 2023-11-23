@@ -27,7 +27,7 @@ class DatabaseRepository(DatabaseRepositoryInterface):
                 "picking",
                 "sorting_out",
                 "packing",
-                "sectors_backlog",
+                "subpackage_management",
                 "hc",
             ]
             cursor = DatabaseConnection.connection.cursor()

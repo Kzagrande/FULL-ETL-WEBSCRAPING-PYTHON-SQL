@@ -29,7 +29,7 @@ class TransformPacking:
                 "Operator",
             ]
             data_content.fillna('', inplace=True)
-            data_content["Operation time"].fillna(
+            data_content.iloc[:,6].fillna(
                 datetime(1500, 1, 11, 11, 11, 11), inplace=True
             )
             data_content["sector"] = "packing_"
