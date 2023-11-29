@@ -53,9 +53,10 @@ class MainPipeline:
         DatabaseConnection.connect()
         cursor = DatabaseConnection.connection.cursor()
         current_time = datetime.now()
-        query = "SELECT id,sector,extraction_hour,nave FROM ware_ods_shein.rpa_control_naves2 WHERE extraction_hour <= %s AND status = False"
+        query = "SELECT id,sector,extraction_hour,nave FROM ware_ods_shein.rpa_control_naves WHERE extraction_hour <= %s AND status = False"
         cursor.execute(query, (current_time,))
         pending_automations = cursor.fetchall()
+        print(query)
 
         for id, sector_name, extaction_hour, nave in pending_automations:
             try:
@@ -72,7 +73,7 @@ class MainPipeline:
                 sector(extaction_hour, nave)
                 self.hc()
                 self.procedures()
-                update_query = f"UPDATE ware_ods_shein.rpa_control_naves2 SET status = True WHERE id = {id}"
+                update_query = f"UPDATE ware_ods_shein.rpa_control_naves SET status = True WHERE id = {id}"
                 cursor.execute(update_query)
                 DatabaseConnection.connection.commit()
                 DatabaseConnection.connection.close()
@@ -83,7 +84,7 @@ class MainPipeline:
             except Exception as exception:
                 print(exception.error_code)
                 if exception.error_code == 1:
-                    update_query = f"UPDATE ware_ods_shein.rpa_control_naves2 SET status = True WHERE id = {id}"
+                    update_query = f"UPDATE ware_ods_shein.rpa_control_naves SET status = True WHERE id = {id}"
                     cursor.execute(update_query)
                     print(
                         f"A extração do {sector_name} referente ás {extaction_hour} foi executada com sucesso"
