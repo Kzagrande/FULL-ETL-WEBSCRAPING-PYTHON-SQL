@@ -43,15 +43,10 @@ from datetime import datetime
 class MainPipeline:
     def get_pending_automations(self):
         sectors = {
-            "Rc_management": self.rc_management,
-            "Shipping_time": self.shipping_time,
-            # "Sorting_in": self.sorting_in,
             "Putaway": self.putaway,
-            # "Consolidation": self.consolidation,
             "Picking": self.picking,
             "Sorting_out": self.sorting_out,
             "Packing": self.packing,
-            # "Subpack_management": self.subpack_management,
         }
 
         DatabaseConnection.connect()
@@ -86,8 +81,7 @@ class MainPipeline:
                 )
 
             except Exception as exception:
-                print(exception.error_code)
-                if exception.error_code == 1:
+                if hasattr(exception, 'error_code') and exception.error_code == 1:
                     update_query = f"UPDATE ware_ods_shein.rpa_control_naves SET status = True WHERE id = {id}"
                     cursor.execute(update_query)
                     print(
@@ -95,68 +89,50 @@ class MainPipeline:
                     )
                     DatabaseConnection.connection.commit()
                 else:
-                    ErrorLog(
+                 raise ErrorLog(
                         message="Erro no pipeline",
                         func=f"get_pending_automations ERROR",
-                        error_code=exception.error_code,
+                        error_code='error alpha'
                     )
 
-    def rc_management(self, pending=None, nave=None):
-        try:
-            print(nave)
-            print(pending)
-            extract_rc_contract = Extract(
-                RcManagement(pending, nave), WmsReportUpload()
-            )
-            transform_rc = TransformRcManagement()
-            load_sorting = LoadData(DatabaseRepository(query=rc_management_query))
-            extract_rc_contract = extract_rc_contract.extract()
-            transform_rc_in_contract = transform_rc.transform(extract_rc_contract)
-            load_sorting.load(transform_rc_in_contract)
-        except Exception as exception:
-            raise ErrorLog(
-                str(exception),
-                func="Pipeline - Rc_management",
-                error_code=exception.error_code,
-            )
-            
-    def shipping_time(self, pending=None, nave=None):
-        try:
-            print(nave)
-            print(pending)
-            extract_rc_contract = Extract(
-                ShippingTime(pending, nave), WmsReportUpload()
-            )
-            transform_rc = TransformShipping()
-            load_sorting = LoadData(DatabaseRepository(query=shipping_time_query))
-            extract_rc_contract = extract_rc_contract.extract()
-            transform_rc_in_contract = transform_rc.transform(extract_rc_contract)
-            load_sorting.load(transform_rc_in_contract)
-        except Exception as exception:
-            raise ErrorLog(
-                str(exception),
-                func="Pipeline - Rc_management",
-                error_code=exception.error_code,
-            )
-
-    # def sorting_in(self, pending=None,nave = None):
+    # def rc_management(self, pending=None, nave=None):
     #     try:
     #         print(nave)
     #         print(pending)
-    #         extract_sorting = Extract(SortingIn(pending,nave), WmsReportUpload())
-    #         transform_sorting = TransformSorting()
-    #         load_sorting = LoadData(DatabaseRepository(query=sorting_in_query))
-    #         extract_sorting_in_contract = extract_sorting.extract()
-    #         transform_sorting_in_contract = transform_sorting.transform(
-    #             extract_sorting_in_contract
+    #         extract_rc_contract = Extract(
+    #             RcManagement(pending, nave), WmsReportUpload()
     #         )
-    #         load_sorting.load(transform_sorting_in_contract)
+    #         transform_rc = TransformRcManagement()
+    #         load_sorting = LoadData(DatabaseRepository(query=rc_management_query))
+    #         extract_rc_contract = extract_rc_contract.extract()
+    #         transform_rc_in_contract = transform_rc.transform(extract_rc_contract)
+    #         load_sorting.load(transform_rc_in_contract)
     #     except Exception as exception:
     #         raise ErrorLog(
     #             str(exception),
-    #             func="Pipeline - Sorting_in",
+    #             func="Pipeline - Rc_management",
     #             error_code=exception.error_code,
     #         )
+            
+    # def shipping_time(self, pending=None, nave=None):
+    #     try:
+    #         print(nave)
+    #         print(pending)
+    #         extract_rc_contract = Extract(
+    #             ShippingTime(pending, nave), WmsReportUpload()
+    #         )
+    #         transform_rc = TransformShipping()
+    #         load_sorting = LoadData(DatabaseRepository(query=shipping_time_query))
+    #         extract_rc_contract = extract_rc_contract.extract()
+    #         transform_rc_in_contract = transform_rc.transform(extract_rc_contract)
+    #         load_sorting.load(transform_rc_in_contract)
+    #     except Exception as exception:
+    #         raise ErrorLog(
+    #             str(exception),
+    #             func="Pipeline - Rc_management",
+    #             error_code=exception.error_code,
+    #         )
+
 
     def putaway(self, pending=None, nave=None):
         try:
@@ -176,23 +152,6 @@ class MainPipeline:
                 error_code=exception.error_code,
             )
 
-    # def consolidation(self, pending=None,nave = None):
-    #     try:
-    #         print(pending)
-    #         extract_consolidation = Extract(Consolidation(pending,nave), WmsReportUpload())
-    #         transform_consolidation = TransformConsolidation()
-    #         load_putaway = LoadData(DatabaseRepository(query=consolidation_query))
-    #         extract_consolidation_in_contract = extract_consolidation.extract()
-    #         transform_consolidation_in_contract = transform_consolidation.transform(
-    #             extract_consolidation_in_contract
-    #         )
-    #         load_putaway.load(transform_consolidation_in_contract)
-    #     except Exception as exception:
-    #         raise ErrorLog(
-    #             str(exception),
-    #             func="Pipeline - Consolidation",
-    #             error_code=exception.error_code,
-    #         )
 
     def picking(self, pending=None, nave=None):
         try:
@@ -246,28 +205,7 @@ class MainPipeline:
                 error_code=exception.error_code,
             )
 
-    # def subpack_management(self, pending=None, nave=None):
-    #     try:
-    #         extract_subpack_management = Extract(
-    #             SubpackageManagement(pending, nave), WmsReportUpload()
-    #         )
-    #         transform_subpack = TransformSubpackageManagement()
-    #         load_subpack_management = LoadData(
-    #             DatabaseRepository(query=subpackage_query)
-    #         )
-    #         extract_subpack_management_in_contract = (
-    #             extract_subpack_management.extract()
-    #         )
-    #         transform_subpack_in_contract = transform_subpack.transform(
-    #             extract_subpack_management_in_contract
-    #         )
-    #         load_subpack_management.load(transform_subpack_in_contract)
-    #     except Exception as exception:
-    #         raise ErrorLog(
-    #             str(exception),
-    #             func="Pipeline - Packing",
-    #             error_code=exception.error_code,
-    #         )
+
 
     def hc(self):
         try:
