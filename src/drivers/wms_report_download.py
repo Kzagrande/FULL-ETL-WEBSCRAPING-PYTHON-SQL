@@ -65,7 +65,7 @@ class WmsReportDownload:
             )
                 my_file.click()
 
-            time.sleep(3)
+            time.sleep(1)
 
             downloads_folder = "C:\\Users\\User\\Downloads"
 

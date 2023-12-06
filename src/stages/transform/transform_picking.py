@@ -21,16 +21,16 @@ class TransformPicking:
         try:
             data_content = extract_picking.raw_information_content
 
-            data_content.iloc[:,14].fillna(
-                datetime(1500, 1, 11, 11, 11, 11), inplace=True
-            )
             data_content.iloc[:,15].fillna(
                 datetime(1500, 1, 11, 11, 11, 11), inplace=True
             )
-            data_content.iloc[:,17].fillna(
+            data_content.iloc[:,16].fillna(
                 datetime(1500, 1, 11, 11, 11, 11), inplace=True
             )
-            data_content.iloc[:,19].fillna(
+            data_content.iloc[:,18].fillna(
+                datetime(1500, 1, 11, 11, 11, 11), inplace=True
+            )
+            data_content.iloc[:,20].fillna(
                 datetime(1500, 1, 11, 11, 11, 11), inplace=True
             )
             
@@ -40,7 +40,7 @@ class TransformPicking:
             data_content["current_date_"] = datetime.now().strftime("%Y-%m-%d")
             data_content.fillna('-', inplace=True)
             
-            hours = data_content.iloc[0,17] #completion time
+            hours = data_content.iloc[0,16] #completion time
             hours_date_type = datetime.strptime(hours, "%Y-%m-%d %H:%M:%S")
             print(type(hours_date_type))
             print(hours_date_type)

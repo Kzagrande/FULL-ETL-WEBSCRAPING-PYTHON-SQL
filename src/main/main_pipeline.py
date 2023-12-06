@@ -43,6 +43,7 @@ from datetime import datetime
 class MainPipeline:
     def get_pending_automations(self):
         sectors = {
+            "Rc_management": self.rc_management,
             "Putaway": self.putaway,
             "Picking": self.picking,
             "Sorting_out": self.sorting_out,
@@ -81,7 +82,8 @@ class MainPipeline:
                 )
 
             except Exception as exception:
-                if hasattr(exception, 'error_code') and exception.error_code == 1:
+                print(exception.error_code)
+                if exception.error_code == 1:
                     update_query = f"UPDATE ware_ods_shein.rpa_control_naves SET status = True WHERE id = {id}"
                     cursor.execute(update_query)
                     print(
@@ -89,30 +91,30 @@ class MainPipeline:
                     )
                     DatabaseConnection.connection.commit()
                 else:
-                 raise ErrorLog(
+                    ErrorLog(
                         message="Erro no pipeline",
                         func=f"get_pending_automations ERROR",
-                        error_code='error alpha'
+                        error_code=exception.error_code,
                     )
 
-    # def rc_management(self, pending=None, nave=None):
-    #     try:
-    #         print(nave)
-    #         print(pending)
-    #         extract_rc_contract = Extract(
-    #             RcManagement(pending, nave), WmsReportUpload()
-    #         )
-    #         transform_rc = TransformRcManagement()
-    #         load_sorting = LoadData(DatabaseRepository(query=rc_management_query))
-    #         extract_rc_contract = extract_rc_contract.extract()
-    #         transform_rc_in_contract = transform_rc.transform(extract_rc_contract)
-    #         load_sorting.load(transform_rc_in_contract)
-    #     except Exception as exception:
-    #         raise ErrorLog(
-    #             str(exception),
-    #             func="Pipeline - Rc_management",
-    #             error_code=exception.error_code,
-    #         )
+    def rc_management(self, pending=None, nave=None):
+        try:
+            print(nave)
+            print(pending)
+            extract_rc_contract = Extract(
+                RcManagement(pending, nave), WmsReportUpload()
+            )
+            transform_rc = TransformRcManagement()
+            load_sorting = LoadData(DatabaseRepository(query=rc_management_query))
+            extract_rc_contract = extract_rc_contract.extract()
+            transform_rc_in_contract = transform_rc.transform(extract_rc_contract)
+            load_sorting.load(transform_rc_in_contract)
+        except Exception as exception:
+            raise ErrorLog(
+                str(exception),
+                func="Pipeline - Rc_management",
+                error_code=exception.error_code,
+            )
             
     # def shipping_time(self, pending=None, nave=None):
     #     try:

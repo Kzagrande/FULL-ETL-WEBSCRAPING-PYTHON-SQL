@@ -21,14 +21,11 @@ class DatabaseRepository(DatabaseRepositoryInterface):
     def truncate_tables(self) -> None:
         try:
             __tables = [
-                "shipping_time",
                 "rc_management",
-                "sorting_in",
                 "putaway",
                 "picking",
                 "sorting_out",
                 "packing",
-                "subpackage_management",
                 "hc",
             ]
             cursor = DatabaseConnection.connection.cursor()
