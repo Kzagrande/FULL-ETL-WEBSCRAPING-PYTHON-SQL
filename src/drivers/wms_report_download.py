@@ -61,7 +61,7 @@ class WmsReportDownload:
             else:
                 my_file = self.wait_for_element(
                 By.XPATH,
-                '/html/body/div[2]/div/div[1]/div/div/div[2]/section[3]/section/div[1]/div/div/section/div/div[1]/div[2]/div[2]/div/table/tbody/tr[td[contains(text(),"SPglp010")]][1]/td[2]',
+                '/html/body/div[2]/div/div[1]/div/div/div[2]/section[3]/section/div[1]/div/div/section/div/div[1]/div[2]/div[2]/div/table/tbody/tr[td[contains(text(),"SPglp050")]][1]/td[2]',
             )
                 my_file.click()
 

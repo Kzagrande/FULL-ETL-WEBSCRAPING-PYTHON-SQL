@@ -1,6 +1,17 @@
 INSERT_RC_MANAGEMENT = """
     INSERT INTO rc_management
        (rc_warehouse, sortation_center_code, destination_warehouse, destination_warehouse_code, destination_warehouse_area, transfer_box_number, shelving_container_number, shipping_mode, 
+       same_park_or_not, forecast_status, number_of_sub_packages, creation_time, packer, packing_station, closing_time, closer, printing_time, printer, shipping_time, shipper, pickup_time, pickup_person, signed_for, signed_by, starting_time_of_shelving, completion_time,license_plate_number,shelved_by, transfer_status, sector, current_date_, extraction_hour
+)
+    VALUES
+        (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+
+
+"""
+
+INSERT_SHIPPING_TIME= """
+    INSERT INTO shipping_time
+       (rc_warehouse, sortation_center_code, destination_warehouse, destination_warehouse_code, destination_warehouse_area, transfer_box_number, shelving_container_number, shipping_mode, 
        same_park_or_not, forecast_status, number_of_sub_packages, creation_time, packer, packing_station, closing_time, closer, printing_time, printer, shipping_time, shipper, pickup_time, pickup_person, signed_for, signed_by, starting_time_of_shelving, completion_time, shelved_by, transfer_status, sector, current_date_, extraction_hour
 )
     VALUES
@@ -33,9 +44,9 @@ INSERT_CONSOLIDATION = """
 
 INSERT_PICKING = """
     INSERT INTO picking
-        (warehouse,picking_group_number,picking_task_number,picking_methods,type_,consolid_ord_num,subpackage_number,wheter_short_picking,picking_location,lane,picking_area,picking_container,status,create_by,task_criation_time,task_pick_up_time,picker,picking_time,voided_by,voided_time,flag_cancel,sector,current_date_,extraction_hour)
+        (warehouse,picking_group_number,picking_task_number,picking_methods,type_,consolid_ord_num,combined_packing_number,subpackage_number,wheter_short_picking,picking_location,lane,picking_area,picking_container,status,create_by,task_criation_time,task_pick_up_time,picker,picking_time,voided_by,voided_time,flag_cancel,sector,current_date_,extraction_hour)
     VALUES
-        (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+        (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
 """
 
 INSERT_SORTING_OUT = """

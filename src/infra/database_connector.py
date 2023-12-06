@@ -44,7 +44,8 @@ class DatabaseConnection:
                 )
 
                 cls.connection = db_connection
+                print('- - - - - CONECTADO PELO SSH - - - -  XD --->')
             except Exception as exception:
                 raise ErrorLog(str(exception), func="connect()",error_code=9) from exception
         # else:
-        #     cls.connection = pymysql.connect(host='127.0.0.1', user='root', password='onepiece1998Yan', db='ware_ods_shein')
+            # cls.connection = pymysql.connect(host='127.0.0.1', user='root', password='onepiece1998Yan', db='ware_ods_shein')

@@ -22,12 +22,10 @@ class DatabaseRepository(DatabaseRepositoryInterface):
         try:
             __tables = [
                 "rc_management",
-                "sorting_in",
                 "putaway",
                 "picking",
                 "sorting_out",
                 "packing",
-                "subpackage_management",
                 "hc",
             ]
             cursor = DatabaseConnection.connection.cursor()
