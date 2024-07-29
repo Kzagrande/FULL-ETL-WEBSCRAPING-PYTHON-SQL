@@ -25,11 +25,11 @@ class DatabaseConnection:
                 # Configuração do túnel SSH
                 tunnel = sshtunnel.SSHTunnelForwarder(
                     ssh_address_or_host=(
-                        "62.72.11.208",
+                        "",
                         22,
                     ),  # Configurar o endereço e a porta do servidor SSH
-                    ssh_username="root",
-                    ssh_password="onepiece1998Yan",
+                    ssh_username="",
+                    ssh_password="",
                     remote_bind_address=("127.0.0.1", 3306),
                 )
 
@@ -40,7 +40,7 @@ class DatabaseConnection:
                     port=tunnel.local_bind_port,  # Usar a porta local do túnel SSH
                     database="ware_ods_shein",
                     user="ware_admin",
-                    passwd="onepiece9960",
+                    passwd="",
                 )
 
                 cls.connection = db_connection

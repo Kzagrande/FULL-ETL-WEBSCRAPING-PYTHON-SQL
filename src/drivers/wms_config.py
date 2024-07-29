@@ -33,7 +33,7 @@ class WmsConfig:
                 By.CSS_SELECTOR, 'input[name="password"]'
             )
             password_input.clear()
-            password_input.send_keys("Bia2023@@@")
+            password_input.send_keys("")
             password_input.submit()
         except Exception as exception:
             raise ErrorLog(str(exception), func="login()",error_code=5) from exception
